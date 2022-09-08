@@ -137,7 +137,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     }
 
     public static class RenderTypes{
-        private static final String Cutout = "cutout";
-        private static final String Translucent = "translucent";
+        public static final String Cutout = "cutout";
+        public static final String Translucent = "translucent";
     }
 }
