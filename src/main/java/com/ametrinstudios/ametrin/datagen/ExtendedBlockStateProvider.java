@@ -32,7 +32,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
      * define blocks that should use the CutoutRenderType.
      * Only used in unclear situations (e.g. only some Doors should be cutout) view usages to see where this actually takes affect
      */
-    public ArrayList<Block> useCutoutRenderType = new ArrayList<>();
+    public ArrayList<Block> useCutoutRendererType = new ArrayList<>();
 
     {
         excludedClasses.add(SignBlock.class); //may be automated in the future;
@@ -96,13 +96,13 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
                 else {texture = texture.replace("_pressure_platen", "");}
                 pressurePlateBlock((PressurePlateBlock) block, modBlockLoc(texture));
             }else if(block instanceof TrapDoorBlock){
-                if(useCutoutRenderType.contains(block)){
+                if(useCutoutRendererType.contains(block)){
                     trapdoorBlockWithRenderType((TrapDoorBlock) block, modBlockLoc(name), true, RenderTypes.Cutout);
                 } else{
                     trapdoorBlock((TrapDoorBlock) block, modBlockLoc(name), true);
                 }
             }else if(block instanceof DoorBlock){
-                if(useCutoutRenderType.contains(block)){
+                if(useCutoutRendererType.contains(block)){
                     doorBlockWithRenderType((DoorBlock) block, modBlockLoc(name + "_bottom"), modBlockLoc(name + "_top"), RenderTypes.Cutout);
                 } else{
                     doorBlock((DoorBlock) block, modBlockLoc(name + "_bottom"), modBlockLoc(name + "_top"));
