@@ -19,22 +19,22 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     /**
      * Blocks in this List will be ignored by the generator
      */
-    public static ArrayList<Block> excludedBlocks = new ArrayList<>();
+    public ArrayList<Block> excludedBlocks = new ArrayList<>();
     /**
      * Classes in this List will be ignored by the generator
      */
-    public static ArrayList<Type> excludedClasses = new ArrayList<>();
+    public ArrayList<Type> excludedClasses = new ArrayList<>();
     /**
      * add custom rules here, gets called before the build-in rules
      */
-    public static ArrayList<AutomatedBlockStateProviderRule> blockStateProviders = new ArrayList<>();
+    public ArrayList<AutomatedBlockStateProviderRule> blockStateProviderRules = new ArrayList<>();
     /**
      * define blocks that should use the CutoutRenderType.
      * Only used in unclear situations (e.g. only some Doors should be cutout) view usages to see where this actually takes affect
      */
-    public static ArrayList<Block> useCutoutRenderType = new ArrayList<>();
+    public ArrayList<Block> useCutoutRenderType = new ArrayList<>();
 
-    static {
+    {
         excludedClasses.add(SignBlock.class); //may be automated in the future;
         excludedClasses.add(BaseFireBlock.class); //may be automated in the future;
         excludedClasses.add(LiquidBlock.class); //may be automated in the future;
@@ -51,7 +51,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
             final String name = getBlockName(block);
             String texture = getTexture(name);
 
-            for(AutomatedBlockStateProviderRule provider : blockStateProviders){
+            for(AutomatedBlockStateProviderRule provider : blockStateProviderRules){
                 if(provider.block(block, name, texture)) {return;}
             }
 
@@ -75,7 +75,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
                     logBlock((RotatedPillarBlock) block);
                 }else if(isWood(name)){
                     texture = texture.replace("wood", "log").replace("hyphae", "stem");
-                    axisBlock((RotatedPillarBlock) block, modBlockLoc(texture));
+                    axisBlock((RotatedPillarBlock) block, modBlockLoc(texture), modBlockLoc(texture));
                 }
             }else if(block instanceof FenceBlock){
                 if(usePlankTexture(name)) {texture = texture.replace("fence", "planks");}
