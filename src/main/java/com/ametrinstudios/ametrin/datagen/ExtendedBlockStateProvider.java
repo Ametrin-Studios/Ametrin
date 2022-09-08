@@ -16,15 +16,28 @@ import java.util.List;
 import static com.ametrinstudios.ametrin.AmUtil.*;
 
 public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
-    public static ArrayList<Block> exclude = new ArrayList<>();
-    public static ArrayList<Type> excludeTypes = new ArrayList<>();
-    public static ArrayList<CustomAutomatedBlockStateProvider> customAutomations = new ArrayList<>();
-    public static ArrayList<Block> useCutoutRenderType = new ArrayList<>(); //only use when it is unclear (e.g. only some Doors should be cutout) view usages to see where this actually takes affect
+    /**
+     * Blocks in this List will be ignored by the generator
+     */
+    public static ArrayList<Block> excludedBlocks = new ArrayList<>();
+    /**
+     * Classes in this List will be ignored by the generator
+     */
+    public static ArrayList<Type> excludedClasses = new ArrayList<>();
+    /**
+     * add custom rules here, gets called before the build-in rules
+     */
+    public static ArrayList<AutomatedBlockStateProviderRule> blockStateProviders = new ArrayList<>();
+    /**
+     * define blocks that should use the CutoutRenderType.
+     * Only used in unclear situations (e.g. only some Doors should be cutout) view usages to see where this actually takes affect
+     */
+    public static ArrayList<Block> useCutoutRenderType = new ArrayList<>();
 
     static {
-        excludeTypes.add(SignBlock.class); //may be automated in the future;
-        excludeTypes.add(BaseFireBlock.class); //may be automated in the future;
-        excludeTypes.add(LiquidBlock.class); //may be automated in the future;
+        excludedClasses.add(SignBlock.class); //may be automated in the future;
+        excludedClasses.add(BaseFireBlock.class); //may be automated in the future;
+        excludedClasses.add(LiquidBlock.class); //may be automated in the future;
     }
 
     public ExtendedBlockStateProvider(DataGenerator generator, String modID, ExistingFileHelper existingFileHelper) {
@@ -33,12 +46,12 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
 
     protected <B extends Block> void handleDefaults(List<B> blocks){ //call to automatically generate block models
         blocks.forEach(block -> {
-            if(excludeTypes.contains(block.getClass())) {return;}
-            if(exclude.contains(block)) {return;}
+            if(excludedClasses.contains(block.getClass())) {return;}
+            if(excludedBlocks.contains(block)) {return;}
             final String name = getBlockName(block);
             String texture = getTexture(name);
 
-            for(CustomAutomatedBlockStateProvider provider : customAutomations){
+            for(AutomatedBlockStateProviderRule provider : blockStateProviders){
                 if(provider.block(block, name, texture)) {return;}
             }
 
