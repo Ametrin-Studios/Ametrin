@@ -1,0 +1,32 @@
+
+modLoader="javafml" #mandatory
+loaderVersion="[43,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="All rights reserved"
+#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+
+[[mods]] #mandatory
+    modId="ametrin" #mandatory
+    version="${file.jarVersion}" #mandatory
+    displayName="Ametrin" #mandatory
+    #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+    #logoFile="logo.png" #optional
+    #credits="" #optional
+    authors="Ametrin Studios" #optional
+
+description='''
+Commonly used code from Ametrin Studios mods. Mainly focused on datagen.
+'''
+
+[[dependencies.ametrin]] #optional
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[43.1,)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.ametrin]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19.2,1.20)"
+    ordering="NONE"
+    side="BOTH"
