@@ -2,13 +2,13 @@
 modLoader="javafml" #mandatory
 loaderVersion="[43,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 license="All rights reserved"
-#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+issueTrackerURL="https://github.com/BarionLP/Ametrin/issues" #optional
 
 [[mods]] #mandatory
     modId="ametrin" #mandatory
     version="${file.jarVersion}" #mandatory
     displayName="Ametrin" #mandatory
-    #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+    displayURL="https://www.curseforge.com/minecraft/mc-mods/ametrin" #optional
     #logoFile="logo.png" #optional
     #credits="" #optional
     authors="Ametrin Studios" #optional

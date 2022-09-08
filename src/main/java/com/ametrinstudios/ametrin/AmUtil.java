@@ -31,6 +31,7 @@ public class AmUtil {
     public static boolean shouldAppendS(String name) {return (name.contains("brick") && !name.contains("bricks") || (name.contains("tile") && !name.contains("tiles")));}
     public static boolean isWood(String name) {return (name.contains("wood") || name.contains("hyphae"));}
     public static boolean isLog(String name) {return (name.contains("log") || name.contains("stem"));}
+    public static boolean isWooden(String name) {return isLog(name) || isWood(name) || name.contains("plank");}
 
 
     public static String getItemName(Item item) {return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getPath();}
