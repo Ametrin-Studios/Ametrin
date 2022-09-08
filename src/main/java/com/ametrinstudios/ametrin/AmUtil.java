@@ -13,6 +13,9 @@ import java.util.Objects;
 public class AmUtil {
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    /**
+     * blocks containing strings from this list try to use the plank texture in some cases look at the usages to find out where exactly
+     */
     public static ArrayList<String> plankIndicators = new ArrayList<>();
 
     public static ResourceLocation location(String key) {return new ResourceLocation(Ametrin.ModID, key);}

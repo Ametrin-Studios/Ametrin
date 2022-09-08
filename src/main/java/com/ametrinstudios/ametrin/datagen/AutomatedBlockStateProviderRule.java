@@ -4,5 +4,5 @@ import net.minecraft.world.level.block.Block;
 
 @FunctionalInterface
 public interface AutomatedBlockStateProviderRule {
-    boolean block(Block block, String name, String texture);
+    boolean rule(Block block, String name, String texture);
 }

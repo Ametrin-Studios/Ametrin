@@ -9,7 +9,6 @@ import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +16,13 @@ import static com.ametrinstudios.ametrin.AmUtil.*;
 
 public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     /**
-     * Blocks in this List will be ignored by the generator
+     * Blocks in this list will be ignored by the generator
      */
     public ArrayList<Block> excludedBlocks = new ArrayList<>();
     /**
-     * Classes in this List will be ignored by the generator
+     * blocks based on classes in this list will be ignored by the generator
      */
-    public ArrayList<Type> excludedClasses = new ArrayList<>();
+    public ArrayList<Class<?>> excludedClasses = new ArrayList<>();
     /**
      * add custom rules here, gets called before the build-in rules
      */
@@ -44,15 +43,26 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
         super(generator, modID, existingFileHelper);
     }
 
+    /**
+     * override this if you want to modify the texture location
+     * @param name name of the block
+     * @return texture used for the given block
+     */
+    protected String getTexture(String name) {
+        return name;
+    }
+
     protected <B extends Block> void handleDefaults(List<B> blocks){ //call to automatically generate block models
         blocks.forEach(block -> {
-            if(excludedClasses.contains(block.getClass())) {return;}
+            for(Class<?> clazz : excludedClasses){
+                if(clazz.isInstance(block)) {return;}
+            }
             if(excludedBlocks.contains(block)) {return;}
             final String name = getBlockName(block);
             String texture = getTexture(name);
 
             for(AutomatedBlockStateProviderRule provider : blockStateProviderRules){
-                if(provider.block(block, name, texture)) {return;}
+                if(provider.rule(block, name, texture)) {return;}
             }
 
             if(block instanceof StairBlock){
@@ -133,21 +143,39 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     protected void campfireBlock(CampfireBlock block, String name, String texture){
         ModelFile model = models().withExistingParent(name, "block/template_campfire").texture("fire", modBlockLoc(texture + "_fire")).texture("lit_log", modBlockLoc(texture + "_log_lit")).renderType(RenderTypes.Cutout);
         ModelFile modelOff = models().getExistingFile(new ResourceLocation("block/campfire_off"));
-        getVariantBuilder(block).forAllStatesExcept(blockState -> ConfiguredModel.builder().modelFile(blockState.getValue(CampfireBlock.LIT) ? model : modelOff).rotationY(horizontalDirectionToYAngle(blockState.getValue(CampfireBlock.FACING))).build(), CampfireBlock.WATERLOGGED, CampfireBlock.SIGNAL_FIRE);
+        getVariantBuilder(block).forAllStatesExcept(blockState -> ConfiguredModel.builder().modelFile(blockState.getValue(CampfireBlock.LIT) ? model : modelOff).rotationY(horizontalDirectionToYAngleForCampfire(blockState.getValue(CampfireBlock.FACING))).build(), CampfireBlock.WATERLOGGED, CampfireBlock.SIGNAL_FIRE);
     }
     protected void wallTorchBlock(WallTorchBlock block, String name, String texture){
         ModelFile model = models().withExistingParent(name, "block/template_torch_wall").texture("torch", modBlockLoc(texture.replace("_wall", ""))).renderType(RenderTypes.Cutout);
-        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngle(state.getValue(WallTorchBlock.FACING))).build());
+        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngleForWallTorch(state.getValue(WallTorchBlock.FACING))).build());
     }
 
-    protected static int horizontalDirectionToYAngle(Direction direction){
+    /**
+     * converts a horizontal direction to a wall torch specific Y angle use {@link ExtendedBlockStateProvider#horizontalDirectionToYAngle(Direction)} for a standardised method
+     * @param direction horizontal direction
+     * @return y angle of the direction
+     */
+    protected static int horizontalDirectionToYAngleForWallTorch(Direction direction){
         return direction == Direction.NORTH ? 270 : direction == Direction.EAST ? 0 : direction == Direction.SOUTH ? 90 : 180;
     }
-    protected ResourceLocation modBlockLoc(String texture) {return modLoc("block/" + texture);}
-
-    protected String getTexture(String name){  //allows to modify the texture for a block name
-        return name;
+    /**
+     * converts a horizontal direction to a campfire specific Y angle use {@link ExtendedBlockStateProvider#horizontalDirectionToYAngle(Direction)} for a standardised method
+     * @param direction horizontal direction
+     * @return y angle of the direction
+     */
+    protected static int horizontalDirectionToYAngleForCampfire(Direction direction){
+        return direction == Direction.NORTH ? 270 : direction == Direction.EAST ? 0 : direction == Direction.SOUTH ? 90 : 180;
     }
+    /**
+     * converts a horizontal direction to a Y angle
+     * @param direction horizontal direction
+     * @return y angle of the direction
+     */
+    protected static int horizontalDirectionToYAngle(Direction direction){
+        return direction == Direction.NORTH ? 0 : direction == Direction.EAST ? 90 : direction == Direction.SOUTH ? 180 : 270;
+    }
+
+    protected ResourceLocation modBlockLoc(String key) {return modLoc("block/" + key);}
 
     public static class RenderTypes{
         public static final String Cutout = "cutout";
