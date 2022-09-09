@@ -25,11 +25,11 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     /**
      * blocks based on classes in this list will be ignored by the generator
      */
-    public ArrayList<Class<?>> excludedClasses = new ArrayList<>();
+    public ArrayList<Class<? extends Block>> excludedClasses = new ArrayList<>();
     /**
      * add custom rules here, gets called before the build-in rules
      */
-    public ArrayList<AutomatedBlockStateProviderRule> blockStateProviderRules = new ArrayList<>();
+    public ArrayList<BlockStateProviderRule> blockStateProviderRules = new ArrayList<>();
     /**
      * define blocks that should use the CutoutRenderType.
      * Only used in unclear situations (e.g. only some Doors should be cutout) view usages to see where this actually takes affect
@@ -76,8 +76,8 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
             final String name = getBlockName(block);
             String texture = getTexture(name);
 
-            for(AutomatedBlockStateProviderRule provider : blockStateProviderRules){
-                if(provider.rule(block, name, texture)) {return;}
+            for(BlockStateProviderRule provider : blockStateProviderRules){
+                if(provider.generate(block, name, texture)) {return;}
             }
 
             if(block instanceof StairBlock){
@@ -89,7 +89,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
                 if(usePlankTexture(name)) {texture = texture.replace("slab", "planks");}
                 else if(shouldAppendS(name)) {texture = texture.replace("_slab", "s");}
                 else {texture = texture.replace("_slab", "");}
-                slabBlock((SlabBlock) block, modBlockLoc(texture), modBlockLoc(texture));
+                slabBlock((SlabBlock) block, modBlockLoc(name), modBlockLoc(texture));
             }else if(block instanceof WallBlock){
                 if(usePlankTexture(name)) {texture = texture.replace("wall", "planks");}
                 else if(shouldAppendS(name)) {texture = texture.replace("_wall", "s");}

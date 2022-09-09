@@ -14,7 +14,7 @@ issueTrackerURL="https://github.com/BarionLP/Ametrin/issues" #optional
     authors="Ametrin Studios" #optional
 
 description='''
-Commonly used code from Ametrin Studios mods. Mainly focused on datagen.
+Commonly used code for Ametrin Studios mods. Mainly focused on datagen.
 '''
 
 [[dependencies.ametrin]] #optional
