@@ -18,7 +18,7 @@ import java.util.List;
 import static com.ametrinstudios.ametrin.AmetrinUtil.getBlockName;
 import static com.ametrinstudios.ametrin.AmetrinUtil.isWooden;
 
-public class ExtendedBlockTagsProvider extends BlockTagsProvider {
+public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
     public ArrayList<Block> excludedBlocks = new ArrayList<>();
     public ArrayList<BlockTagProviderRule> blockTagProviderRules = new ArrayList<>();
 
