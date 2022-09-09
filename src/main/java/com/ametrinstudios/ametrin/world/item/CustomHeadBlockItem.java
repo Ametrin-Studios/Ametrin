@@ -1,7 +1,7 @@
-package com.ametrinstudios.ametrin.word.item;
+package com.ametrinstudios.ametrin.world.item;
 
-import com.ametrinstudios.ametrin.word.block.CustomHeadBlock;
-import com.ametrinstudios.ametrin.word.block.CustomWallHeadBlock;
+import com.ametrinstudios.ametrin.world.block.CustomHeadBlock;
+import com.ametrinstudios.ametrin.world.block.CustomWallHeadBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;

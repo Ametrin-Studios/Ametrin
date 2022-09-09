@@ -1,8 +1,9 @@
 package com.ametrinstudios.ametrin.datagen;
 
-import com.ametrinstudios.ametrin.word.block.AmAbstractHeadBlock;
-import com.ametrinstudios.ametrin.word.block.CustomHeadBlock;
-import com.ametrinstudios.ametrin.word.block.CustomWallHeadBlock;
+import com.ametrinstudios.ametrin.AmetrinUtil;
+import com.ametrinstudios.ametrin.world.block.AmAbstractHeadBlock;
+import com.ametrinstudios.ametrin.world.block.CustomHeadBlock;
+import com.ametrinstudios.ametrin.world.block.CustomWallHeadBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -201,23 +202,23 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     protected void head(CustomHeadBlock block, String name){
         getVariantBuilder(block).forAllStatesExcept(state -> {
             int rotation = state.getValue(CustomHeadBlock.Rotation);
-            ModelFile model = models().withExistingParent( "block/" + name + "/" + rotation, "ametrin:block/head/" + rotation).texture("texture", modBlockLoc(name));
+            ModelFile model = models().withExistingParent( "block/" + name + "/" + rotation, AmetrinUtil.location("block/head/" + rotation)).texture("texture", modBlockLoc(name));
             return ConfiguredModel.builder().modelFile(model).build();
         }, AmAbstractHeadBlock.Waterlogged);
     }
     protected void headWall(CustomWallHeadBlock block, String name){
-        ModelFile model = models().withExistingParent( "block/" + name, "ametrin:block/head_wall").texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
+        ModelFile model = models().withExistingParent( "block/" + name, AmetrinUtil.location("block/head_wall")).texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
         getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngle(state.getValue(CustomWallHeadBlock.Facing))).build(), AmAbstractHeadBlock.Waterlogged);
     }
     protected void headCutout(CustomHeadBlock block, String name){
         getVariantBuilder(block).forAllStatesExcept(state -> {
             int rotation = state.getValue(CustomHeadBlock.Rotation);
-            ModelFile model = models().withExistingParent( "block/" + name + "/" + rotation, "ametrin:block/head/cutout/" + rotation).texture("texture", modBlockLoc(name)).renderType(RenderTypes.Cutout);
+            ModelFile model = models().withExistingParent( "block/" + name + "/" + rotation, AmetrinUtil.location("block/head/cutout/" + rotation)).texture("texture", modBlockLoc(name)).renderType(RenderTypes.Cutout);
             return ConfiguredModel.builder().modelFile(model).build();
         }, AmAbstractHeadBlock.Waterlogged);
     }
     protected void headCutoutWall(CustomWallHeadBlock block, String name){
-        ModelFile model = models().withExistingParent( "block/" + name, "ametrin:block/head_wall_cutout").texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
+        ModelFile model = models().withExistingParent( "block/" + name, AmetrinUtil.location("block/head_wall_cutout")).texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
         getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngle(state.getValue(CustomWallHeadBlock.Facing))).build(), AmAbstractHeadBlock.Waterlogged);
     }
 

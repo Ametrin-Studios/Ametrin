@@ -1,4 +1,4 @@
-package com.ametrinstudios.ametrin.word.block;
+package com.ametrinstudios.ametrin.world.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Wearable;

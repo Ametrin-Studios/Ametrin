@@ -1,6 +1,6 @@
-package com.ametrinstudios.ametrin.word.block;
+package com.ametrinstudios.ametrin.world.block;
 
-import com.ametrinstudios.ametrin.word.item.CustomHeadBlockItem;
+import com.ametrinstudios.ametrin.world.item.CustomHeadBlockItem;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
