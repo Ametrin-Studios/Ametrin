@@ -9,6 +9,8 @@ import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +55,19 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
         return name;
     }
 
-    protected <B extends Block> void handleDefaults(List<B> blocks){ //call to automatically generate block models
+    /**
+     * automatically generates block models based on all given {@link #blockStateProviderRules} and some build-in rules
+     * @param blockRegistry mod block registry
+     */
+    protected void runProviderRules(DeferredRegister<Block> blockRegistry){
+        runProviderRules(blockRegistry.getEntries().stream().map(RegistryObject::get).toList());
+    }
+
+    /**
+     * automatically generates block models based on all given {@link #blockStateProviderRules} and some build-in rules
+     * @param blocks list of all blocks this should run on
+     */
+    protected <B extends Block> void runProviderRules(List<B> blocks){
         blocks.forEach(block -> {
             for(Class<?> clazz : excludedClasses){
                 if(clazz.isInstance(block)) {return;}
@@ -90,10 +104,12 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
                 }
             }else if(block instanceof FenceBlock){
                 if(usePlankTexture(name)) {texture = texture.replace("fence", "planks");}
+                else if(shouldAppendS(name)) {texture = texture.replace("_fence", "s");}
                 else {texture = texture.replace("_fence", "");}
                 fenceBlock((FenceBlock) block, modBlockLoc(texture));
             }else if(block instanceof FenceGateBlock){
                 if(usePlankTexture(name)) {texture = texture.replace("fence_gate", "planks");}
+                else if(shouldAppendS(name)) {texture = texture.replace("_fence_gate", "s");}
                 else {texture = texture.replace("_fence_gate", "");}
                 fenceGateBlock((FenceGateBlock) block, modBlockLoc(texture));
             }else if(block instanceof ButtonBlock){
