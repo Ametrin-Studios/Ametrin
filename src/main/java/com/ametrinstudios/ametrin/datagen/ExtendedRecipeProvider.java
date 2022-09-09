@@ -17,6 +17,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -47,6 +48,19 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
             }
         });
+    }
+
+    protected static void stairSlabWallButton(Consumer<FinishedRecipe> consumer, @Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, boolean hasStonecutting){
+        if(stair != null) {stairs(consumer, stair, material, hasStonecutting);}
+        if(slab != null) {slab(consumer, slab, material, hasStonecutting);}
+        if(wall != null) {wall(consumer, wall, material, hasStonecutting);}
+        if(button != null) {button(consumer, button, material, hasStonecutting);}
+    }
+    protected static void stairSlabWallButton(Consumer<FinishedRecipe> consumer, @Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, ItemLike... additionalStonecuttingMaterials){
+        if(stair != null) {stairs(consumer, stair, material, additionalStonecuttingMaterials);}
+        if(slab != null) {slab(consumer, slab, material, additionalStonecuttingMaterials);}
+        if(wall != null) {wall(consumer, wall, material, additionalStonecuttingMaterials);}
+        if(button != null) {button(consumer, button, material, additionalStonecuttingMaterials);}
     }
 
     protected static void stairs(Consumer<FinishedRecipe> consumer, ItemLike stair, ItemLike material, boolean hasStonecutting){
@@ -82,15 +96,38 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         }
     }
 
+    protected static void button(Consumer<FinishedRecipe> consumer, ItemLike button, ItemLike material, boolean hasStonecutting){
+        buttonBuilder(button, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(button, material));
+        if(hasStonecutting) {stonecutting(consumer, button, 1, material);}
+    }
+    protected static void button(Consumer<FinishedRecipe> consumer, ItemLike button, ItemLike material, ItemLike... additionalStonecuttingMaterials) {
+        button(consumer, button, material, true);
+        for(ItemLike item : additionalStonecuttingMaterials) {stonecutting(consumer, button, 1, item);}
+    }
+
     protected static void chiseledWithStonecutting(Consumer<FinishedRecipe> consumer, ItemLike chiseled, ItemLike material){
-        chiseled(consumer, chiseled, material);
+        chiseledBuilder(chiseled, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(chiseled, material));
         stonecutting(consumer, chiseled, 1, material);
     }
     protected static void fence(Consumer<FinishedRecipe> consumer, FenceBlock fence, ItemLike material){
-        fenceBuilder(fence, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(fence, material));
+        fence(consumer, fence, 3, material, Items.STICK, false);
+    }
+    protected static void netherFence(Consumer<FinishedRecipe> consumer, ItemLike fence, ItemLike material){
+        fence(consumer, fence, 6, material, Items.NETHER_BRICK, true);
+    }
+    protected static void fence(Consumer<FinishedRecipe> consumer, ItemLike fence, int count, ItemLike material, ItemLike stick, boolean hasStonecutting){
+        ShapedRecipeBuilder.shaped(fence, count).define('W', material).define('#', stick).pattern("W#W").pattern("W#W").unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(fence, material));
+        if(hasStonecutting) {stonecutting(consumer, fence, 1, material);}
     }
     protected static void fenceGate(Consumer<FinishedRecipe> consumer, FenceGateBlock fenceGate, ItemLike material){
-        fenceGateBuilder(fenceGate, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(fenceGate, material));
+        fenceGate(consumer, fenceGate, material, Items.STICK, false);
+    }
+    protected static void netherFenceGate(Consumer<FinishedRecipe> consumer, ItemLike fenceGate, ItemLike material){
+        fenceGate(consumer, fenceGate, material, Items.NETHER_BRICK, true);
+    }
+    protected static void fenceGate(Consumer<FinishedRecipe> consumer, ItemLike fenceGate, ItemLike material, ItemLike stick, boolean hasStonecutting){
+        ShapedRecipeBuilder.shaped(fenceGate).define('#', stick).define('W', material).pattern("#W#").pattern("#W#").unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(fenceGate, material));
+        if(hasStonecutting) {stonecutting(consumer, fenceGate, 1, material);}
     }
     protected static void button(Consumer<FinishedRecipe> consumer, ButtonBlock button, ItemLike material, boolean hasStonecutting){
         buttonBuilder(button, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(button, material));
