@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class AmUtil {
+public class AmetrinUtil {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     /**

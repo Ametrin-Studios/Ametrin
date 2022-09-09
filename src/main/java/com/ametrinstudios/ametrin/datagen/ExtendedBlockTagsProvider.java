@@ -15,8 +15,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ametrinstudios.ametrin.AmUtil.getBlockName;
-import static com.ametrinstudios.ametrin.AmUtil.isWooden;
+import static com.ametrinstudios.ametrin.AmetrinUtil.getBlockName;
+import static com.ametrinstudios.ametrin.AmetrinUtil.isWooden;
 
 public class ExtendedBlockTagsProvider extends BlockTagsProvider {
     public ArrayList<Block> excludedBlocks = new ArrayList<>();

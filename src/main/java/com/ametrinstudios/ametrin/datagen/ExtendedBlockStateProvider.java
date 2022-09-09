@@ -15,7 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ametrinstudios.ametrin.AmUtil.*;
+import static com.ametrinstudios.ametrin.AmetrinUtil.*;
 
 public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     /**
@@ -86,10 +86,20 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
                 else {texture = texture.replace("_stairs", "");}
                 stairsBlock((StairBlock) block, modBlockLoc(texture));
             }else if(block instanceof SlabBlock){
-                if(usePlankTexture(name)) {texture = texture.replace("slab", "planks");}
-                else if(shouldAppendS(name)) {texture = texture.replace("_slab", "s");}
-                else {texture = texture.replace("_slab", "");}
-                slabBlock((SlabBlock) block, modBlockLoc(name), modBlockLoc(texture));
+                String doubleSlab = name;
+                if(usePlankTexture(name)) {
+                    texture = texture.replace("slab", "planks");
+                    doubleSlab = doubleSlab.replace("slab", "planks");
+                }
+                else if(shouldAppendS(name)) {
+                    texture = texture.replace("_slab", "s");
+                    doubleSlab = doubleSlab.replace("_slab", "s");
+                }
+                else {
+                    texture = texture.replace("_slab", "");
+                    doubleSlab = doubleSlab.replace("_slab", "");
+                }
+                slabBlock((SlabBlock) block, modBlockLoc(doubleSlab), modBlockLoc(texture));
             }else if(block instanceof WallBlock){
                 if(usePlankTexture(name)) {texture = texture.replace("wall", "planks");}
                 else if(shouldAppendS(name)) {texture = texture.replace("_wall", "s");}
