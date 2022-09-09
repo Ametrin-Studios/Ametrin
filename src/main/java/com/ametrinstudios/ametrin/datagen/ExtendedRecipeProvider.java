@@ -415,6 +415,12 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         furnance(consumer, ingot, raw, 0.7f, 200);
         blasting(consumer, ingot, raw, 0.7f, 100);
     }
+    protected static void stoneSmelting(Consumer<FinishedRecipe> consumer, ItemLike ingot, TagKey<Item> raw){
+        furnance(consumer, ingot, raw, 0.1f, 200);
+    }
+    protected static void stoneSmelting(Consumer<FinishedRecipe> consumer, ItemLike ingot, ItemLike raw){
+        furnance(consumer, ingot, raw, 0.1f, 200);
+    }
 
     protected static void shapeless(Consumer<FinishedRecipe> consumer, ItemLike result, int countR, ItemLike material, int countM){
         ShapelessRecipeBuilder.shapeless(result, countR).requires(material, countM).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(result, material));
