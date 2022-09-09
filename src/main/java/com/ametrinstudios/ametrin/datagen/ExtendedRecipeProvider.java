@@ -14,7 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -109,7 +109,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         chiseledBuilder(chiseled, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(chiseled, material));
         stonecutting(consumer, chiseled, 1, material);
     }
-    protected static void fence(Consumer<FinishedRecipe> consumer, FenceBlock fence, ItemLike material){
+    protected static void fence(Consumer<FinishedRecipe> consumer, ItemLike fence, ItemLike material){
         fence(consumer, fence, 3, material, Items.STICK, false);
     }
     protected static void netherFence(Consumer<FinishedRecipe> consumer, ItemLike fence, ItemLike material){
@@ -119,7 +119,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(fence, count).define('W', material).define('#', stick).pattern("W#W").pattern("W#W").unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(fence, material));
         if(hasStonecutting) {stonecutting(consumer, fence, 1, material);}
     }
-    protected static void fenceGate(Consumer<FinishedRecipe> consumer, FenceGateBlock fenceGate, ItemLike material){
+    protected static void fenceGate(Consumer<FinishedRecipe> consumer, ItemLike fenceGate, ItemLike material){
         fenceGate(consumer, fenceGate, material, Items.STICK, false);
     }
     protected static void netherFenceGate(Consumer<FinishedRecipe> consumer, ItemLike fenceGate, ItemLike material){
@@ -129,14 +129,10 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(fenceGate).define('#', stick).define('W', material).pattern("#W#").pattern("#W#").unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(fenceGate, material));
         if(hasStonecutting) {stonecutting(consumer, fenceGate, 1, material);}
     }
-    protected static void button(Consumer<FinishedRecipe> consumer, ButtonBlock button, ItemLike material, boolean hasStonecutting){
-        buttonBuilder(button, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(button, material));
-        if(hasStonecutting) {stonecutting(consumer, button, 1, material);}
-    }
-    protected static void door(Consumer<FinishedRecipe> consumer, DoorBlock door, ItemLike material){
+    protected static void door(Consumer<FinishedRecipe> consumer, ItemLike door, ItemLike material){
         doorBuilder(door, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(door, material));
     }
-    protected static void trapdoor(Consumer<FinishedRecipe> consumer, TrapDoorBlock trapdoor, ItemLike material){
+    protected static void trapdoor(Consumer<FinishedRecipe> consumer, ItemLike trapdoor, ItemLike material){
         trapdoorBuilder(trapdoor, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(trapdoor, material));
     }
 
@@ -515,11 +511,11 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         return result + "_from_" + getItemTagName(ingredient);
     }
 
-    protected static String getHasName(TagKey<Item> tag) {return "has_" + tag.location().getPath();}
+    protected static String getHasName(TagKey<Item> tag) {return "has_" + tag.location().getPath().replace('/', '_');}
     protected static String modID(ItemLike item) {return itemID(item).getNamespace();}
     protected static ResourceLocation itemID(ItemLike item) {return ForgeRegistries.ITEMS.getKey(item.asItem());}
     protected static ResourceLocation location(String modID, String key) {return new ResourceLocation(modID, key);}
-    protected static String getItemTagName(TagKey<Item> tag) {return tag.location().getPath();}
+    protected static String getItemTagName(TagKey<Item> tag) {return tag.location().getPath().replace('/', '_');}
 
     private static void saveRecipe(CachedOutput pOutput, JsonObject pRecipeJson, Path pPath) {
         try {
