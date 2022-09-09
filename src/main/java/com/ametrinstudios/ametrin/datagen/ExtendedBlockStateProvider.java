@@ -184,7 +184,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     }
 
     /**
-     * converts a horizontal direction to a wall torch specific Y angle use {@link ExtendedBlockStateProvider#horizontalDirectionToYAngle(Direction)} for a standardised method
+     * converts a horizontal direction to a wall torch specific Y angle use {@link #horizontalDirectionToYAngle(Direction)} for a standardised method
      * @param direction horizontal direction
      * @return y angle of the direction
      */
@@ -192,7 +192,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
         return direction == Direction.NORTH ? 270 : direction == Direction.EAST ? 0 : direction == Direction.SOUTH ? 90 : 180;
     }
     /**
-     * converts a horizontal direction to a campfire specific Y angle use {@link ExtendedBlockStateProvider#horizontalDirectionToYAngle(Direction)} for a standardised method
+     * converts a horizontal direction to a campfire specific Y angle use {@link #horizontalDirectionToYAngle(Direction)} for a standardised method
      * @param direction horizontal direction
      * @return y angle of the direction
      */
@@ -200,7 +200,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
         return direction == Direction.NORTH ? 270 : direction == Direction.EAST ? 0 : direction == Direction.SOUTH ? 90 : 180;
     }
     /**
-     * converts a horizontal direction to a Y angle
+     * converts a horizontal direction to the corresponding Y angle
      * @param direction horizontal direction
      * @return y angle of the direction
      */

@@ -105,9 +105,9 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         for(ItemLike item : additionalStonecuttingMaterials) {stonecutting(consumer, button, 1, item);}
     }
 
-    protected static void chiseledWithStonecutting(Consumer<FinishedRecipe> consumer, ItemLike chiseled, ItemLike material){
+    protected static void chiseled(Consumer<FinishedRecipe> consumer, ItemLike chiseled, ItemLike material, boolean hasStonecutting){
         chiseledBuilder(chiseled, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(consumer, recipeID(chiseled, material));
-        stonecutting(consumer, chiseled, 1, material);
+        if(hasStonecutting) {stonecutting(consumer, chiseled, 1, material);}
     }
     protected static void fence(Consumer<FinishedRecipe> consumer, ItemLike fence, ItemLike material){
         fence(consumer, fence, 3, material, Items.STICK, false);
