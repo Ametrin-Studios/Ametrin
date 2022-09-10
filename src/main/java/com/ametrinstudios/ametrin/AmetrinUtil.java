@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -19,6 +20,10 @@ public class AmetrinUtil {
     public static ArrayList<String> plankIndicators = new ArrayList<>();
 
     public static ResourceLocation location(String key) {return new ResourceLocation(Ametrin.ModID, key);}
+
+    public static int ColorToInt(Color color){
+        return color.getBlue() + (color.getGreen() * 256) + (color.getRed() * 65536);
+    }
 
     public static boolean usePlankTexture(String name) {
         for(String indicator : plankIndicators){
