@@ -23,13 +23,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class GrowableBushBlock extends BushBlock implements IGrowable {
+public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     public final int GrowRarity;
     public final int BonusDrop;
     private static final VoxelShape SaplingShape = Block.box(3, 0, 3, 13, 8, 13);
     private static final VoxelShape MidGrowthShape = Block.box(1, 0, 1, 15, 16, 15);
 
-    public GrowableBushBlock(int bonusDrop, int growRate, Properties properties) {
+    public AgeableBushBlock(int bonusDrop, int growRate, Properties properties) {
         super(properties);
         GrowRarity = growRate;
         BonusDrop = bonusDrop;

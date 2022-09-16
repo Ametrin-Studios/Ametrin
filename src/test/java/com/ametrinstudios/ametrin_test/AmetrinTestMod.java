@@ -1,23 +1,19 @@
-package com.ametrinstudios.ametrin;
+package com.ametrinstudios.ametrin_test;
 
+import com.ametrinstudios.ametrin_test.world.TestBlocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-// The value here should match an entry in the META-INF/mods.toml file
-@Mod(Ametrin.ModID)
-public class Ametrin{
-    public static final String ModID = "ametrin";
+@Mod(AmetrinTestMod.ModID)
+public class AmetrinTestMod {
+    public static final String ModID = "ametrin_test";
 
-    public Ametrin(){
+    public AmetrinTestMod(){
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 
-//        modEventBus.addListener(this::commonSetup);
+        TestBlocks.Registry.register(modEventBus);
     }
-
-/*    private void commonSetup(final FMLCommonSetupEvent event){
-
-    }*/
 }

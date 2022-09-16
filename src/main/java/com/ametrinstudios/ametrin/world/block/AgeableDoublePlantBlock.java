@@ -26,12 +26,12 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Supplier;
 
-public class GrowableDoublePlantBlock extends SimpleDoublePlantBlock implements BonemealableBlock, IGrowable{
+public class AgeableDoublePlantBlock extends SimpleDoublePlantBlock implements BonemealableBlock, IAgeablePlant {
     public final int GrowRarity;
     public final int BonusDrop;
     public final Supplier<Item> item;
 
-    public GrowableDoublePlantBlock(int growRarity, int bonusDrop, Supplier<Item> item, Properties properties) {
+    public AgeableDoublePlantBlock(int growRarity, int bonusDrop, Supplier<Item> item, Properties properties) {
         super(properties);
         this.item = item;
         GrowRarity = growRarity;

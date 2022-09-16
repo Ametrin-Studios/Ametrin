@@ -30,12 +30,17 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static final Logger LOGGER = LogUtils.getLogger();
     protected static Set<ResourceLocation> Recipes = Sets.newHashSet();
 
-    public ExtendedRecipeProvider(DataGenerator generator) {
+    protected static String currentModID;
+    protected String modID;
+
+    public ExtendedRecipeProvider(DataGenerator generator, String modID) {
         super(generator);
+        this.modID = modID;
     }
 
     @Override
     public void run(@NotNull CachedOutput output){
+        currentModID = modID;
         buildCraftingRecipes((recipe) -> {
             if (!Recipes.add(recipe.getId())) {
                 throw new IllegalStateException("Duplicate recipe " + recipe.getId());
@@ -48,6 +53,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
             }
         });
+        currentModID = "";
     }
 
     protected static void stairSlabWallButton(Consumer<FinishedRecipe> consumer, @Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, boolean hasStonecutting){
@@ -445,66 +451,68 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     protected static ResourceLocation recipeID(ItemLike result, ItemLike material) {
-        ResourceLocation itemID = itemID(result);
-        if(Recipes.contains(itemID)){
-            return location(itemID.getNamespace(), getConversionRecipeName(itemID.getPath(), material));
-        }
-        return itemID;
-    }
-    protected static ResourceLocation recipeID(ItemLike result, TagKey<Item> material) {
-        ResourceLocation itemID = itemID(result);
-        if(Recipes.contains(itemID)){
-            return location(itemID.getNamespace(), getConversionRecipeName(itemID.getPath(), material));
-        }
-        return itemID;
-    }
-
-    protected static ResourceLocation stonecuttingRecipeID(ResourceLocation itemID) {
-        return location(itemID.getNamespace(), "stonecutting/" + itemID.getPath());
-    }
-    protected static ResourceLocation stonecuttingRecipeID(ItemLike result, ItemLike ingredient) {
-        ResourceLocation itemID = itemID(result);
-        ResourceLocation recipeID = stonecuttingRecipeID(itemID);
+        String itemID = itemID(result);
+        ResourceLocation recipeID = location(itemID);
         if(Recipes.contains(recipeID)){
-            return location(itemID.getNamespace(), "stonecutting/" + getConversionRecipeName(itemID.getPath(), ingredient));
+            return location(getConversionRecipeName(itemID, material));
         }
         return recipeID;
     }
-    protected static ResourceLocation smeltingRecipeID(ResourceLocation itemID) {
-        return location(itemID.getNamespace(), "smelting/" + itemID.getPath());
+    protected static ResourceLocation recipeID(ItemLike result, TagKey<Item> material) {
+        String itemID = itemID(result);
+        ResourceLocation recipeID = location(itemID);
+        if(Recipes.contains(recipeID)){
+            return location(getConversionRecipeName(itemID, material));
+        }
+        return recipeID;
+    }
+
+    protected static ResourceLocation stonecuttingRecipeID(String key) {
+        return location("stonecutting/" + key);
+    }
+    protected static ResourceLocation stonecuttingRecipeID(ItemLike result, ItemLike ingredient) {
+        String itemID = itemID(result);
+        ResourceLocation recipeID = stonecuttingRecipeID(itemID);
+        if(Recipes.contains(recipeID)){
+            return location("stonecutting/" + getConversionRecipeName(itemID, ingredient));
+        }
+        return recipeID;
+    }
+    protected static ResourceLocation smeltingRecipeID(String key) {
+        return location("smelting/" + key);
     }
     protected static ResourceLocation smeltingRecipeID(ItemLike result, ItemLike ingredient) {
-        ResourceLocation itemID = itemID(result);
+        String itemID = itemID(result);
         ResourceLocation recipeID = smeltingRecipeID(itemID);
         if(Recipes.contains(recipeID)){
-            return location(itemID.getNamespace(), "smelting/" + getConversionRecipeName(itemID.getPath(), ingredient));
+            return location("smelting/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
     protected static ResourceLocation smeltingRecipeID(ItemLike result, TagKey<Item> ingredient) {
-        ResourceLocation itemID = itemID(result);
+        String itemID = itemID(result);
         ResourceLocation recipeID = smeltingRecipeID(itemID);
         if(Recipes.contains(recipeID)){
-            return location(itemID.getNamespace(), "smelting/" + getConversionRecipeName(itemID.getPath(), ingredient));
+            return location("smelting/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
-    protected static ResourceLocation blastingRecipeID(ResourceLocation itemID) {
-        return location(itemID.getNamespace(), "blasting/" + itemID.getPath());
+    protected static ResourceLocation blastingRecipeID(String key) {
+        return location("blasting/" + key);
     }
     protected static ResourceLocation blastingRecipeID(ItemLike result, ItemLike ingredient) {
-        ResourceLocation itemID = itemID(result);
+        String itemID = itemID(result);
         ResourceLocation recipeID = blastingRecipeID(itemID);
         if(Recipes.contains(recipeID)){
-            return location(itemID.getNamespace(), "blasting/" + getConversionRecipeName(itemID.getPath(), ingredient));
+            return location("blasting/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
     protected static ResourceLocation blastingRecipeID(ItemLike result, TagKey<Item> ingredient) {
-        ResourceLocation itemID = itemID(result);
+        String itemID = itemID(result);
         ResourceLocation recipeID = blastingRecipeID(itemID);
         if(Recipes.contains(recipeID)){
-            return location(itemID.getNamespace(), "blasting/" + getConversionRecipeName(itemID.getPath(), ingredient));
+            return location("blasting/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
@@ -518,10 +526,9 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     protected static String getHasName(TagKey<Item> tag) {return "has_" + tag.location().getPath().replace('/', '_');}
-    protected static String modID(ItemLike item) {return itemID(item).getNamespace();}
-    protected static ResourceLocation itemID(ItemLike item) {return ForgeRegistries.ITEMS.getKey(item.asItem());}
-    protected static ResourceLocation location(String modID, String key) {return new ResourceLocation(modID, key);}
+    protected static String itemID(ItemLike item) {return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath();}
     protected static String getItemTagName(TagKey<Item> tag) {return tag.location().getPath().replace('/', '_');}
+    protected static ResourceLocation location(String key) {return new ResourceLocation(currentModID, key);}
 
     private static void saveRecipe(CachedOutput pOutput, JsonObject pRecipeJson, Path pPath) {
         try {

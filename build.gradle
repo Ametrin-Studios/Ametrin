@@ -23,7 +23,6 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-
             property 'forge.enabledGameTestNamespaces', 'ametrin'
 
             mods {
@@ -80,16 +79,10 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-repositories {
-    flatDir {
-        dir 'libs'
-    }
-}
+repositories {}
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
-
-    // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
 }
 
 jar {

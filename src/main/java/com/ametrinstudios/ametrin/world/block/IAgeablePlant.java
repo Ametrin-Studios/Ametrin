@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public interface IGrowable extends BonemealableBlock{
+public interface IAgeablePlant extends BonemealableBlock{
     int MaxAge = 3;
     IntegerProperty Age = BlockStateProperties.AGE_3;
 
