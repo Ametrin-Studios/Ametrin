@@ -94,6 +94,16 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
             block(name, name + "_bottom");
             return true;
         });
+        blockItemModelProviderRules.add((item, block, name, texture)->{
+            if(!(block instanceof CampfireBlock || block instanceof LanternBlock || block instanceof DoorBlock)) {return false;}
+            item(name, texture);
+            return true;
+        });
+        blockItemModelProviderRules.add((item, block, name, texture)->{
+            if(!(block instanceof TorchBlock)) {return false;}
+            blockItem(name, texture);
+            return true;
+        });
 
 
 
@@ -119,22 +129,17 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
             if(!(item instanceof BlockItem)) {return false;}
             Block block = ((BlockItem) item).getBlock();
 
-            if(block instanceof CampfireBlock || block instanceof LanternBlock || block instanceof DoorBlock){
-                item(name, texture);
-            }
-            if(block instanceof TorchBlock){
-                blockItem(name, texture);
+            for(BlockItemModelProviderRule provider : blockItemModelProviderRules){
+                if(provider.generate(item, block, name, texture)) {return true;}
             }
 
             if(useItemModel.contains(item)){
                 item(name, texture);
+                return true;
             }
             if(useItemModelWithBlockTexture.contains(item)){
                 blockItem(name);
-            }
-
-            for(BlockItemModelProviderRule provider : blockItemModelProviderRules){
-                if(provider.generate(item, block, name, texture)) {return true;}
+                return true;
             }
 
             block(name);
