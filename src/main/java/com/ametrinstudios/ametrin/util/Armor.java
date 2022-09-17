@@ -24,9 +24,7 @@ public class Armor{
         return new Armor(material, new ResourceLocation(modID, "textures/model/armor/" + material.getName() + "_layer_1.png").toString(), new ResourceLocation(modID, "textures/model/armor/" + material.getName() + "_layer_2.png").toString());
     }
 
-    public ArmorMaterial getMaterial(){
-        return material;
-    }
+    public ArmorMaterial getMaterial() {return material;}
 
     public String getTexture(EquipmentSlot slot){
         if(slot == EquipmentSlot.LEGS){
