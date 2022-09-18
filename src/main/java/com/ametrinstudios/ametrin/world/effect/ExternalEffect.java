@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 
 public class ExternalEffect extends MobEffect {
-    protected ExternalEffect(MobEffectCategory category, Color color) {super(category, AmetrinUtil.ColorToInt(color));}
+    public ExternalEffect(MobEffectCategory category, Color color) {super(category, AmetrinUtil.ColorToInt(color));}
 
     @Override
     public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {}

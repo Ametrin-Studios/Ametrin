@@ -187,7 +187,8 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
     protected void item(String name, ModelFile parent, String texture) {getBuilder(name).parent(parent).texture("layer0", modItemLoc(texture));}
 
     protected void blockItem(String name) {blockItem(name, name);}
-    protected void blockItem(String name, String texture) {getBuilder(name).parent(generated).texture("layer0", modBlockLoc(texture));}
+    protected void blockItem(String name, String texture) {blockItem(name, generated, texture);}
+    protected void blockItem(String name, ModelFile parent, String texture) {getBuilder(name).parent(parent).texture("layer0", modBlockLoc(texture));}
 
     protected void block(String name) {block(name, name);}
     protected void block(String name, String parent) {withExistingParent(itemLoc(name), modBlockLoc(parent));}
