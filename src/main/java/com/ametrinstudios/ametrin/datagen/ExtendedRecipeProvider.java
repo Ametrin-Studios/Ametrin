@@ -414,18 +414,18 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     protected static void oreSmelting(Consumer<FinishedRecipe> consumer, ItemLike ingot, ItemLike raw){
-        furnance(consumer, ingot, raw, 0.7f, 200);
+        smelting(consumer, ingot, raw, 0.7f, 200);
         blasting(consumer, ingot, raw, 0.7f, 100);
     }
     protected static void oreSmelting(Consumer<FinishedRecipe> consumer, ItemLike ingot, TagKey<Item> raw){
-        furnance(consumer, ingot, raw, 0.7f, 200);
+        smelting(consumer, ingot, raw, 0.7f, 200);
         blasting(consumer, ingot, raw, 0.7f, 100);
     }
     protected static void stoneSmelting(Consumer<FinishedRecipe> consumer, ItemLike ingot, TagKey<Item> raw){
-        furnance(consumer, ingot, raw, 0.1f, 200);
+        smelting(consumer, ingot, raw, 0.1f, 200);
     }
     protected static void stoneSmelting(Consumer<FinishedRecipe> consumer, ItemLike ingot, ItemLike raw){
-        furnance(consumer, ingot, raw, 0.1f, 200);
+        smelting(consumer, ingot, raw, 0.1f, 200);
     }
 
     protected static void shapeless(Consumer<FinishedRecipe> consumer, ItemLike result, int countR, ItemLike material, int countM){
@@ -437,10 +437,10 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static void stonecutting(Consumer<FinishedRecipe> consumer, ItemLike result, int count, ItemLike material){
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(material), result, count).unlockedBy(getHasName(material), has(material)).save(consumer, stonecuttingRecipeID(result, material));
     }
-    protected static void furnance(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient, float xp, int time) {
+    protected static void smelting(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient, float xp, int time) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(ingredient), result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(consumer, smeltingRecipeID(result, ingredient));
     }
-    protected static void furnance(Consumer<FinishedRecipe> consumer, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
+    protected static void smelting(Consumer<FinishedRecipe> consumer, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(ingredient), result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(consumer, smeltingRecipeID(result, ingredient));
     }
     protected static void blasting(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient, float xp, int time) {

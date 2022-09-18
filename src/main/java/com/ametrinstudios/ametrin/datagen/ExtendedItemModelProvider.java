@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin.datagen;
 
 import com.ametrinstudios.ametrin.world.item.CustomHeadBlockItem;
+import com.ametrinstudios.ametrin.world.item.ItemNameDoubleHighBlockItem;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -126,7 +127,7 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
         });
 
         itemModelProviderRules.add((item, name, texture)-> {
-            if(!(item instanceof BlockItem)) {return false;}
+            if(!(item instanceof BlockItem) || (item instanceof ItemNameBlockItem || item instanceof ItemNameDoubleHighBlockItem)) {return false;}
             Block block = ((BlockItem) item).getBlock();
 
             for(BlockItemModelProviderRule provider : blockItemModelProviderRules){
@@ -191,9 +192,10 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
     protected void block(String name) {block(name, name);}
     protected void block(String name, String parent) {withExistingParent(itemLoc(name), modBlockLoc(parent));}
 
-    protected ResourceLocation modBlockLoc(String key) {return modLoc(BLOCK_FOLDER + "/" + key);}
+    protected ResourceLocation modBlockLoc(String key) {return modLoc(blockLoc(key));}
     protected ResourceLocation modItemLoc(String key) {return modLoc(itemLoc(key));}
     protected String itemLoc(String key) {return ITEM_FOLDER + "/" + key;}
+    protected String blockLoc(String key) {return BLOCK_FOLDER + "/" + key;}
 
     protected String getTexture(String name) {return name;}
 }

@@ -25,6 +25,13 @@ public class AmetrinUtil {
         return color.getBlue() + (color.getGreen() * 256) + (color.getRed() * 65536);
     }
 
+    public static int SecondsToTicks(int seconds){
+        return seconds * 20;
+    }
+    public static int MinutesToTicks(int minutes){
+        return SecondsToTicks(minutes * 60);
+    }
+
     public static boolean usePlankTexture(String name) {
         for(String indicator : plankIndicators){
             if(name.contains(indicator)){
@@ -33,6 +40,7 @@ public class AmetrinUtil {
         }
         return false;
     }
+
     public static boolean shouldAppendS(String name) {return (name.contains("brick") && !name.contains("bricks") || (name.contains("tile") && !name.contains("tiles")));}
     public static boolean isWood(String name) {return (name.contains("wood") || name.contains("hyphae"));}
     public static boolean isLog(String name) {return (name.contains("log") || name.contains("stem"));}
