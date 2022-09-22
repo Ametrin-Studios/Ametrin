@@ -10,7 +10,7 @@ issueTrackerURL="https://github.com/BarionLP/Ametrin/issues" #optional
     displayName="Ametrin" #mandatory
     displayURL="https://www.curseforge.com/minecraft/mc-mods/ametrin" #optional
     #logoFile="logo.png" #optional
-    #credits="" #optional
+    credits="Thanks to KaupenJoe for his great tutorials" #optional
     authors="Ametrin Studios" #optional
 
 description='''
