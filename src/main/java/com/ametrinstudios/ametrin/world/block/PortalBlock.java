@@ -74,12 +74,12 @@ public abstract class PortalBlock extends Block {
     }
 
     @Nullable
-    public PortalBlock.Size isPortal(LevelAccessor worldIn, BlockPos pos){
-        PortalBlock.Size size = new Size(worldIn, pos, Direction.Axis.X, registeredBlock(), portalFrameBlocks());
+    public PortalBlock.Size isPortal(LevelAccessor world, BlockPos pos){
+        PortalBlock.Size size = new Size(world, pos, Direction.Axis.X, registeredBlock(), portalFrameBlocks());
         if (size.isValid() && size.portalBlockCount == 0) {
             return size;
         }else{
-            PortalBlock.Size size2 = new Size(worldIn, pos, Direction.Axis.Z, registeredBlock(), portalFrameBlocks());
+            PortalBlock.Size size2 = new Size(world, pos, Direction.Axis.Z, registeredBlock(), portalFrameBlocks());
             return size2.isValid() && size2.portalBlockCount == 0 ? size2 : null;
         }
     }
@@ -191,8 +191,7 @@ public abstract class PortalBlock extends Block {
                 this.rightDir = Direction.SOUTH;
             }
 
-            for(BlockPos blockpos = pos; pos.getY() > blockpos.getY() - 21 && pos.getY() > 0 && this.canConnect(level.getBlockState(pos.below())); pos = pos.below()) {
-            }
+            for(BlockPos blockpos = pos; pos.getY() > blockpos.getY() - 21 && pos.getY() > 0 && this.canConnect(level.getBlockState(pos.below())); pos = pos.below()) {}
 
             int i = this.getDistanceUntilEdge(pos, this.leftDir) - 1;
             if (i >= 0) {
