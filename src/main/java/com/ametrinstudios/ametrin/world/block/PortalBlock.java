@@ -39,8 +39,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 public abstract class PortalBlock extends Block {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
-    protected static final VoxelShape X_AABB = Block.box(0.0D, 0.0D, 6.0D, 16.0D, 16.0D, 10.0D);
-    protected static final VoxelShape Z_AABB = Block.box(6.0D, 0.0D, 0.0D, 10.0D, 16.0D, 16.0D);
+    protected static final VoxelShape X_AABB = Block.box(0, 0, 6, 16, 16, 10);
+    protected static final VoxelShape Z_AABB = Block.box(6, 0, 0, 10, 16, 16);
 
     public PortalBlock(int lightLevel) {
         super(Properties.of(Material.PORTAL).strength(-1).noCollission().lightLevel((state) -> lightLevel).noLootTable());
