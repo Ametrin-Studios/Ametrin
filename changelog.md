@@ -1,4 +1,5 @@
 ## 0.0.20 (ALPHA)
+* added helper methods for `AxeItem#STRIPPABLES` and `PotionBrewing#addMix`
 * `DataGenerator`s now use `Iterator`s (potentially breaking)
 
 ## 0.0.19 (ALPHA)
