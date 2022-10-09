@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.RandomState;
 import java.util.function.Predicate;
 
 public class TerrainAnalyzer {
-    public static Settings defaultCheckSettings = new Settings(1, 3, 3);
+    public static final Settings defaultCheckSettings = new Settings(1, 3, 3);
 
     public static boolean isFlatEnough(ChunkPos chunkPos, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState) {return isFlatEnough(chunkPos, chunkGenerator, defaultCheckSettings, heightAccessor, randomState);}
 

@@ -1,9 +1,12 @@
-## 0.0.19
+## 0.0.20 (ALPHA)
+* `DataGenerator`s now use `Iterator`s (potentially breaking)
+
+## 0.0.19 (ALPHA)
 * added block registry helper methods
 * added CustomTree API
 * added `TerrainAnalyzer`
 
-## 0.0.18
+## 0.0.18 (ALPHA)
 * fixed `PortalBlock` model generator
 
 ## 0.0.17 (ALPHA)
