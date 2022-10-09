@@ -1,3 +1,8 @@
+## 0.0.19
+* added block registry helper methods
+* added CustomTree API
+* added `TerrainAnalyzer`
+
 ## 0.0.18
 * fixed `PortalBlock` model generator
 

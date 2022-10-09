@@ -14,7 +14,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 import static com.ametrinstudios.ametrin.AmetrinUtil.*;
 
@@ -62,15 +62,15 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
      * @param blockRegistry mod block registry
      */
     protected void runProviderRules(DeferredRegister<Block> blockRegistry){
-        runProviderRules(blockRegistry.getEntries().stream().map(RegistryObject::get).toList());
+        runProviderRules(blockRegistry.getEntries().stream().map(RegistryObject::get).iterator());
     }
 
     /**
      * automatically generates block models based on all given {@link #blockStateProviderRules} and some build-in rules
      * @param blocks list of all blocks this should run on
      */
-    protected <B extends Block> void runProviderRules(List<B> blocks){
-        blocks.forEach(block -> {
+    protected <B extends Block> void runProviderRules(Iterator<B> blocks){
+        blocks.forEachRemaining(block -> {
             for(Class<?> clazz : excludedClasses){
                 if(clazz.isInstance(block)) {return;}
             }

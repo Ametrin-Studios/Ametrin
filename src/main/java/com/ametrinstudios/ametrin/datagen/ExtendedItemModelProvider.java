@@ -13,7 +13,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 import static com.ametrinstudios.ametrin.AmetrinUtil.*;
 
@@ -161,10 +161,10 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
     }
 
     protected void runProviderRules(DeferredRegister<Item> itemRegister){
-        runProviderRules(itemRegister.getEntries().stream().map(RegistryObject::get).toList());
+        runProviderRules(itemRegister.getEntries().stream().map(RegistryObject::get).iterator());
     }
-    protected void runProviderRules(List<Item> items){
-        items.forEach(item -> {
+    protected void runProviderRules(Iterator<Item> items){
+        items.forEachRemaining(item -> {
             for(Class<?> clazz : excludedClasses){
                 if(clazz.isInstance(item)) {return;}
             }

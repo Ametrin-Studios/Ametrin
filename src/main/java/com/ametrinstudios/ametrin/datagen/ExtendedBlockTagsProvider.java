@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 import static com.ametrinstudios.ametrin.AmetrinUtil.getBlockName;
 import static com.ametrinstudios.ametrin.AmetrinUtil.isWooden;
@@ -27,11 +27,11 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
     }
 
     protected void runRules(DeferredRegister<Block> blockRegistry){
-        runRules(blockRegistry.getEntries().stream().map(RegistryObject::get).toList());
+        runRules(blockRegistry.getEntries().stream().map(RegistryObject::get).iterator());
     }
 
-    protected void runRules(List<? extends Block> blocks){
-        blocks.forEach(block -> {
+    protected void runRules(Iterator<? extends Block> blocks){
+        blocks.forEachRemaining(block -> {
             if(excludedBlocks.contains(block)) {return;}
             final String name = getBlockName(block);
 

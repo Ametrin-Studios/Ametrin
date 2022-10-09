@@ -19,7 +19,7 @@ public abstract class BlockRegistry {
 
     protected static Supplier<Block> block(BlockBehaviour.Properties properties) {return ()-> new Block(properties);}
     protected static Supplier<Block> block(Block base) {return block(properties(base));}
-    protected static Supplier<DropExperienceBlock> gemOre(UniformInt xp, BlockBehaviour.Properties properties) {return ()-> new DropExperienceBlock(properties, xp);}
+    protected static Supplier<DropExperienceBlock> xpDroppingBlock(UniformInt xp, BlockBehaviour.Properties properties) {return ()-> new DropExperienceBlock(properties, xp);}
     protected static Supplier<StairBlock> stair(StairBlock.Properties properties, Supplier<BlockState> base) {return ()-> new StairBlock(base, properties);}
     protected static Supplier<StairBlock> stair(Block base) {return stair(properties(base), base::defaultBlockState);}
     protected static Supplier<SlabBlock> slab(SlabBlock.Properties properties) {return ()-> new SlabBlock(properties);}
@@ -34,7 +34,6 @@ public abstract class BlockRegistry {
     protected static Supplier<PressurePlateBlock> pressurePlate(PressurePlateBlock.Sensitivity sensitivity, Block base) {return (pressurePlate(sensitivity, properties(base)));}
     protected static Supplier<WoodButtonBlock> woodButton(BlockBehaviour.Properties properties) {return ()-> new WoodButtonBlock(properties);}
     protected static Supplier<WoodButtonBlock> woodButton(Block base) {return woodButton(properties(base));}
-
     protected static Supplier<LeavesBlock> leave(BlockBehaviour.Properties properties) {return ()-> new LeavesBlock(properties);}
     protected static Supplier<LeavesBlock> leave(Block base) {return leave(properties(base));}
     protected static Supplier<SaplingBlock> sapling(Supplier<? extends CustomTreeFeature> tree) {return ()-> new SaplingBlock(new CustomTreeGrower(tree), properties(Blocks.OAK_SAPLING));}
@@ -45,7 +44,6 @@ public abstract class BlockRegistry {
     protected static Supplier<TrapDoorBlock> trapdoor(Block base) {return trapdoor(properties(base));}
     protected static Supplier<RotatedPillarBlock> rotatedPillar(BlockBehaviour.Properties properties) {return ()-> new RotatedPillarBlock(properties);}
     protected static Supplier<RotatedPillarBlock> rotatedPillar(Block base) {return rotatedPillar(properties(base));}
-
     protected static Supplier<AgeableBushBlock> bush(int bonusDrop, int growRarity) {return ()-> new AgeableBushBlock(bonusDrop, growRarity, properties(Blocks.SWEET_BERRY_BUSH));}
 
     protected static ToIntFunction<BlockState> litEmission(int lightLevel) {return (state)-> state.getValue(BlockStateProperties.LIT) ? lightLevel : 0;}
