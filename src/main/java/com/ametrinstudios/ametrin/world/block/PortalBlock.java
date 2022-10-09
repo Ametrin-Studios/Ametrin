@@ -3,7 +3,6 @@ package com.ametrinstudios.ametrin.world.block;
 import com.ametrinstudios.ametrin.world.dimension.portal.CustomTeleporter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -37,27 +36,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.function.Supplier;
 
-public class PortalBlock extends Block {
+public abstract class PortalBlock extends Block {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     protected static final VoxelShape X_AABB = Block.box(0.0D, 0.0D, 6.0D, 16.0D, 16.0D, 10.0D);
     protected static final VoxelShape Z_AABB = Block.box(6.0D, 0.0D, 0.0D, 10.0D, 16.0D, 16.0D);
-    protected final Supplier<? extends PortalBlock> registeredBlock;
-    protected final TagKey<Block> portalFrameBlocks;
-    protected final Supplier<SimpleParticleType> particle;
-    protected final ResourceKey<Level> targetLevel;
-    protected final Holder<PoiType> poi;
-    protected final Supplier<? extends Block> defaultPortalFrameBlock;
 
-    public PortalBlock(Supplier<? extends PortalBlock> registeredBlock, ResourceKey<Level> targetLevel, TagKey<Block> portalFrameBlocks, Supplier<? extends Block> defaultPortalFrameBlock, Holder<PoiType> poi, Supplier<SimpleParticleType> particle, int lightLevel) {
+    public PortalBlock(int lightLevel) {
         super(Properties.of(Material.PORTAL).strength(-1).noCollission().lightLevel((state) -> lightLevel).noLootTable());
-        this.registeredBlock = registeredBlock;
-        this.targetLevel = targetLevel;
-        this.portalFrameBlocks = portalFrameBlocks;
-        this.defaultPortalFrameBlock = defaultPortalFrameBlock;
-        this.poi = poi;
-        this.particle = particle;
         registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
 
@@ -89,26 +75,25 @@ public class PortalBlock extends Block {
 
     @Nullable
     public PortalBlock.Size isPortal(LevelAccessor worldIn, BlockPos pos){
-        PortalBlock.Size size = new Size(worldIn, pos, Direction.Axis.X, registeredBlock, portalFrameBlocks);
+        PortalBlock.Size size = new Size(worldIn, pos, Direction.Axis.X, registeredBlock(), portalFrameBlocks());
         if (size.isValid() && size.portalBlockCount == 0) {
             return size;
         }else{
-            PortalBlock.Size size2 = new Size(worldIn, pos, Direction.Axis.Z, registeredBlock, portalFrameBlocks);
+            PortalBlock.Size size2 = new Size(worldIn, pos, Direction.Axis.Z, registeredBlock(), portalFrameBlocks());
             return size2.isValid() && size2.portalBlockCount == 0 ? size2 : null;
         }
     }
 
     @Override @ParametersAreNonnullByDefault
-    public @NotNull BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+    public @NotNull BlockState updateShape(BlockState blockState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         Direction.Axis direction$axis = facing.getAxis();
-        Direction.Axis direction = stateIn.getValue(AXIS);
+        Direction.Axis direction = blockState.getValue(AXIS);
         boolean flag = direction != direction$axis && direction$axis.isHorizontal();
-        return !flag && facingState.getBlock() != this && !(new Size(worldIn, currentPos, direction, registeredBlock, portalFrameBlocks)).validatePortal() ?
-                Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return !flag && facingState.getBlock() != this && !(new Size(level, currentPos, direction, registeredBlock(), portalFrameBlocks())).validatePortal() ? Blocks.AIR.defaultBlockState() : super.updateShape(blockState, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override @ParametersAreNonnullByDefault
-    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity){
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity){
         if(!entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()){
             if(entity.isOnPortalCooldown()){
                 entity.setPortalCooldown();
@@ -119,13 +104,13 @@ public class PortalBlock extends Block {
                 }
                 Level entityWorld = entity.level;
                 MinecraftServer server = entityWorld.getServer();
-                ResourceKey<Level> destination = entity.level.dimension() == targetLevel ? Level.OVERWORLD : targetLevel;
+                ResourceKey<Level> destination = entity.level.dimension() == targetLevel() ? Level.OVERWORLD : targetLevel();
                 if(server != null) {
                     ServerLevel destinationWorld = server.getLevel(destination);
                     if(destinationWorld != null && server.isNetherEnabled() && !entity.isPassenger()){
                         entity.level.getProfiler().push("kaupen_portal");
                         entity.setPortalCooldown();
-                        entity.changeDimension(destinationWorld, new CustomTeleporter(destinationWorld, poi, targetLevel, registeredBlock, defaultPortalFrameBlock));
+                        entity.changeDimension(destinationWorld, new CustomTeleporter(destinationWorld, poi(), targetLevel(), registeredBlock(), defaultPortalFrameBlock()));
                         entity.level.getProfiler().pop();
                     }
                 }
@@ -158,14 +143,12 @@ public class PortalBlock extends Block {
                 zSpeed = rand.nextFloat() * 2.0F * (float)j;
             }
 
-            level.addParticle(particle.get(), x, y, z, xSpeed, ySpeed, zSpeed);
+            level.addParticle(particle(), x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }
 
     @Override @ParametersAreNonnullByDefault
-    public @NotNull ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state){
-        return ItemStack.EMPTY;
-    }
+    public @NotNull ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {return ItemStack.EMPTY;}
 
     @Override
     public @NotNull BlockState rotate(@NotNull BlockState blockState, Rotation rot){
@@ -193,9 +176,9 @@ public class PortalBlock extends Block {
         private int height;
         private int width;
         protected final TagKey<Block> portalFrameBlocks;
-        protected final Supplier<? extends PortalBlock> registeredBlock;
+        protected final PortalBlock registeredBlock;
 
-        public Size(LevelAccessor level, BlockPos pos, Direction.Axis axis, Supplier<? extends PortalBlock> registeredBlock, TagKey<Block> portalFrameBlocks) {
+        public Size(LevelAccessor level, BlockPos pos, Direction.Axis axis, PortalBlock registeredBlock, TagKey<Block> portalFrameBlocks) {
             this.level = level;
             this.axis = axis;
             this.portalFrameBlocks = portalFrameBlocks;
@@ -256,7 +239,7 @@ public class PortalBlock extends Block {
                     }
 
                     Block block = blockstate.getBlock();
-                    if (block == registeredBlock.get()) {
+                    if (block == registeredBlock) {
                         ++portalBlockCount;
                     }
 
@@ -294,7 +277,7 @@ public class PortalBlock extends Block {
 
         protected boolean canConnect(BlockState pos) {
             Block block = pos.getBlock();
-            return pos.isAir() || block == registeredBlock.get();
+            return pos.isAir() || block == registeredBlock;
         }
 
         public boolean isValid() {
@@ -306,7 +289,7 @@ public class PortalBlock extends Block {
                 BlockPos blockpos = bottomLeft.relative(rightDir, i);
 
                 for(int j = 0; j < height; ++j) {
-                    level.setBlock(blockpos.above(j), registeredBlock.get().defaultBlockState().setValue(PortalBlock.AXIS, axis), 18);
+                    level.setBlock(blockpos.above(j), registeredBlock.defaultBlockState().setValue(PortalBlock.AXIS, axis), 18);
                 }
             }
 
@@ -321,4 +304,11 @@ public class PortalBlock extends Block {
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return state.getValue(AXIS) == Direction.Axis.Z ? Z_AABB : X_AABB;
     }
+
+    protected abstract PortalBlock registeredBlock();
+    protected abstract TagKey<Block> portalFrameBlocks();
+    protected abstract SimpleParticleType particle();
+    protected abstract ResourceKey<Level> targetLevel();
+    protected abstract PoiType poi();
+    protected abstract Block defaultPortalFrameBlock();
 }

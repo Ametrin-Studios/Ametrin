@@ -187,8 +187,8 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     }
 
     protected void portalBlock(PortalBlock portal, String name, String texture){
-        ModelFile ew = models().withExistingParent(name, "nether_portal_ew").texture("portal", texture).texture("particle", texture);
-        ModelFile ns = models().withExistingParent(name, "nether_portal_ns").texture("portal", texture).texture("particle", texture);
+        ModelFile ew = models().withExistingParent(name, "nether_portal_ew").texture("portal", texture).texture("particle", texture).renderType(RenderTypes.Translucent);
+        ModelFile ns = models().withExistingParent(name, "nether_portal_ns").texture("portal", texture).texture("particle", texture).renderType(RenderTypes.Translucent);
         getVariantBuilder(portal).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(PortalBlock.AXIS) == Direction.Axis.X ? ns : ew).build());
     }
 

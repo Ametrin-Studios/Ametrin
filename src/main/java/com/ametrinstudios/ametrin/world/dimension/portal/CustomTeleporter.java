@@ -4,7 +4,6 @@ import com.ametrinstudios.ametrin.world.block.PortalBlock;
 import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,17 +31,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class CustomTeleporter implements ITeleporter {
     protected final ServerLevel level;
 
-    protected final Holder<PoiType> poi;
-    protected final Supplier<? extends PortalBlock> portalBlock;
-    protected final Supplier<? extends Block> portalFrameBlock;
+    protected final PoiType poi;
+    protected final PortalBlock portalBlock;
+    protected final Block portalFrameBlock;
     protected final ResourceKey<Level> targetLevel;
 
-    public CustomTeleporter(ServerLevel level, Holder<PoiType> poi, ResourceKey<Level> targetLevel, Supplier<? extends PortalBlock> portalBlock, Supplier<? extends Block> portalFrameBlock){
+    public CustomTeleporter(ServerLevel level, PoiType poi, ResourceKey<Level> targetLevel, PortalBlock portalBlock, Block portalFrameBlock){
         this.level = level;
         this.poi = poi;
         this.targetLevel = targetLevel;
@@ -54,7 +52,7 @@ public class CustomTeleporter implements ITeleporter {
         PoiManager poiManager = this.level.getPoiManager();
         poiManager.ensureLoadedAndValid(this.level, pos, 64);
         Optional<PoiRecord> optional = poiManager.getInSquare((poiType) ->
-                poiType == poi, pos, 64, PoiManager.Occupancy.ANY).sorted(Comparator.<PoiRecord>comparingDouble((poi) ->
+                poiType.get() == poi, pos, 64, PoiManager.Occupancy.ANY).sorted(Comparator.<PoiRecord>comparingDouble((poi) ->
                 poi.getPos().distSqr(pos)).thenComparingInt((poi) ->
                 poi.getPos().getY())).filter((poi) ->
                 this.level.getBlockState(poi.getPos()).hasProperty(BlockStateProperties.HORIZONTAL_AXIS)).findFirst();
@@ -86,8 +84,7 @@ public class CustomTeleporter implements ITeleporter {
                     currentPos.setY(l);
                     if (this.level.isEmptyBlock(currentPos)) {
                         int i1;
-                        for(i1 = l; l > 0 && this.level.isEmptyBlock(currentPos.move(Direction.DOWN)); --l) {
-                        }
+                        for(i1 = l; l > 0 && this.level.isEmptyBlock(currentPos.move(Direction.DOWN)); --l) {} //Do not delete!
 
                         if (l + 4 <= dimensionLogicalHeight) {
                             int j1 = i1 - l;
@@ -127,7 +124,7 @@ public class CustomTeleporter implements ITeleporter {
             for(int l1 = -1; l1 < 2; ++l1){
                 for(int k2 = 0; k2 < 2; ++k2){
                     for(int i3 = -1; i3 < 3; ++i3){
-                        BlockState blockstate1 = i3 < 0 ? portalFrameBlock.get().defaultBlockState() : Blocks.AIR.defaultBlockState();
+                        BlockState blockstate1 = i3 < 0 ? portalFrameBlock.defaultBlockState() : Blocks.AIR.defaultBlockState();
                         mutablePos.setWithOffset(blockpos, k2 * direction.getStepX() + l1 * direction1.getStepX(), i3, k2 * direction.getStepZ() + l1 * direction1.getStepZ());
                         this.level.setBlockAndUpdate(mutablePos, blockstate1);
                     }
@@ -139,12 +136,12 @@ public class CustomTeleporter implements ITeleporter {
             for(int i2 = -1; i2 < 4; ++i2) {
                 if (k1 == -1 || k1 == 2 || i2 == -1 || i2 == 3) {
                     mutablePos.setWithOffset(blockpos, k1 * direction.getStepX(), i2, k1 * direction.getStepZ());
-                    this.level.setBlock(mutablePos, portalFrameBlock.get().defaultBlockState(), 3);
+                    this.level.setBlock(mutablePos, portalFrameBlock.defaultBlockState(), 3);
                 }
             }
         }
 
-        BlockState kaupenPortal = portalBlock.get().defaultBlockState().setValue(PortalBlock.AXIS, axis);
+        BlockState kaupenPortal = portalBlock.defaultBlockState().setValue(PortalBlock.AXIS, axis);
 
         for(int j2 = 0; j2 < 2; ++j2) {
             for(int l2 = 0; l2 < 3; ++l2) {

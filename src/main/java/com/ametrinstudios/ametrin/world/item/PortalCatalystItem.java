@@ -32,8 +32,9 @@ public class PortalCatalystItem extends Item{
                     if(portalBlock.get().trySpawnPortal(context.getLevel(), framePos)) {
                         context.getLevel().playSound(context.getPlayer(), framePos, SoundEvents.PORTAL_TRIGGER, SoundSource.BLOCKS, 1, 1);
                         return InteractionResult.CONSUME;
+                    } else {
+                        return InteractionResult.FAIL;
                     }
-                    else return InteractionResult.FAIL;
                 }
             }
         }
