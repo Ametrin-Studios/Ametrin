@@ -3,7 +3,7 @@ package com.ametrinstudios.ametrin.world;
 import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeFeature;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeGrower;
-import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +19,7 @@ public abstract class BlockRegistry {
 
     protected static Supplier<Block> block(BlockBehaviour.Properties properties) {return ()-> new Block(properties);}
     protected static Supplier<Block> block(Block parent) {return block(properties(parent));}
-    protected static Supplier<DropExperienceBlock> xpDroppingBlock(UniformInt xp, BlockBehaviour.Properties properties) {return ()-> new DropExperienceBlock(properties, xp);}
+    protected static Supplier<DropExperienceBlock> xpDroppingBlock(IntProvider xp, BlockBehaviour.Properties properties) {return ()-> new DropExperienceBlock(properties, xp);}
     protected static Supplier<StairBlock> stair(StairBlock.Properties properties, Supplier<BlockState> base) {return ()-> new StairBlock(base, properties);}
     protected static Supplier<StairBlock> stair(Block parent) {return stair(properties(parent), parent::defaultBlockState);}
     protected static Supplier<SlabBlock> slab(SlabBlock.Properties properties) {return ()-> new SlabBlock(properties);}

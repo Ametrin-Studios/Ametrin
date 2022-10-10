@@ -1,5 +1,6 @@
 ## 0.0.20 (APLHA)
 * added `addCompostable`
+* `xpDroppingBlock` now takes a `IntProvider`
 
 ## 0.0.20 (ALPHA)
 * added helper methods for `AxeItem#STRIPPABLES` and `PotionBrewing#addMix`
