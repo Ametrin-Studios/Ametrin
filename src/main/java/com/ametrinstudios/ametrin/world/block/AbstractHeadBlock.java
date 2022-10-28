@@ -17,9 +17,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class AmAbstractHeadBlock extends Block implements Wearable, SimpleWaterloggedBlock {
+public class AbstractHeadBlock extends Block implements Wearable, SimpleWaterloggedBlock {
     public static final BooleanProperty Waterlogged = BlockStateProperties.WATERLOGGED;
-    public AmAbstractHeadBlock(Properties properties) {super(properties);}
+    public AbstractHeadBlock(Properties properties) {super(properties);}
 
     @Override
     public @NotNull FluidState getFluidState(BlockState blockState) {

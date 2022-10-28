@@ -3,15 +3,20 @@ package com.ametrinstudios.ametrin.world.item;
 import com.ametrinstudios.ametrin.world.block.PortalBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class PortalCatalystItem extends Item{
@@ -39,5 +44,10 @@ public class PortalCatalystItem extends Item{
             }
         }
         return InteractionResult.FAIL;
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack itemStack, @Nullable Level level, @NotNull List<Component> componentList, @NotNull TooltipFlag isAdvanced) {
+        componentList.add(Component.translatable(getDescriptionId(itemStack)+".desc"));
     }
 }

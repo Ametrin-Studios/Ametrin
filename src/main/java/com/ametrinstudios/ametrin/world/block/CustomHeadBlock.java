@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class CustomHeadBlock extends AmAbstractHeadBlock {
+public class CustomHeadBlock extends AbstractHeadBlock {
     private static final int MaxRotations = 16;
     public static final IntegerProperty Rotation = BlockStateProperties.ROTATION_16;
     protected static final VoxelShape Shape = Block.box(4d, 0d, 4d, 12d, 8d, 12d);

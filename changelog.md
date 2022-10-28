@@ -1,6 +1,9 @@
-## 0.0.20 (APLHA)
+## 0.0.21 (APLHA)
 * added `addCompostable`
 * `xpDroppingBlock` now takes a `IntProvider`
+* added base for `ExtendedLootTableProvider`
+* added `StructurePieces` (updated from DungeonsEnhanced `StructurePiece`)
+* `PortalCatalystItem` now has a description
 
 ## 0.0.20 (ALPHA)
 * added helper methods for `AxeItem#STRIPPABLES` and `PotionBrewing#addMix`

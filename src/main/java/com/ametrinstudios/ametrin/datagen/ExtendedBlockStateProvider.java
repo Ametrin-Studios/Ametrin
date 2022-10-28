@@ -213,22 +213,22 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
             int rotation = state.getValue(CustomHeadBlock.Rotation);
             ModelFile model = models().withExistingParent( "block/" + name + "/" + rotation, mcLoc("block/head/" + rotation)).texture("texture", modBlockLoc(name));
             return ConfiguredModel.builder().modelFile(model).build();
-        }, AmAbstractHeadBlock.Waterlogged);
+        }, AbstractHeadBlock.Waterlogged);
     }
     protected void headWall(CustomWallHeadBlock wallHead, String name){
         ModelFile model = models().withExistingParent( "block/" + name, mcLoc("block/head_wall")).texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
-        getVariantBuilder(wallHead).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngle(state.getValue(CustomWallHeadBlock.Facing))).build(), AmAbstractHeadBlock.Waterlogged);
+        getVariantBuilder(wallHead).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngle(state.getValue(CustomWallHeadBlock.Facing))).build(), AbstractHeadBlock.Waterlogged);
     }
     protected void headCutout(CustomHeadBlock head, String name){
         getVariantBuilder(head).forAllStatesExcept(state -> {
             int rotation = state.getValue(CustomHeadBlock.Rotation);
             ModelFile model = models().withExistingParent( "block/" + name + "/" + rotation, mcLoc("block/head/cutout/" + rotation)).texture("texture", modBlockLoc(name)).renderType(RenderTypes.Cutout);
             return ConfiguredModel.builder().modelFile(model).build();
-        }, AmAbstractHeadBlock.Waterlogged);
+        }, AbstractHeadBlock.Waterlogged);
     }
     protected void headCutoutWall(CustomWallHeadBlock wallHead, String name){
         ModelFile model = models().withExistingParent( "block/" + name, mcLoc("block/head_wall_cutout")).texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
-        getVariantBuilder(wallHead).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngle(state.getValue(CustomWallHeadBlock.Facing))).build(), AmAbstractHeadBlock.Waterlogged);
+        getVariantBuilder(wallHead).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngle(state.getValue(CustomWallHeadBlock.Facing))).build(), AbstractHeadBlock.Waterlogged);
     }
 
     protected void simpleAgeableBushBlock(AgeableBushBlock bush, String name, String texture) {

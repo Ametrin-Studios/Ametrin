@@ -22,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class CustomWallHeadBlock extends AmAbstractHeadBlock {
+public class CustomWallHeadBlock extends AbstractHeadBlock {
     public static final DirectionProperty Facing = BlockStateProperties.HORIZONTAL_FACING;
 
     protected final Supplier<CustomHeadBlockItem> item;
