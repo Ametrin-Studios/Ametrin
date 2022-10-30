@@ -1,8 +1,13 @@
-## 0.0.22 (APLHA)
+## 0.0.23 (ALPHA)
+* added `ColorToIntWithAlpha`
+* added `SimpleFluidType` and `CustomFluidType`
+* added `stoneButton` to `BlockRegistry`
+
+## 0.0.22 (ALPHA)
 * added proper build method to `StructurePieces.Builder`
 * added method for copying `BlockBehaviour.Properties` (experimental)
 
-## 0.0.21 (APLHA)
+## 0.0.21 (ALPHA)
 * added `addCompostable`
 * `xpDroppingBlock` now takes an `IntProvider`
 * added base for `ExtendedLootTableProvider`

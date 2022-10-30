@@ -34,6 +34,8 @@ public abstract class BlockRegistry {
     protected static Supplier<PressurePlateBlock> pressurePlate(PressurePlateBlock.Sensitivity sensitivity, Block parent) {return (pressurePlate(sensitivity, properties(parent)));}
     protected static Supplier<WoodButtonBlock> woodButton(BlockBehaviour.Properties properties) {return ()-> new WoodButtonBlock(properties);}
     protected static Supplier<WoodButtonBlock> woodButton(Block parent) {return woodButton(properties(parent));}
+    protected static Supplier<StoneButtonBlock> stoneButton(BlockBehaviour.Properties properties) {return ()-> new StoneButtonBlock(properties);}
+    protected static Supplier<StoneButtonBlock> stoneButton(Block parent) {return stoneButton(properties(parent));}
     protected static Supplier<LeavesBlock> leave(BlockBehaviour.Properties properties) {return ()-> new LeavesBlock(properties);}
     protected static Supplier<LeavesBlock> leave(Block parent) {return leave(properties(parent));}
     protected static Supplier<SaplingBlock> sapling(Supplier<? extends CustomTreeFeature> tree) {return ()-> new SaplingBlock(new CustomTreeGrower(tree), properties(Blocks.OAK_SAPLING));}

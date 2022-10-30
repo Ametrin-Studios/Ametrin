@@ -40,7 +40,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     {
         excludedClasses.add(SignBlock.class); //may be automated in the future;
         excludedClasses.add(BaseFireBlock.class); //may be automated in the future;
-        excludedClasses.add(LiquidBlock.class); //may be automated in the future;
+        excludedClasses.add(LiquidBlock.class); //do not need models
         excludedClasses.add(AgeableDoublePlantBlock.class);
     }
 

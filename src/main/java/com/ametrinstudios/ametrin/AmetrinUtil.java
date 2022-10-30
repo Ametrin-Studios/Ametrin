@@ -28,6 +28,7 @@ public class AmetrinUtil {
     public static ResourceLocation location(String key) {return new ResourceLocation(Ametrin.ModID, key);}
 
     public static int ColorToInt(Color color) {return color.getBlue() + (color.getGreen() * 256) + (color.getRed() * 65536);}
+    public static int ColorToIntWithAlpha(Color color) {return (color.getAlpha()) + (color.getBlue()*256) + (color.getGreen() * 65536) + (color.getRed() * 16777216);}
 
     public static int SecondsToTicks(int seconds) {return seconds * 20;}
     public static int MinutesToTicks(int minutes) {return SecondsToTicks(minutes * 60);}
