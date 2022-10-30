@@ -13,7 +13,7 @@ public class StructurePieces {
     private final int maxWeight;
 
     public StructurePieces(Builder builder){
-        this(builder.build());
+        this(builder.buildArray());
     }
     public StructurePieces(Piece[] pieces){
         this.pieces = pieces;
@@ -82,6 +82,8 @@ public class StructurePieces {
             return this;
         }
 
-        public Piece[] build() {return pieces.toArray(Piece[]::new);}
+        private Piece[] buildArray() {return pieces.toArray(Piece[]::new);}
+
+        public StructurePieces build() {return new StructurePieces(this);}
     }
 }

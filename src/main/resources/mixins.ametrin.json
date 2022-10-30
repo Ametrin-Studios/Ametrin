@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.ametrinstudios.ametrin.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MixinBlockBehaviorProperties"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

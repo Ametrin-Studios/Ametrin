@@ -1,8 +1,12 @@
+## 0.0.22 (APLHA)
+* added proper build method to `StructurePieces.Builder`
+* added method for copying `BlockBehaviour.Properties` (experimental)
+
 ## 0.0.21 (APLHA)
 * added `addCompostable`
-* `xpDroppingBlock` now takes a `IntProvider`
+* `xpDroppingBlock` now takes an `IntProvider`
 * added base for `ExtendedLootTableProvider`
-* added `StructurePieces` (updated from DungeonsEnhanced `StructurePiece`)
+* added `StructurePieces` (updated from DungeonsEnhanced `DEStructurePiece`)
 * `PortalCatalystItem` now has a description
 
 ## 0.0.20 (ALPHA)
