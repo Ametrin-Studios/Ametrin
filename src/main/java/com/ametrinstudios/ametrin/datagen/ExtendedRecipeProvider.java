@@ -449,6 +449,12 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static void blasting(Consumer<FinishedRecipe> consumer, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
         SimpleCookingRecipeBuilder.blasting(Ingredient.of(ingredient), result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(consumer, blastingRecipeID(result, ingredient));
     }
+    protected static void smoking(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient, float xp, int time) {
+        SimpleCookingRecipeBuilder.smoking(Ingredient.of(ingredient), result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(consumer, smokingRecipeID(result, ingredient));
+    }
+    protected static void smoking(Consumer<FinishedRecipe> consumer, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(ingredient), result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(consumer, smokingRecipeID(result, ingredient));
+    }
 
     protected static ResourceLocation recipeID(ItemLike result, ItemLike material) {
         String itemID = itemID(result);
@@ -513,6 +519,26 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         ResourceLocation recipeID = blastingRecipeID(itemID);
         if(Recipes.contains(recipeID)){
             return location("blasting/" + getConversionRecipeName(itemID, ingredient));
+        }
+        return recipeID;
+    }
+
+    protected static ResourceLocation smokingRecipeID(String key) {
+        return location("smoking/" + key);
+    }
+    protected static ResourceLocation smokingRecipeID(ItemLike result, ItemLike ingredient) {
+        String itemID = itemID(result);
+        ResourceLocation recipeID = smokingRecipeID(itemID);
+        if(Recipes.contains(recipeID)){
+            return location("smoking/" + getConversionRecipeName(itemID, ingredient));
+        }
+        return recipeID;
+    }
+    protected static ResourceLocation smokingRecipeID(ItemLike result, TagKey<Item> ingredient) {
+        String itemID = itemID(result);
+        ResourceLocation recipeID = smokingRecipeID(itemID);
+        if(Recipes.contains(recipeID)){
+            return location("smoking/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }

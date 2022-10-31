@@ -7,10 +7,14 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class Extensions {
     /**
@@ -33,5 +37,8 @@ public class Extensions {
      */
     public static void addCompostable(ItemLike item, float chance){
         ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
+    }
+    public static void addFlowerPot(RegistryObject<Block> plant, Supplier<Block> pot){
+        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant.getId(), pot);
     }
 }

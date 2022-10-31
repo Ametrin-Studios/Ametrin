@@ -1,7 +1,12 @@
+## 0.0.24 (ALPHA)
+* added `LockedSlot`
+* added helper methods for smoking recipes
+* added helper method for Flower Pots
+
 ## 0.0.23 (ALPHA)
 * added `ColorToIntWithAlpha`
 * added `SimpleFluidType` and `CustomFluidType`
-* added `stoneButton` to `BlockRegistry`
+* added `stoneButton()` to `BlockRegistry`
 
 ## 0.0.22 (ALPHA)
 * added proper build method to `StructurePieces.Builder`
