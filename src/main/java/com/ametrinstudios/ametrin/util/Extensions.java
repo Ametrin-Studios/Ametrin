@@ -38,7 +38,7 @@ public class Extensions {
     public static void addCompostable(ItemLike item, float chance){
         ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
     }
-    public static void addFlowerPot(RegistryObject<Block> plant, Supplier<Block> pot){
-        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant.getId(), pot);
+    public static void addFlowerPot(RegistryObject<? extends Block> plant, Supplier<? extends FlowerPotBlock> fullPot){
+        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant.getId(), fullPot);
     }
 }
