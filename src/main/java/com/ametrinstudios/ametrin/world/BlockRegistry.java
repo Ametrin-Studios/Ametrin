@@ -3,8 +3,8 @@ package com.ametrinstudios.ametrin.world;
 import com.ametrinstudios.ametrin.mixin.util.IBlockBehaviorPropertiesMixin;
 import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
 import com.ametrinstudios.ametrin.world.block.FlammableLeavesBlock;
+import com.ametrinstudios.ametrin.world.block.FlammableLogBlock;
 import com.ametrinstudios.ametrin.world.block.FlammablePlankBlock;
-import com.ametrinstudios.ametrin.world.block.FlammableRotatedPillarBlock;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeFeature;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeGrower;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -53,8 +53,8 @@ public abstract class BlockRegistry {
     @Deprecated(forRemoval = true) protected static Supplier<RotatedPillarBlock> rotatedPillar(Block parent) {return rotatedPillar(properties(parent));}
     @Deprecated(forRemoval = true) protected static Supplier<FlammablePlankBlock> plank(BlockBehaviour.Properties properties) {return ()-> new FlammablePlankBlock(properties);}
     @Deprecated(forRemoval = true) protected static Supplier<FlammablePlankBlock> plank(Block parent) {return plank(properties(parent));}
-    @Deprecated(forRemoval = true) protected static Supplier<FlammableRotatedPillarBlock> flammableLog(BlockBehaviour.Properties properties) {return ()-> new FlammableRotatedPillarBlock(properties);}
-    @Deprecated(forRemoval = true) protected static Supplier<FlammableRotatedPillarBlock> flammableLog(Block parent) {return flammableLog(properties(parent));}
+    @Deprecated(forRemoval = true) protected static Supplier<FlammableLogBlock> flammableLog(BlockBehaviour.Properties properties) {return ()-> new FlammableLogBlock(properties);}
+    @Deprecated(forRemoval = true) protected static Supplier<FlammableLogBlock> flammableLog(Block parent) {return flammableLog(properties(parent));}
     protected static Supplier<AgeableBushBlock> bush(int bonusDrop, int growRarity) {return ()-> new AgeableBushBlock(bonusDrop, growRarity, properties(Blocks.SWEET_BERRY_BUSH));}
 
     protected static ToIntFunction<BlockState> litEmission(int lightLevel) {return (state)-> state.getValue(BlockStateProperties.LIT) ? lightLevel : 0;}

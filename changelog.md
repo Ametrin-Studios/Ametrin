@@ -1,6 +1,8 @@
 ## 0.0.26 (ALPHA)
 * added `getApplicableSlots()` to `Enchantment`
 * fixed `BlockBehaviorPropertiesMixin`
+* added more flammable blocks
+* renamed `FlammableRotatedPillarBlock` to `FlammableLogBlock`
 
 ## 0.0.25 (ALPHA)
 * added `FlammableBlock` and default implementations for Leaves, Planks and Logs/Woods

@@ -48,7 +48,7 @@ public abstract class PortalBlock extends Block {
     }
 
     public boolean trySpawnPortal(LevelAccessor worldIn, BlockPos pos){
-        PortalBlock.Size size = this.isPortal(worldIn, pos);
+        PortalBlock.Size size = getPortalSize(worldIn, pos);
         if (size != null && !onTrySpawnPortal(worldIn, pos, size)){
             size.placePortalBlocks();
             return true;
@@ -74,7 +74,7 @@ public abstract class PortalBlock extends Block {
     }
 
     @Nullable
-    public PortalBlock.Size isPortal(LevelAccessor world, BlockPos pos){
+    public PortalBlock.Size getPortalSize(LevelAccessor world, BlockPos pos){
         PortalBlock.Size size = new Size(world, pos, Direction.Axis.X, registeredBlock(), portalFrameBlocks());
         if (size.isValid() && size.portalBlockCount == 0) {
             return size;
@@ -171,7 +171,6 @@ public abstract class PortalBlock extends Block {
         private final Direction rightDir;
         private final Direction leftDir;
         private int portalBlockCount;
-        @Nullable
         private BlockPos bottomLeft;
         private int height;
         private int width;
