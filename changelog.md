@@ -1,3 +1,10 @@
+## 0.0.25 (ALPHA)
+* added `FlammableBlock` and default implementations for Leaves, Planks and Logs/Woods
+* fixed flammability for some blocks
+* fixed `addFlowerPot()`
+* fixed mixins
+* deprecated a lot of unnecessary `BlockRegistry` helper methods
+
 ## 0.0.24 (ALPHA)
 * added `LockedSlot`
 * added helper methods for smoking recipes

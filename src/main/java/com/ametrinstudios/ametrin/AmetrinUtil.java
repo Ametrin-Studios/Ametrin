@@ -1,6 +1,5 @@
 package com.ametrinstudios.ametrin;
 
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -11,15 +10,12 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.slf4j.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class AmetrinUtil {
-    public static final Logger LOGGER = LogUtils.getLogger();
-
     /**
      * blocks containing strings from this list try to use the plank texture in some cases look at the usages to find out where exactly
      */
@@ -47,14 +43,16 @@ public class AmetrinUtil {
     public static boolean isLog(String name) {return (name.contains("log") || name.contains("stem"));}
     public static boolean isWooden(String name) {return isLog(name) || isWood(name) || name.contains("plank") || usePlankTexture(name);}
 
-    public static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos) {return ChunkPosToBlockPos(chunkPos, 0);}
+    /**
+     * use {@link ChunkPos#getWorldPosition()} instead
+     */
+    @Deprecated(forRemoval = true) public static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos) {return ChunkPosToBlockPos(chunkPos, 0);}
     public static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos, int y) {return new BlockPos(chunkPos.getMinBlockX(), y, chunkPos.getMinBlockZ());}
 
     public static BlockPos ChunkPosToBlockPosFromHeightMap(ChunkPos chunkPos, ChunkGenerator chunkGenerator, Heightmap.Types heightmapType, LevelHeightAccessor heightAccessor, RandomState randomState){
-        BlockPos pos = ChunkPosToBlockPos(chunkPos);
+        BlockPos pos = chunkPos.getWorldPosition();
         return pos.atY(chunkGenerator.getBaseHeight(pos.getX(), pos.getZ(), heightmapType, heightAccessor, randomState));
     }
-
 
     public static String getItemName(Item item) {return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getPath();}
     public static String getBlockName(Block block) {return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();}

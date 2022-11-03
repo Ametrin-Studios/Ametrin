@@ -1,6 +1,6 @@
 package com.ametrinstudios.ametrin.mixin;
 
-import com.ametrinstudios.ametrin.util.IMixinBlockBehaviorProperties;
+import com.ametrinstudios.ametrin.util.IBlockBehaviorPropertiesMixin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.SoundType;
@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -15,7 +16,7 @@ import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
 @Mixin(BlockBehaviour.Properties.class)
-public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehaviorProperties {
+public abstract class BlockBehaviorPropertiesMixin implements IBlockBehaviorPropertiesMixin {
 
     @Shadow Material material;
     @Shadow Function<BlockState, MaterialColor> materialColor;
@@ -50,7 +51,12 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
                 .friction(friction)
                 .speedFactor(speedFactor)
                 .jumpFactor(jumpFactor)
-                .offsetType(offsetType);
+                .offsetType(offsetType)
+                .isValidSpawn(isValidSpawn)
+                .isRedstoneConductor(isRedstoneConductor)
+                .isSuffocating(isSuffocating)
+                .hasPostProcess(hasPostProcess)
+                .emissiveRendering(emissiveRendering);
 
         if(!hasCollision) {properties.noCollission();}
         if(isRandomlyTicking) {properties.randomTicks();}
@@ -58,28 +64,9 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
         if(!canOcclude) {properties.noOcclusion();}
         if(isAir) {properties.air();}
         if(requiresCorrectToolForDrops) {properties.requiresCorrectToolForDrops();}
+        if(drops == BuiltInLootTables.EMPTY) {properties.noLootTable();}
+        if(isViewBlocking != isSuffocating) {properties.isViewBlocking(isViewBlocking);}
 
         return properties;
     }
-
-    /*public static BlockBehaviour.Properties copy(BlockBehaviour.Properties fromOriginal) {
-        IBlockBehaviorPropertiesMixin from = (IBlockBehaviorPropertiesMixin) fromOriginal;
-
-        BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(from.getMaterial(), from.getMaterialColor());
-        properties.strength(from.getDestroyTime(), from.getExplosionResistance());
-        if(!from.getHasCollision()) {properties.noCollission();}
-        if(from.getIsRandomlyTicking()) {properties.randomTicks();}
-        properties.lightLevel(from.getLightEmission());
-        properties.sound(from.getSoundType());
-        properties.friction(from.getFriction());
-        properties.speedFactor(from.getSpeedFactor());
-        properties.jumpFactor(from.getJumpFactor());
-        if(from.getDrops() == BuiltInLootTables.EMPTY) {properties.noLootTable();}
-        if(from.getDynamicShape()) {properties.dynamicShape();}
-        if(!from.getCanOcclude()) {properties.noOcclusion();}
-        if(from.getIsAir()) {properties.air();}
-        if(from.getRequiresCorrectToolForDrops()) {properties.requiresCorrectToolForDrops();}
-        properties.offsetType(from.getOffsetType());
-        return properties;
-    }*/
 }

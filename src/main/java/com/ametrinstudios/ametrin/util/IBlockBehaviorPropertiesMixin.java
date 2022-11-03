@@ -2,6 +2,6 @@ package com.ametrinstudios.ametrin.util;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public interface IMixinBlockBehaviorProperties {
+public interface IBlockBehaviorPropertiesMixin {
     BlockBehaviour.Properties fullCopy();
 }

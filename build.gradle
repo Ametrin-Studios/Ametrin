@@ -11,7 +11,6 @@ archivesBaseName = "ametrin-${mc_version}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-//println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
     mappings channel: 'parchment', version: "${parchment_version}-${mc_version}"
 
@@ -24,6 +23,7 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'ametrin'
+            arg '-mixin.config=ametrin.mixin.json'
 
             mods {
                 ametrin {
@@ -94,7 +94,10 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Barion",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+                "TweakOrder": 0,
+                "MixinConfigs" : "ametrin.mixin.json"
         ])
     }
 }

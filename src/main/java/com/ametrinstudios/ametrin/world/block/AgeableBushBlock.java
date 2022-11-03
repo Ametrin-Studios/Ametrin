@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin.world.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -92,4 +93,11 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
         if(isFull(blockState)) {return;}
         level.setBlock(pos, blockState.setValue(Age, Math.min(MaxAge, blockState.getValue(Age) + 1)), 2);
     }
+
+    @Override
+    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return true;}
+    @Override
+    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 60;}
+    @Override
+    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 100;}
 }
