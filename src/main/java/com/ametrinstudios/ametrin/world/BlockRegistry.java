@@ -1,6 +1,6 @@
 package com.ametrinstudios.ametrin.world;
 
-import com.ametrinstudios.ametrin.util.IBlockBehaviorPropertiesMixin;
+import com.ametrinstudios.ametrin.mixin.util.IBlockBehaviorPropertiesMixin;
 import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
 import com.ametrinstudios.ametrin.world.block.FlammableLeavesBlock;
 import com.ametrinstudios.ametrin.world.block.FlammablePlankBlock;
@@ -20,7 +20,7 @@ import java.util.function.ToIntFunction;
 public abstract class BlockRegistry {
     protected static BlockBehaviour.Properties properties(Block parent) {return BlockBehaviour.Properties.copy(parent);}
     protected static BlockBehaviour.Properties properties(Material material) {return BlockBehaviour.Properties.of(material);}
-    protected static BlockBehaviour.Properties properties(BlockBehaviour.Properties properties) {return ((IBlockBehaviorPropertiesMixin)properties).fullCopy();}
+    protected static BlockBehaviour.Properties properties(BlockBehaviour.Properties properties) {return ((IBlockBehaviorPropertiesMixin) properties).copy();}
 
     @Deprecated(forRemoval = true) protected static Supplier<Block> block(BlockBehaviour.Properties properties) {return ()-> new Block(properties);}
     @Deprecated(forRemoval = true) protected static Supplier<Block> block(Block parent) {return block(properties(parent));}

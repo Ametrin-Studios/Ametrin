@@ -1,6 +1,6 @@
 package com.ametrinstudios.ametrin.mixin;
 
-import com.ametrinstudios.ametrin.util.IBlockBehaviorPropertiesMixin;
+import com.ametrinstudios.ametrin.mixin.util.IBlockBehaviorPropertiesMixin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.SoundType;
@@ -43,7 +43,7 @@ public abstract class BlockBehaviorPropertiesMixin implements IBlockBehaviorProp
     @Shadow boolean dynamicShape;
     @Shadow Function<BlockState, BlockBehaviour.OffsetType> offsetType;
 
-    public BlockBehaviour.Properties fullCopy(){
+    public BlockBehaviour.Properties copy(){
         BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(material, materialColor)
                 .strength(destroyTime, explosionResistance)
                 .lightLevel(lightEmission)
