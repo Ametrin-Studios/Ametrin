@@ -1,7 +1,7 @@
 minecraft:
   version: 1.19.2
-  mappings_channel: official
-  mappings_version: 1.19.2
+  mappings_channel: parchment
+  mappings_version: 2022.10.16-1.19.2
 
 minecraftforge:
   toolchain: forge
