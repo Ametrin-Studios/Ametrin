@@ -40,7 +40,6 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     {
         excludedClasses.add(SignBlock.class); //may be automated in the future;
         excludedClasses.add(BaseFireBlock.class); //may be automated in the future;
-        excludedClasses.add(LiquidBlock.class); //do not need models
         excludedClasses.add(AgeableDoublePlantBlock.class);
     }
 
@@ -168,6 +167,8 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
                 portalBlock((PortalBlock) block, name, texture);
             }else if(block instanceof TorchBlock) {
                 simpleBlock(block, models().withExistingParent(name, "block/template_torch").texture("torch", modBlockLoc(texture)).renderType(RenderTypes.Cutout));
+            }else if(block instanceof LiquidBlock) {
+                simpleBlock(block, models().getBuilder(name).texture("particle", mcBlockLoc("water_still")));
             }else if(block instanceof CustomHeadBlock){
                 if(useCutoutRendererType.contains(block)){
                     headCutout((CustomHeadBlock) block, name);
@@ -279,6 +280,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     }
 
     protected ResourceLocation modBlockLoc(String key) {return modLoc("block/" + key);}
+    protected ResourceLocation mcBlockLoc(String key) {return mcLoc("block/" + key);}
 
     public static class RenderTypes{
         public static final String Cutout = "cutout";

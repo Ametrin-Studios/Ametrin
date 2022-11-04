@@ -1,7 +1,7 @@
-package com.ametrinstudios.ametrin.mixin.util;
+package com.ametrinstudios.ametrin.util.mixin;
 
 import net.minecraft.world.entity.EquipmentSlot;
 
-public interface IEnchantmentMixin {
+public interface IMixinEnchantment {
     EquipmentSlot[] getApplicableSlots();
 }
