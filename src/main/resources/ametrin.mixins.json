@@ -4,13 +4,13 @@
   "package": "com.ametrinstudios.ametrin.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "BlockBehaviorPropertiesMixin",
-    "EnchantmentMixin"
+    "MixinBlockBehaviorProperties",
+    "MixinEnchantment"
   ],
   "client": [
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "ametrin.mixin.refmap.json"
+  "refmap": "ametrin.refmap.json"
 }

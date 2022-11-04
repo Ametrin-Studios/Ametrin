@@ -3,6 +3,7 @@
 * fixed `BlockBehaviorPropertiesMixin`
 * added more flammable blocks
 * renamed `FlammableRotatedPillarBlock` to `FlammableLogBlock`
+* `LiquidBlock`s now generate an empty model with particle texture
 
 ## 0.0.25 (ALPHA)
 * added `FlammableBlock` and default implementations for Leaves, Planks and Logs/Woods

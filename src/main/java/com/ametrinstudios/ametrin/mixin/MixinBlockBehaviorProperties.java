@@ -1,6 +1,6 @@
 package com.ametrinstudios.ametrin.mixin;
 
-import com.ametrinstudios.ametrin.mixin.util.IBlockBehaviorPropertiesMixin;
+import com.ametrinstudios.ametrin.util.mixin.IMixinBlockBehaviorProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.SoundType;
@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
 @Mixin(BlockBehaviour.Properties.class)
-public abstract class BlockBehaviorPropertiesMixin implements IBlockBehaviorPropertiesMixin {
+public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehaviorProperties {
 
     @Shadow Material material;
     @Shadow Function<BlockState, MaterialColor> materialColor;
@@ -33,7 +33,6 @@ public abstract class BlockBehaviorPropertiesMixin implements IBlockBehaviorProp
     @Shadow ResourceLocation drops;
     @Shadow boolean canOcclude;
     @Shadow boolean isAir;
-    @Shadow private java.util.function.Supplier<ResourceLocation> lootTableSupplier;
     @Shadow BlockBehaviour.StateArgumentPredicate<EntityType<?>> isValidSpawn;
     @Shadow BlockBehaviour.StatePredicate isRedstoneConductor;
     @Shadow BlockBehaviour.StatePredicate isSuffocating;
