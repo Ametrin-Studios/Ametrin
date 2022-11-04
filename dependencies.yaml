@@ -1,0 +1,14 @@
+minecraft:
+  version: 1.19.2
+  mappings_channel: official
+  mappings_version: 1.19.2
+
+minecraftforge:
+  toolchain: forge
+  version: 43.1.47
+
+mixin:
+  enabled: True
+  version: 0.8.5
+
+dependencies:

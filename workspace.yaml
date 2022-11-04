@@ -1,0 +1,9 @@
+mod:
+  mod_id: ametrin
+  group: com.ametrinstudios
+  name: Ametrin API
+  author: Ametrin Studios
+  version: 0.0.26
+
+java:
+  version: AUTO_DETECT
