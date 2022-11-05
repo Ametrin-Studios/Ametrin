@@ -1,3 +1,7 @@
+## 0.0.27 (ALPHA)
+* added `flammableStair()` to BlockRegistry
+* added `hasEnchantment()`
+
 ## 0.0.26 (ALPHA)
 * added `getApplicableSlots()` to `Enchantment`
 * added more flammable blocks

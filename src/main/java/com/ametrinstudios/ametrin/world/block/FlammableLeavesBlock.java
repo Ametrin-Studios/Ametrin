@@ -10,10 +10,7 @@ public class FlammableLeavesBlock extends LeavesBlock {
 
     public FlammableLeavesBlock(Properties properties) {super(properties);}
 
-    @Override
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return !state.getValue(LeavesBlock.WATERLOGGED);}
-    @Override
-    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return state.getValue(LeavesBlock.WATERLOGGED) ? 0 : 30;}
-    @Override
-    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 60;}
+    @Override public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return !state.getValue(LeavesBlock.WATERLOGGED);}
+    @Override public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return state.getValue(LeavesBlock.WATERLOGGED) ? 0 : 30;}
+    @Override public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 60;}
 }

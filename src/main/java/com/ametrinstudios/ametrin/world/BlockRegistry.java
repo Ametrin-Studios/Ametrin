@@ -1,10 +1,7 @@
 package com.ametrinstudios.ametrin.world;
 
 import com.ametrinstudios.ametrin.util.mixin.IMixinBlockBehaviorProperties;
-import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
-import com.ametrinstudios.ametrin.world.block.FlammableLeavesBlock;
-import com.ametrinstudios.ametrin.world.block.FlammableLogBlock;
-import com.ametrinstudios.ametrin.world.block.FlammablePlankBlock;
+import com.ametrinstudios.ametrin.world.block.*;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeFeature;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeGrower;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -27,6 +24,8 @@ public abstract class BlockRegistry {
     @Deprecated(forRemoval = true) protected static Supplier<DropExperienceBlock> xpDroppingBlock(IntProvider xp, BlockBehaviour.Properties properties) {return ()-> new DropExperienceBlock(properties, xp);}
     protected static Supplier<StairBlock> stair(StairBlock.Properties properties, Supplier<BlockState> base) {return ()-> new StairBlock(base, properties);}
     protected static Supplier<StairBlock> stair(Block parent) {return stair(properties(parent), parent::defaultBlockState);}
+    protected static Supplier<FlammableStairPlankBlock> flammableStair(FlammableStairPlankBlock.Properties properties, Supplier<BlockState> base) {return ()-> new FlammableStairPlankBlock(base, properties);}
+    protected static Supplier<FlammableStairPlankBlock> flammableStair(Block parent) {return flammableStair(properties(parent), parent::defaultBlockState);}
     @Deprecated(forRemoval = true) protected static Supplier<SlabBlock> slab(SlabBlock.Properties properties) {return ()-> new SlabBlock(properties);}
     @Deprecated(forRemoval = true) protected static Supplier<SlabBlock> slab(Block parent) {return slab(properties(parent));}
     @Deprecated(forRemoval = true) protected static Supplier<WallBlock> wall(WallBlock.Properties properties) {return ()-> new WallBlock(properties);}
