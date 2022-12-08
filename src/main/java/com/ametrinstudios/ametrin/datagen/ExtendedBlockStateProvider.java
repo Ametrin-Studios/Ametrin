@@ -228,7 +228,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
         }, AbstractHeadBlock.Waterlogged);
     }
     protected void headCutoutWall(CustomWallHeadBlock wallHead, String name){
-        ModelFile model = models().withExistingParent( "block/" + name, mcLoc("block/head_wall_cutout")).texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
+        ModelFile model = models().withExistingParent( "block/" + name, modLoc("block/head_wall_cutout")).texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
         getVariantBuilder(wallHead).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngle(state.getValue(CustomWallHeadBlock.Facing))).build(), AbstractHeadBlock.Waterlogged);
     }
 

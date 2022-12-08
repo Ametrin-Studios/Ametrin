@@ -1,12 +1,13 @@
 package com.ametrinstudios.ametrin.datagen;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.CompletableFuture;
 
 import static com.ametrinstudios.ametrin.AmetrinUtil.getBlockName;
 import static com.ametrinstudios.ametrin.AmetrinUtil.isWooden;
@@ -22,8 +24,8 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
     public ArrayList<Block> excludedBlocks = new ArrayList<>();
     public ArrayList<BlockTagProviderRule> blockTagProviderRules = new ArrayList<>();
 
-    public ExtendedBlockTagsProvider(DataGenerator generator, String modID, @Nullable ExistingFileHelper existingFileHelper) {
-        super(generator, modID, existingFileHelper);
+    public ExtendedBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modID, @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, modID, existingFileHelper);
     }
 
     protected void runRules(DeferredRegister<Block> blockRegistry){
@@ -71,7 +73,7 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
                 }
             }
             if(block instanceof ButtonBlock){
-                if(block instanceof WoodButtonBlock){
+                if(block instanceof ButtonBlock){
                     tag(BlockTags.WOODEN_BUTTONS).add(block);
                 } else{
                     tag(BlockTags.BUTTONS).add(block);

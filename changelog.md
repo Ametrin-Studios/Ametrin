@@ -1,6 +1,9 @@
 ## 0.0.27 (ALPHA)
 * added `flammableStair()` to BlockRegistry
 * added `hasEnchantment()`
+* added helper methods for buttons to `BlockRegistry`
+* removed deprecated methods
+* ported to 1.19.3
 
 ## 0.0.26 (ALPHA)
 * added `getApplicableSlots()` to `Enchantment`

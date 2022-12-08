@@ -18,7 +18,7 @@ apply plugin: 'me.jonathing.gradleworks'
 minecraft {
     runs {
         // Client test run configuration
-        test_client {
+        clientTest {
             parent runs.client
 
             mods {
@@ -27,8 +27,16 @@ minecraft {
         }
 
         // Server test run configuration
-        test_server {
+        serverTest {
             parent runs.server
+
+            mods {
+                tests { sources sourceSets.test }
+            }
+        }
+
+        dataTest {
+            parent runs.data
 
             mods {
                 tests { sources sourceSets.test }
