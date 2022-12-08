@@ -2,7 +2,7 @@ package com.ametrinstudios.ametrin.event;
 
 import com.ametrinstudios.ametrin.Ametrin;
 import com.ametrinstudios.ametrin.world.gen.structure.processor.AmProcessorTypes;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegisterEvent;
@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegisterEvent;
 public class AmEvents {
     @SubscribeEvent
     public static void register(RegisterEvent event){
-        event.register(Registry.STRUCTURE_PROCESSOR.key(), helper ->{
+        event.register(BuiltInRegistries.STRUCTURE_PROCESSOR.key(), helper ->{
             AmProcessorTypes.register();
         });
     }

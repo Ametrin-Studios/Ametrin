@@ -2,6 +2,7 @@ package com.ametrinstudios.ametrin.world.gen.structure.processor;
 
 import com.ametrinstudios.ametrin.AmetrinUtil;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 
@@ -13,6 +14,6 @@ public class AmProcessorTypes {
     }
 
     private static <P extends StructureProcessor> void register(String key, StructureProcessorType<P> processorType) {
-        Registry.register(Registry.STRUCTURE_PROCESSOR, AmetrinUtil.location(key), processorType);
+        Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, AmetrinUtil.location(key), processorType);
     }
 }

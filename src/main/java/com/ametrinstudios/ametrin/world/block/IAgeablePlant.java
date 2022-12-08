@@ -2,8 +2,8 @@ package com.ametrinstudios.ametrin.world.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -16,9 +16,8 @@ public interface IAgeablePlant extends BonemealableBlock{
     IntegerProperty Age = BlockStateProperties.AGE_3;
 
     void onHarvest(BlockState blockState, Level level, BlockPos blockPos);
-
     @Override @ParametersAreNonnullByDefault
-    default boolean isValidBonemealTarget(BlockGetter blockGetter, BlockPos pos, BlockState blockState, boolean bool) {return isSparse(blockState);}
+    default boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState, boolean isClientSide) {return isSparse(blockState);}
     @Override @ParametersAreNonnullByDefault
     default boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState) {return true;}
 

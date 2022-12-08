@@ -88,6 +88,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
         stateBuilder.add(Age);
     }
+
     @Override @ParametersAreNonnullByDefault
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState) {
         if(isFull(blockState)) {return;}

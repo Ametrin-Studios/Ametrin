@@ -79,15 +79,16 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
             return true;
         });
         blockItemModelProviderRules.add((item, block, name, texture)->{
-            if(!(block instanceof WoodButtonBlock)) {return false;}
-            buttonInventory(name, modBlockLoc(name.replace("button", "planks")));
-            return true;
-        });
-        blockItemModelProviderRules.add((item, block, name, texture)->{
-            if(!(block instanceof StoneButtonBlock)) {return false;}
+            if(!(block instanceof ButtonBlock)) {return false;}
+            if(isWooden(name)){
+                buttonInventory(name, modBlockLoc(name.replace("button", "planks")));
+                return true;
+            }
+
             if (shouldAppendS(name)) {texture = texture.replace("_button", "s");}
             else {texture = texture.replace("_button", "");}
             buttonInventory(name, modBlockLoc(texture));
+
             return true;
         });
         blockItemModelProviderRules.add((item, block, name, texture)->{

@@ -1,7 +1,7 @@
 package com.ametrinstudios.ametrin.world.gen.feature.tree;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.BiConsumer;
@@ -23,8 +22,8 @@ public class CustomTreeGrower extends AbstractTreeGrower {
 
     public CustomTreeGrower(Supplier<? extends CustomTreeFeature> tree) {this.tree = tree;}
 
-    @Override@Nullable
-    protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(@NotNull RandomSource random, boolean pLargeHive) {return null;}
+    @Override
+    protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(@NotNull RandomSource random, boolean pLargeHive) {return null;}
 
     @Override @ParametersAreNonnullByDefault
     public boolean growTree(ServerLevel level, ChunkGenerator generator, BlockPos pos, BlockState blockState, RandomSource random) {
