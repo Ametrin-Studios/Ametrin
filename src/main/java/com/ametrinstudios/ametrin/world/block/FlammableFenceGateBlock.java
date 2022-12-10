@@ -1,13 +1,19 @@
 package com.ametrinstudios.ametrin.world.block;
 
+import com.ametrinstudios.ametrin.util.VanillaCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * use {@link VanillaCompat#addFlammablePlank(Block)}
+ */
+@Deprecated(forRemoval = true)
 public class FlammableFenceGateBlock extends FenceGateBlock {
     public FlammableFenceGateBlock(Properties properties, SoundEvent closeSoundEvent, SoundEvent openSoundEvent) {super(properties, closeSoundEvent, openSoundEvent);}
     public FlammableFenceGateBlock(Properties properties) {super(properties, SoundEvents.FENCE_GATE_CLOSE, SoundEvents.FENCE_GATE_OPEN);}

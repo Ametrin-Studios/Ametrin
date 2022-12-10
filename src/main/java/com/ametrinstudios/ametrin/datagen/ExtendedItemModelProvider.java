@@ -72,7 +72,7 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
         });
         blockItemModelProviderRules.add((item, block, name, texture)->{
             if(!(block instanceof FenceBlock)) {return false;}
-            if(usePlankTexture(name)) {texture = texture.replace("fence", "planks");}
+            if(isPlank(name)) {texture = texture.replace("fence", "planks");}
             else if(shouldAppendS(name)) {texture = texture.replace("_fence", "s");}
             else {texture = texture.replace("_fence", "");}
             fenceInventory(name, modBlockLoc(texture));

@@ -1,13 +1,19 @@
 package com.ametrinstudios.ametrin.world.block;
 
+import com.ametrinstudios.ametrin.util.VanillaCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Supplier;
 
+/**
+ * use {@link VanillaCompat#addFlammablePlank(Block)}
+ */
+@Deprecated(forRemoval = true)
 public class FlammableStairPlankBlock extends StairBlock {
     public FlammableStairPlankBlock(Supplier<BlockState> modelState, Properties properties) {super(modelState, properties);}
 

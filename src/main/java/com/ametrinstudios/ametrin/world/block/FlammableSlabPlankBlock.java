@@ -1,11 +1,17 @@
 package com.ametrinstudios.ametrin.world.block;
 
+import com.ametrinstudios.ametrin.util.VanillaCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * use {@link VanillaCompat#addFlammablePlank(Block)}
+ */
+@Deprecated(forRemoval = true)
 public class FlammableSlabPlankBlock extends SlabBlock {
     public FlammableSlabPlankBlock(Properties properties) {super(properties);}
 

@@ -1,11 +1,16 @@
 package com.ametrinstudios.ametrin.world.block;
 
+import com.ametrinstudios.ametrin.util.VanillaCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * use {@link VanillaCompat#addFlammable(Block, int, int)}
+ */
+@Deprecated(forRemoval = true)
 public class FlammableBlock extends Block {
     protected final int flammability;
     protected final int fireSpreadSpeed;

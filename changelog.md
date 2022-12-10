@@ -1,3 +1,7 @@
+## 0.0.28 (ALPHA)
+* bunch of VanillaCompat helper methods
+* deprecated FlammableBlocks
+
 ## 0.0.27 (ALPHA)
 * added `flammableStair()` to BlockRegistry
 * added `hasEnchantment()`

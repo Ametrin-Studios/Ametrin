@@ -82,13 +82,13 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
             }
 
             if(block instanceof StairBlock){
-                if(usePlankTexture(name)) {texture = texture.replace("stairs", "planks");}
+                if(isPlank(name)) {texture = texture.replace("stairs", "planks");}
                 else if(shouldAppendS(name)) {texture = texture.replace("_stairs", "s");}
                 else {texture = texture.replace("_stairs", "");}
                 stairsBlock((StairBlock) block, modBlockLoc(texture));
             }else if(block instanceof SlabBlock){
                 String doubleSlab = name;
-                if(usePlankTexture(name)) {
+                if(isPlank(name)) {
                     texture = texture.replace("slab", "planks");
                     doubleSlab = doubleSlab.replace("slab", "planks");
                 }
@@ -102,7 +102,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
                 }
                 slabBlock((SlabBlock) block, modBlockLoc(doubleSlab), modBlockLoc(texture));
             }else if(block instanceof WallBlock){
-                if(usePlankTexture(name)) {texture = texture.replace("wall", "planks");}
+                if(isPlank(name)) {texture = texture.replace("wall", "planks");}
                 else if(shouldAppendS(name)) {texture = texture.replace("_wall", "s");}
                 else {texture = texture.replace("_wall", "");}
                 wallBlock((WallBlock) block, modBlockLoc(texture));
@@ -114,22 +114,22 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
                     axisBlock((RotatedPillarBlock) block, modBlockLoc(texture), modBlockLoc(texture));
                 }
             }else if(block instanceof FenceBlock){
-                if(usePlankTexture(name)) {texture = texture.replace("fence", "planks");}
+                if(isPlank(name)) {texture = texture.replace("fence", "planks");}
                 else if(shouldAppendS(name)) {texture = texture.replace("_fence", "s");}
                 else {texture = texture.replace("_fence", "");}
                 fenceBlock((FenceBlock) block, modBlockLoc(texture));
             }else if(block instanceof FenceGateBlock){
-                if(usePlankTexture(name)) {texture = texture.replace("fence_gate", "planks");}
+                if(isPlank(name)) {texture = texture.replace("fence_gate", "planks");}
                 else if(shouldAppendS(name)) {texture = texture.replace("_fence_gate", "s");}
                 else {texture = texture.replace("_fence_gate", "");}
                 fenceGateBlock((FenceGateBlock) block, modBlockLoc(texture));
             }else if(block instanceof ButtonBlock){
-                if(usePlankTexture(name)) {texture = texture.replace("button", "planks");}
+                if(isPlank(name)) {texture = texture.replace("button", "planks");}
                 else if(shouldAppendS(name)) {texture = texture.replace("_button", "s");}
                 else {texture = texture.replace("_button", "");}
                 buttonBlock((ButtonBlock) block, modBlockLoc(texture));
             }else if(block instanceof PressurePlateBlock){
-                if(usePlankTexture(name)) {texture = texture.replace("pressure_plate", "planks");}
+                if(isPlank(name)) {texture = texture.replace("pressure_plate", "planks");}
                 else if(shouldAppendS(name)) {texture = texture.replace("_pressure_plate", "s");}
                 else {texture = texture.replace("_pressure_platen", "");}
                 pressurePlateBlock((PressurePlateBlock) block, modBlockLoc(texture));
