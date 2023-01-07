@@ -8,9 +8,9 @@ import net.minecraft.data.loot.packs.VanillaLootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -21,7 +21,6 @@ import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -29,11 +28,9 @@ import java.util.Set;
 
 public abstract class ExtendedLootTableProvider extends LootTableProvider {
     protected final String modID;
-    private final List<SubProviderEntry> tables;
-    public ExtendedLootTableProvider(PackOutput packOutput, String modID, final List<SubProviderEntry> tables) {
+    public ExtendedLootTableProvider(PackOutput packOutput, String modID) {
         super(packOutput, Set.of(), VanillaLootTableProvider.create(packOutput).getTables());
         this.modID = modID;
-        this.tables = tables;
     }
 
     public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider{
@@ -49,13 +46,13 @@ public abstract class ExtendedLootTableProvider extends LootTableProvider {
     }
 
     public abstract class ExtendedLootTableSubProvider implements LootTableSubProvider{
-        protected LootPoolEntryContainer.Builder<?> item(Item item, int weight, NumberProvider amount){
+        protected LootPoolEntryContainer.Builder<?> item(ItemLike item, int weight, NumberProvider amount){
             return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
         }
-        protected LootPoolEntryContainer.Builder<?> enchantedItem(Item item, int weight, NumberProvider enchant, NumberProvider amount){
+        protected LootPoolEntryContainer.Builder<?> enchantedItem(ItemLike item, int weight, NumberProvider enchant, NumberProvider amount){
             return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(EnchantWithLevelsFunction.enchantWithLevels(enchant));
         }
-        protected LootPoolEntryContainer.Builder<?> enchantedItem(Item item, int weight, NumberProvider amount){
+        protected LootPoolEntryContainer.Builder<?> enchantedItem(ItemLike item, int weight, NumberProvider amount){
             return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(EnchantRandomlyFunction.randomApplicableEnchantment());
         }
         protected LootPoolEntryContainer.Builder<?> suspiciousStew(int weight, NumberProvider amount){
@@ -74,13 +71,13 @@ public abstract class ExtendedLootTableProvider extends LootTableProvider {
         protected ResourceLocation location(String key) {return baseLocation("chests/" + key);}
     }
 
-    protected static NumberProvider one() {return ConstantValue.exactly(1);}
+    protected static NumberProvider one() {return number(1);}
     protected static NumberProvider number(int amount) {return ConstantValue.exactly(amount);}
-    protected static NumberProvider number(int minAmount, int maxAmount) {return UniformGenerator.between(minAmount, maxAmount);}
+    protected static NumberProvider number(int min, int max) {return UniformGenerator.between(min, max);}
     protected static LootPool.Builder pool(NumberProvider rolls) {return LootPool.lootPool().setRolls(rolls);}
 
-    @Override @Nonnull
-    public List<SubProviderEntry> getTables() {return tables;}
+    @Override @NotNull
+    public abstract List<SubProviderEntry> getTables();
 
     protected ResourceLocation baseLocation(String key) {return new ResourceLocation(modID, key);}
 }

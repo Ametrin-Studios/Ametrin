@@ -1,5 +1,10 @@
+## 0.0.29 (ALPHA)
+* more DataProvider fixes
+
 ## 0.0.28 (ALPHA)
+* fixed DataProviders
 * bunch of VanillaCompat helper methods
+* `StructurePieces` now use Weighted List
 * deprecated FlammableBlocks
 
 ## 0.0.27 (ALPHA)
