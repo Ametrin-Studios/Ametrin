@@ -2,7 +2,7 @@ package com.ametrinstudios.ametrin.datagen;
 
 import com.ametrinstudios.ametrin.world.block.*;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -43,8 +43,8 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
         excludedClasses.add(AgeableDoublePlantBlock.class);
     }
 
-    public ExtendedBlockStateProvider(DataGenerator generator, String modID, ExistingFileHelper existingFileHelper) {
-        super(generator, modID, existingFileHelper);
+    public ExtendedBlockStateProvider(PackOutput output, String modID, ExistingFileHelper existingFileHelper) {
+        super(output, modID, existingFileHelper);
     }
 
     /**

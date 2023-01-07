@@ -24,8 +24,8 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
     public ArrayList<Block> excludedBlocks = new ArrayList<>();
     public ArrayList<BlockTagProviderRule> blockTagProviderRules = new ArrayList<>();
 
-    public ExtendedBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modID, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, modID, existingFileHelper);
+    public ExtendedBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String modID, @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, registries, modID, existingFileHelper);
     }
 
     protected void runRules(DeferredRegister<Block> blockRegistry){

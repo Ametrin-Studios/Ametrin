@@ -2,7 +2,7 @@ package com.ametrinstudios.ametrin.datagen;
 
 import com.ametrinstudios.ametrin.world.item.CustomHeadBlockItem;
 import com.ametrinstudios.ametrin.world.item.ItemNameDoubleHighBlockItem;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
@@ -47,8 +47,8 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
     public ArrayList<ItemModelProviderRule> itemModelProviderRules = new ArrayList<>();
     public ArrayList<BlockItemModelProviderRule> blockItemModelProviderRules = new ArrayList<>();
 
-    public ExtendedItemModelProvider(DataGenerator generator, String modid, ExistingFileHelper existingFileHelper){
-        super(generator, modid, existingFileHelper);
+    public ExtendedItemModelProvider(PackOutput output, String modID, ExistingFileHelper existingFileHelper){
+        super(output, modID, existingFileHelper);
     }
 
     {

@@ -3,67 +3,39 @@ package com.ametrinstudios.ametrin.world.gen.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.util.random.SimpleWeightedRandomList;
 
 public class StructurePieces {
+    private final SimpleWeightedRandomList<Piece> pieces;
 
-    private final Piece[] pieces;
-    private final int maxWeight;
-
-    public StructurePieces(Builder builder){
-        this(builder.buildArray());
-    }
-    public StructurePieces(Piece[] pieces){
+    public StructurePieces(final Builder builder) {this(builder.buildList());}
+    public StructurePieces(final SimpleWeightedRandomList<Piece> pieces){
+        if(pieces.isEmpty()) {
+            throw new IllegalArgumentException("The given builder is empty");
+        }
         this.pieces = pieces;
-        maxWeight = getMaxWeight();
     }
 
-    public Piece getRandomPiece(RandomSource rand){
-        int piece = 0;
-        if(pieces.length > 1) {
-            int i = rand.nextInt(maxWeight);
-            for (int j = 0; j < pieces.length; j++) {
-                if (pieces[j].Weight >= i) {
-                    piece = j;
-                    break;
-                } else {
-                    i -= pieces[j].Weight;
-                }
-            }
-        }
-        return pieces[piece];
-    }
-
-    public int getMaxWeight(){
-        int i = 0;
-        for (Piece piece : pieces){
-            i += piece.Weight;
-        }
-        return i;
-    }
+    public Piece getRandomPiece(RandomSource random) {return pieces.getRandomValue(random).get();}
 
     public static class Piece{
         public final ResourceLocation Resource;
         public final BlockPos Offset;
-        public final int Weight;
-        public Piece(ResourceLocation resource, BlockPos offset, int weight){
+        public Piece(final ResourceLocation resource, final BlockPos offset){
             Resource = resource;
             Offset = offset;
-            Weight = weight;
         }
     }
 
     public static class Builder{
-        private final List<Piece> pieces;
+        private final SimpleWeightedRandomList.Builder<Piece> pieces;
         private BlockPos offset;
         private int weight;
 
         public Builder(){
             this.offset = BlockPos.ZERO;
             this.weight = 1;
-            pieces = new ArrayList<>();
+            pieces = SimpleWeightedRandomList.builder();
         }
 
         public Builder weight(int weight){
@@ -78,11 +50,13 @@ public class StructurePieces {
         public Builder offset(int x, int y, int z) {return offset(new BlockPos(x, y, z));}
 
         public Builder add(ResourceLocation resource){
-            pieces.add(new Piece(resource, offset, weight));
+            pieces.add(new Piece(resource, offset), weight);
             return this;
         }
 
-        private Piece[] buildArray() {return pieces.toArray(Piece[]::new);}
+        private SimpleWeightedRandomList<Piece> buildList() {
+            return pieces.build();
+        }
 
         public StructurePieces build() {return new StructurePieces(this);}
     }

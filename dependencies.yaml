@@ -1,11 +1,11 @@
 minecraft:
   version: 1.19.3
   mappings_channel: parchment
-  mappings_version: 1.19.2-2022.11.27-1.19.3
+  mappings_version: 2022.12.18-1.19.3
 
 minecraftforge:
   toolchain: forge
-  version: 44.0.5
+  version: 44.1.0
 
 mixin:
   enabled: True
