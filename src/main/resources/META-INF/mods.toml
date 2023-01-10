@@ -1,12 +1,12 @@
 modLoader="javafml" #mandatory
-loaderVersion="[43,)" #mandatory
+loaderVersion="[44,)" #mandatory
 license="All rights reserved"
 issueTrackerURL="https://github.com/BarionLP/Ametrin/issues" #optional
 
 [[mods]] #mandatory
     modId="ametrin" #mandatory
     version="${file.jarVersion}" #mandatory
-    displayName="Ametrin" #mandatory
+    displayName="Ametrin API" #mandatory
     displayURL="https://www.curseforge.com/minecraft/mc-mods/ametrin" #optional
     #logoFile="logo.png" #optional
     credits="Thanks to KaupenJoe for his great tutorials" #optional
@@ -19,13 +19,13 @@ Commonly used code for Ametrin Studios mods.
 [[dependencies.ametrin]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[43.1,)" #mandatory
+    versionRange="[44.1,)" #mandatory
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.ametrin]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.2,1.20)"
+    versionRange="[1.19.3,1.20)"
     ordering="NONE"
     side="BOTH"
