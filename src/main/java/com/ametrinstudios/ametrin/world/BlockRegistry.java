@@ -40,6 +40,19 @@ public abstract class BlockRegistry {
         return ()-> new ButtonBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(soundType), ticksStayPressed, arrowsCanPress, soundOffEvent, soundOnEvent);
     }
 
+    protected static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties) {return fenceGate(properties, SoundEvents.FENCE_GATE_CLOSE, SoundEvents.FENCE_GATE_OPEN);}
+    protected static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, SoundEvent closeEvent, SoundEvent openEvent){
+        return ()-> new FenceGateBlock(properties, closeEvent, openEvent);
+    }
+    protected static Supplier<DoorBlock> door(BlockBehaviour.Properties properties) {return door(properties, SoundEvents.WOODEN_DOOR_CLOSE, SoundEvents.WOODEN_DOOR_OPEN);}
+    protected static Supplier<DoorBlock> door(BlockBehaviour.Properties properties, SoundEvent closeEvent, SoundEvent openEvent){
+        return ()-> new DoorBlock(properties, closeEvent, openEvent);
+    }
+    protected static Supplier<TrapDoorBlock> trapDoor(BlockBehaviour.Properties properties) {return trapDoor(properties, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN);}
+    protected static Supplier<TrapDoorBlock> trapDoor(BlockBehaviour.Properties properties, SoundEvent closeEvent, SoundEvent openEvent){
+        return ()-> new TrapDoorBlock(properties, closeEvent, openEvent);
+    }
+
     protected static ToIntFunction<BlockState> litEmission(int lightLevel) {return (state)-> state.getValue(BlockStateProperties.LIT) ? lightLevel : 0;}
     protected static ToIntFunction<BlockState> litEmission(ToIntFunction<BlockState> lightLevel) {return (state)-> state.getValue(BlockStateProperties.LIT) ? lightLevel.applyAsInt(state) : 0;}
     protected static ToIntFunction<BlockState> emission(int lightLevel) {return (state)-> lightLevel;}

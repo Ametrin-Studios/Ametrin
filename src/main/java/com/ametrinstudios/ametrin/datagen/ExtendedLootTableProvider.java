@@ -1,21 +1,29 @@
 package com.ametrinstudios.ametrin.datagen;
 
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.data.loot.packs.VanillaLootTableProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.*;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -25,6 +33,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public abstract class ExtendedLootTableProvider extends LootTableProvider {
     protected final String modID;
@@ -34,8 +43,28 @@ public abstract class ExtendedLootTableProvider extends LootTableProvider {
     }
 
     public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider{
+        private static final float[] LeavesSaplingChances = new float[] {0.05f, 0.0625f, 0.083333336f, 0.1f};
+
         protected ExtendedBlockLootSubProvider() {
             super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+        }
+
+
+        protected void dropLeaveLoot(Block block, SaplingBlock sapling){add(block, createLeavesDrops(block, sapling, LeavesSaplingChances));}
+        protected void dropDoor(DoorBlock door){add(door, createDoorTable(door));}
+        protected void dropOre(Block block, ItemLike drop){add(block, createOreDrop(block, drop.asItem()));}
+        protected void dropDoublePlant(DoublePlantBlock plant){add(plant, createSinglePropConditionTable(plant, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));}
+        protected void dropDoublePlantOther(DoublePlantBlock plant, ItemLike drop){add(plant, createSinglePropConditionTableDropOther(plant, drop, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));}
+
+        protected void dropCampfire(CampfireBlock campfireBlock, ItemLike charcoal){
+            add(campfireBlock, createSilkTouchDispatchTable(campfireBlock, applyExplosionCondition(campfireBlock, LootItem.lootTableItem(charcoal).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))))));
+
+        }
+        protected  <T extends Comparable<T> & StringRepresentable> LootTable.Builder createSinglePropConditionTableDropOther(Block block, ItemLike dropItem, Property<T> property, T validValue){
+            return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                    .add(LootItem.lootTableItem(dropItem)
+                            .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                    .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(property, validValue))))));
         }
 
         @SafeVarargs
@@ -69,6 +98,16 @@ public abstract class ExtendedLootTableProvider extends LootTableProvider {
         }
 
         protected ResourceLocation location(String key) {return baseLocation("chests/" + key);}
+    }
+
+    public abstract class ExtendedEntityLootSubProvider extends EntityLootSubProvider{
+
+        protected ExtendedEntityLootSubProvider() {
+            super(FeatureFlags.REGISTRY.allFlags());
+        }
+
+        @Override
+        protected abstract @NotNull Stream<EntityType<?>> getKnownEntityTypes();
     }
 
     protected static NumberProvider one() {return number(1);}
