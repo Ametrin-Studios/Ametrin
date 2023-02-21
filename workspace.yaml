@@ -3,7 +3,7 @@ mod:
   group: com.ametrinstudios
   name: Ametrin API
   author: Ametrin Studios
-  version: 0.0.30
+  version: 0.0.31
 
 java:
   version: AUTO_DETECT

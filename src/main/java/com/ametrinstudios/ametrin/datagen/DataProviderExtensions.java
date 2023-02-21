@@ -11,8 +11,12 @@ public class DataProviderExtensions {
     /**
      * blocks containing strings from this list try to use the plank texture in some cases look at the usages to find out where exactly
      */
-    public static ArrayList<String> plankIndicators = new ArrayList<>();
+    private static final ArrayList<String> plankIndicators = new ArrayList<>();
 
+
+    public static void addPlankIndicator(String indicator){
+        plankIndicators.add(indicator);
+    }
     public static boolean isPlank(String name) {
         for(String indicator : plankIndicators){
             if(name.contains(indicator)){

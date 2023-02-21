@@ -1,3 +1,7 @@
+## 0.0.31 (ALPHA)
+* added pressurePlate helper methods
+* removed flammable stuff
+
 ## 0.0.30 (ALPHA)
 * added fenceGate, door and trapDoor to `BlockRegistry`
 * added `ExtendedEntityLootSubProvider`

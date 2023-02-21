@@ -2,7 +2,6 @@ package com.ametrinstudios.ametrin.world;
 
 import com.ametrinstudios.ametrin.util.mixin.IMixinBlockBehaviorProperties;
 import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
-import com.ametrinstudios.ametrin.world.block.FlammableStairPlankBlock;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeFeature;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeGrower;
 import net.minecraft.sounds.SoundEvent;
@@ -24,8 +23,7 @@ public abstract class BlockRegistry {
 
     protected static Supplier<StairBlock> stair(StairBlock.Properties properties, Supplier<BlockState> base) {return ()-> new StairBlock(base, properties);}
     protected static Supplier<StairBlock> stair(Block parent) {return stair(properties(parent), parent::defaultBlockState);}
-    @Deprecated(forRemoval = true) protected static Supplier<FlammableStairPlankBlock> flammableStair(FlammableStairPlankBlock.Properties properties, Supplier<BlockState> base) {return ()-> new FlammableStairPlankBlock(base, properties);}
-    @Deprecated(forRemoval = true) protected static Supplier<FlammableStairPlankBlock> flammableStair(Block parent) {return flammableStair(properties(parent), parent::defaultBlockState);}
+
     protected static Supplier<SaplingBlock> sapling(Supplier<? extends CustomTreeFeature> tree) {return ()-> new SaplingBlock(new CustomTreeGrower(tree), properties(Blocks.OAK_SAPLING));}
     protected static Supplier<FlowerPotBlock> potted(Supplier<Block> main) {return ()-> new FlowerPotBlock(() -> (FlowerPotBlock)Blocks.FLOWER_POT, main, properties(Blocks.POTTED_OAK_SAPLING));}
     protected static Supplier<AgeableBushBlock> bush(int bonusDrop, int growRarity) {return ()-> new AgeableBushBlock(bonusDrop, growRarity, properties(Blocks.SWEET_BERRY_BUSH));}
