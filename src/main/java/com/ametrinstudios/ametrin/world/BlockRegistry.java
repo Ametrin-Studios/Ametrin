@@ -53,6 +53,13 @@ public abstract class BlockRegistry {
         return ()-> new TrapDoorBlock(properties, closeEvent, openEvent);
     }
 
+    protected static Supplier<PressurePlateBlock> woodenPressurePlate(BlockBehaviour.Properties properties) {return pressurePlate(PressurePlateBlock.Sensitivity.EVERYTHING, properties);}
+    protected static Supplier<PressurePlateBlock> stonePressurePlate(BlockBehaviour.Properties properties) {return pressurePlate(PressurePlateBlock.Sensitivity.MOBS, properties);}
+    protected static Supplier<PressurePlateBlock> pressurePlate(PressurePlateBlock.Sensitivity sensitivity, BlockBehaviour.Properties properties) {return pressurePlate(sensitivity, properties, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN);}
+    protected static Supplier<PressurePlateBlock> pressurePlate(PressurePlateBlock.Sensitivity sensitivity, BlockBehaviour.Properties properties, SoundEvent closeEvent, SoundEvent openEvent){
+        return ()-> new PressurePlateBlock(sensitivity, properties, closeEvent, openEvent);
+    }
+
     protected static ToIntFunction<BlockState> litEmission(int lightLevel) {return (state)-> state.getValue(BlockStateProperties.LIT) ? lightLevel : 0;}
     protected static ToIntFunction<BlockState> litEmission(ToIntFunction<BlockState> lightLevel) {return (state)-> state.getValue(BlockStateProperties.LIT) ? lightLevel.applyAsInt(state) : 0;}
     protected static ToIntFunction<BlockState> emission(int lightLevel) {return (state)-> lightLevel;}

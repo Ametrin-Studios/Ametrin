@@ -1,3 +1,11 @@
+## 0.0.30 (ALPHA)
+* added fenceGate, door and trapDoor to `BlockRegistry`
+* added `ExtendedEntityLootSubProvider`
+* extended `ExtendedBlockLootSubProvider`
+* extended `BlockRegistry` button helper methods
+* fixed `ExtendedBlockTagsProvider`
+* optimisations & refactoring
+
 ## 0.0.29 (ALPHA)
 * more DataProvider fixes
 
