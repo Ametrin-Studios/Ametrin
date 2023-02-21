@@ -3,6 +3,7 @@ package com.ametrinstudios.ametrin.mixin;
 import com.ametrinstudios.ametrin.util.mixin.IMixinBlockBehaviorProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,6 +41,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow BlockBehaviour.StatePredicate hasPostProcess;
     @Shadow BlockBehaviour.StatePredicate emissiveRendering;
     @Shadow boolean dynamicShape;
+    @Shadow FeatureFlagSet requiredFeatures;
     @Shadow Function<BlockState, BlockBehaviour.OffsetType> offsetType;
 
     public BlockBehaviour.Properties copy(){

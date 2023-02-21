@@ -29,12 +29,6 @@ public class AmetrinUtil {
     public static int SecondsToTicks(int seconds) {return seconds * 20;}
     public static int MinutesToTicks(int minutes) {return SecondsToTicks(minutes * 60);}
 
-    /**
-     * use {@link AmetrinUtil#isPlank(String)} instead
-     */
-    @Deprecated(forRemoval = true) public static boolean usePlankTexture(String name) {
-        return isPlank(name);
-    }
     public static boolean isPlank(String name) {
         for(String indicator : plankIndicators){
             if(name.contains(indicator)){
@@ -44,9 +38,9 @@ public class AmetrinUtil {
         return false;
     }
 
-    public static boolean shouldAppendS(String name) {return (name.contains("brick") && !name.contains("bricks") || (name.contains("tile") && !name.contains("tiles")));}
-    public static boolean isWood(String name) {return (name.contains("wood") || name.contains("hyphae"));}
-    public static boolean isLog(String name) {return (name.contains("log") || name.contains("stem"));}
+    public static boolean shouldAppendS(String name) {return name.matches(".*brick(?!s).*|.*tile(?!s).*");}
+    public static boolean isWood(String name) {return name.matches(".*(wood|hyphae).*");}
+    public static boolean isLog(String name) {return name.matches(".*(log|stem).*");}
     public static boolean isWooden(String name) {return isLog(name) || isWood(name) || name.contains("plank") || isPlank(name);}
 
     /**
