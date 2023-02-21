@@ -30,9 +30,12 @@ public abstract class BlockRegistry {
     protected static Supplier<FlowerPotBlock> potted(Supplier<Block> main) {return ()-> new FlowerPotBlock(() -> (FlowerPotBlock)Blocks.FLOWER_POT, main, properties(Blocks.POTTED_OAK_SAPLING));}
     protected static Supplier<AgeableBushBlock> bush(int bonusDrop, int growRarity) {return ()-> new AgeableBushBlock(bonusDrop, growRarity, properties(Blocks.SWEET_BERRY_BUSH));}
 
-    protected static Supplier<ButtonBlock> woodenButton() {return woodenButton(SoundType.WOOD, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundEvents.WOODEN_BUTTON_CLICK_ON);}
+    protected static Supplier<ButtonBlock> woodenButton() {return woodenButton(SoundType.WOOD);}
+    protected static Supplier<ButtonBlock> woodenButton(SoundType soundType) {return woodenButton(soundType, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundEvents.WOODEN_BUTTON_CLICK_ON);}
     protected static Supplier<ButtonBlock> woodenButton(SoundType soundType, SoundEvent soundOffEvent, SoundEvent soundOnEvent) {return button(30, true, soundType, soundOffEvent, soundOnEvent);}
-    protected static Supplier<ButtonBlock> stoneButton() {return button(20, false, SoundType.STONE, SoundEvents.STONE_BUTTON_CLICK_OFF, SoundEvents.STONE_BUTTON_CLICK_ON);}
+    protected static Supplier<ButtonBlock> stoneButton() {return stoneButton(SoundType.STONE);}
+    protected static Supplier<ButtonBlock> stoneButton(SoundType soundType) {return stoneButton(soundType, SoundEvents.STONE_BUTTON_CLICK_OFF, SoundEvents.STONE_BUTTON_CLICK_ON);}
+    protected static Supplier<ButtonBlock> stoneButton(SoundType soundType, SoundEvent soundOffEvent, SoundEvent soundOnEvent) {return button(20, false, soundType, soundOffEvent, soundOnEvent);}
     protected static Supplier<ButtonBlock> button(int ticksStayPressed, boolean arrowsCanPress, SoundType soundType, SoundEvent soundOffEvent, SoundEvent soundOnEvent){
         return ()-> new ButtonBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(soundType), ticksStayPressed, arrowsCanPress, soundOffEvent, soundOnEvent);
     }
