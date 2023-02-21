@@ -1,6 +1,6 @@
 package com.ametrinstudios.ametrin.fluid;
 
-import com.ametrinstudios.ametrin.AmetrinUtil;
+import com.ametrinstudios.ametrin.util.Extensions;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
@@ -34,7 +34,7 @@ public class CustomFluidType extends FluidType {
     private final Vector3f fogColor;
 
     public CustomFluidType(final ResourceLocation stillTexture, final ResourceLocation flowingTexture, @Nullable final ResourceLocation overlayTexture, final Color tintColor, final Color fogColor, final Properties properties){
-        this(stillTexture, flowingTexture, overlayTexture, AmetrinUtil.ColorToIntWithAlpha(tintColor), new Vector3f(fogColor.getRed()/255f, fogColor.getGreen()/255f, fogColor.getBlue()/255f), properties);
+        this(stillTexture, flowingTexture, overlayTexture, Extensions.ColorToIntWithAlpha(tintColor), new Vector3f(fogColor.getRed()/255f, fogColor.getGreen()/255f, fogColor.getBlue()/255f), properties);
     }
 
     public CustomFluidType(final ResourceLocation stillTexture, final ResourceLocation flowingTexture, @Nullable final ResourceLocation overlayTexture, final int tintColor, final Vector3f fogColor, final Properties properties) {

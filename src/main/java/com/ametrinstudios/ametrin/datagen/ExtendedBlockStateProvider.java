@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static com.ametrinstudios.ametrin.AmetrinUtil.*;
+import static com.ametrinstudios.ametrin.datagen.DataProviderExtensions.*;
 
 public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     /**

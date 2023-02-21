@@ -1,6 +1,6 @@
 package com.ametrinstudios.ametrin.fluid;
 
-import com.ametrinstudios.ametrin.AmetrinUtil;
+import com.ametrinstudios.ametrin.util.Extensions;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
@@ -25,7 +25,7 @@ public class SimpleFluidType extends FluidType {
     private final Vector3f fogColor;
 
     public SimpleFluidType(final Color tintColor, final Color fogColor, final Properties properties) {
-        this(AmetrinUtil.ColorToIntWithAlpha(tintColor), new Vector3f(fogColor.getRed()/255f, fogColor.getGreen()/255f, fogColor.getBlue()/255f), properties);
+        this(Extensions.ColorToIntWithAlpha(tintColor), new Vector3f(fogColor.getRed()/255f, fogColor.getGreen()/255f, fogColor.getBlue()/255f), properties);
     }
 
     public SimpleFluidType(final int tintColor, final Vector3f fogColor, final Properties properties) {

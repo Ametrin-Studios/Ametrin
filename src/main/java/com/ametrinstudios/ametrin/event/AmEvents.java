@@ -6,7 +6,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegisterEvent;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Internal
 @Mod.EventBusSubscriber(modid = Ametrin.ModID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AmEvents {
     @SubscribeEvent

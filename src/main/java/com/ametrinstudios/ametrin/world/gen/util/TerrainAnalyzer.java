@@ -1,6 +1,6 @@
 package com.ametrinstudios.ametrin.world.gen.util;
 
-import com.ametrinstudios.ametrin.AmetrinUtil;
+import com.ametrinstudios.ametrin.util.Extensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.ChunkPos;
@@ -75,7 +75,7 @@ public class TerrainAnalyzer {
 
     protected static BlockState getBlockAt(int x, int y, int z, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState) {return chunkGenerator.getBaseColumn(x, z, heightAccessor, randomState).getBlock(y);}
     protected static BlockState getBlockAt(BlockPos pos, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState) {return chunkGenerator.getBaseColumn(pos.getX(), pos.getZ(), heightAccessor, randomState).getBlock(pos.getY());}
-    protected static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos, Heightmap.Types heightmapType, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState) {return AmetrinUtil.ChunkPosToBlockPosFromHeightMap(chunkPos, chunkGenerator, heightmapType, heightAccessor, randomState);}
+    protected static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos, Heightmap.Types heightmapType, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState) {return Extensions.ChunkPosToBlockPosFromHeightMap(chunkPos, chunkGenerator, heightmapType, heightAccessor, randomState);}
 
     protected static int getSurfaceLevelAt(ChunkPos pos, Heightmap.Types heightmapType, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState){
         return ChunkPosToBlockPos(pos, heightmapType, chunkGenerator, heightAccessor, randomState).getY();

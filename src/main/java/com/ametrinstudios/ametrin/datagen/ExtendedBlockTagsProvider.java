@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ametrinstudios.ametrin.AmetrinUtil.getBlockName;
-import static com.ametrinstudios.ametrin.AmetrinUtil.isWooden;
+import static com.ametrinstudios.ametrin.datagen.DataProviderExtensions.getBlockName;
+import static com.ametrinstudios.ametrin.datagen.DataProviderExtensions.isWooden;
 
 public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
     public ArrayList<Block> excludedBlocks = new ArrayList<>();
