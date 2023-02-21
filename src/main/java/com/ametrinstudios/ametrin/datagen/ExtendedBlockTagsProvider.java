@@ -61,8 +61,10 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
             if(block instanceof FenceBlock){
                 if(isWooden(name)){
                     tag(BlockTags.WOODEN_FENCES).add(block);
+                    tag(Tags.Blocks.FENCES_WOODEN).add(block);
                 } else {
                     tag(BlockTags.FENCES).add(block);
+                    tag(Tags.Blocks.FENCES).add(block);
                 }
             }
             if(block instanceof FenceGateBlock){
@@ -70,10 +72,11 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
                     tag(Tags.Blocks.FENCE_GATES_WOODEN).add(block);
                 } else {
                     tag(BlockTags.FENCE_GATES).add(block);
+                    tag(Tags.Blocks.FENCE_GATES).add(block);
                 }
             }
             if(block instanceof ButtonBlock){
-                if(block instanceof ButtonBlock){
+                if(isWooden(name)){
                     tag(BlockTags.WOODEN_BUTTONS).add(block);
                 } else{
                     tag(BlockTags.BUTTONS).add(block);
