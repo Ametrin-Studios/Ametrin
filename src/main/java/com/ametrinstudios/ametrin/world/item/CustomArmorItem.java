@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 public class CustomArmorItem extends ArmorItem {
     protected final Armor Armor;
 
-    public CustomArmorItem(Armor armor, EquipmentSlot slot, Properties properties) {
-        super(armor.getMaterial(), slot, properties);
+    public CustomArmorItem(Armor armor, ArmorItem.Type type, Properties properties) {
+        super(armor.getMaterial(), type, properties);
         Armor = armor;
     }
 

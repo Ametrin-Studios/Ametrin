@@ -181,14 +181,16 @@ public class CustomTeleporter implements ITeleporter {
         }
         else {
             WorldBorder border = level.getWorldBorder();
-            double minX = Math.max(-2.9999872E7D, border.getMinX() + 16.0D);
-            double minZ = Math.max(-2.9999872E7D, border.getMinZ() + 16.0D);
-            double maxX = Math.min(2.9999872E7D, border.getMaxX() - 16.0D);
-            double maxZ = Math.min(2.9999872E7D, border.getMaxZ() - 16.0D);
-            double coordinateDifference = DimensionType.getTeleportationScale(entity.level.dimensionType(), level.dimensionType());
-            BlockPos blockpos = new BlockPos(Mth.clamp(entity.getX() * coordinateDifference, minX, maxX), entity.getY(), Mth.clamp(entity.getZ() * coordinateDifference, minZ, maxZ));
+            var minX = Math.max(-2.9999872E7D, border.getMinX() + 16.0D);
+            var minZ = Math.max(-2.9999872E7D, border.getMinZ() + 16.0D);
+            var maxX = Math.min(2.9999872E7D, border.getMaxX() - 16.0D);
+            var maxZ = Math.min(2.9999872E7D, border.getMaxZ() - 16.0D);
+            var coordinateDifference = DimensionType.getTeleportationScale(entity.level.dimensionType(), level.dimensionType());
+            var x = (int)Mth.clamp(entity.getX() * coordinateDifference, minX, maxX);
+            var y = (int)Mth.clamp(entity.getZ() * coordinateDifference, minZ, maxZ);
+            var blockpos = new BlockPos(x, (int)entity.getY(), y);
             return this.getOrMakePortal(entity, blockpos).map((result) -> {
-                BlockState blockstate = entity.level.getBlockState(entity.portalEntrancePos);
+                var blockstate = entity.level.getBlockState(entity.portalEntrancePos);
                 Direction.Axis axis;
                 Vec3 vector3d;
                 if (blockstate.hasProperty(BlockStateProperties.HORIZONTAL_AXIS)) {

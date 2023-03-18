@@ -27,8 +27,19 @@ public class CustomTreeGrower extends AbstractTreeGrower {
 
     @Override @ParametersAreNonnullByDefault
     public boolean growTree(ServerLevel level, ChunkGenerator generator, BlockPos pos, BlockState blockState, RandomSource random) {
+        /*FoliagePlacer.FoliageSetter foliageplacer$foliagesetter = new FoliagePlacer.FoliageSetter() {
+            public void set(BlockPos p_272825_, BlockState p_273311_) {
+                set2.add(p_272825_.immutable());
+                worldgenlevel.setBlock(p_272825_, p_273311_, 19);
+            }
+
+            public boolean isSet(BlockPos p_272999_) {
+                return set2.contains(p_272999_);
+            }
+        };*/
+
         BiConsumer<BlockPos, BlockState> placedLogs = level::setBlockAndUpdate;
         BiConsumer<BlockPos, BlockState> placedLeaves = level::setBlockAndUpdate;
-        return tree.get().place(level, random, pos, placedLogs, placedLeaves);
+        return tree.get().place(level, random, pos, placedLogs, placedLeaves, null);
     }
 }

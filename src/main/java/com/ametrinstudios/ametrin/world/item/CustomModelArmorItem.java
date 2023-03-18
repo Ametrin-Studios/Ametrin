@@ -5,6 +5,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
@@ -13,8 +14,8 @@ import java.util.function.Consumer;
 
 public class CustomModelArmorItem extends CustomArmorItem {
 
-    public CustomModelArmorItem(CustomModelArmor armor, EquipmentSlot slot, Properties properties) {
-        super(armor, slot, properties);
+    public CustomModelArmorItem(CustomModelArmor armor, ArmorItem.Type type, Properties properties) {
+        super(armor, type, properties);
     }
 
     @Override

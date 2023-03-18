@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.ApiStatus;
@@ -29,13 +30,13 @@ public abstract class CustomTreeFeature extends TreeFeature{
     public CustomTreeFeature(Codec<TreeConfiguration> codec) {super(codec);}
 
     @Override @ApiStatus.Internal @ParametersAreNonnullByDefault
-    public final boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> changedLogs, BiConsumer<BlockPos, BlockState> changedLeaves, BiConsumer<BlockPos, BlockState> whatIsThis, TreeConfiguration config) {
-        return place(level, random, pos, changedLogs, changedLeaves);
+    protected boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> changedLogs, BiConsumer<BlockPos, BlockState> changedLeaves, FoliagePlacer.FoliageSetter foliageSetter, TreeConfiguration configuration) {
+        return place(level, random, pos, changedLogs, changedLeaves, foliageSetter);
     }
 
     protected boolean isValidGround(BlockState state) {return isDirt(state);}
 
-    public abstract boolean place(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> changedLogs, BiConsumer<BlockPos, BlockState> changedLeaves);
+    public abstract boolean place(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> changedLogs, BiConsumer<BlockPos, BlockState> changedLeaves, FoliagePlacer.FoliageSetter foliageSetter);
 
     protected BlockPos placeTrunk(BlockState log, int height, BlockPos pos, WorldGenLevel level, BiConsumer<BlockPos, BlockState> changedLogs){
         for(int i = 0; i <= height; i++){

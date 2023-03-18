@@ -13,6 +13,7 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
@@ -42,7 +43,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow BlockBehaviour.StatePredicate emissiveRendering;
     @Shadow boolean dynamicShape;
     @Shadow FeatureFlagSet requiredFeatures;
-    @Shadow Function<BlockState, BlockBehaviour.OffsetType> offsetType;
+    @Shadow Optional<BlockBehaviour.OffsetFunction> offsetFunction = Optional.empty();
 
     public BlockBehaviour.Properties copy(){
         BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(material, materialColor)
@@ -52,7 +53,6 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
                 .friction(friction)
                 .speedFactor(speedFactor)
                 .jumpFactor(jumpFactor)
-                .offsetType(offsetType)
                 .isValidSpawn(isValidSpawn)
                 .isRedstoneConductor(isRedstoneConductor)
                 .isSuffocating(isSuffocating)

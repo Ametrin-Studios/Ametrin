@@ -4,13 +4,14 @@ import com.ametrinstudios.ametrin.util.mixin.IMixinBlockBehaviorProperties;
 import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeFeature;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeGrower;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -28,34 +29,39 @@ public abstract class BlockRegistry {
     protected static Supplier<FlowerPotBlock> potted(Supplier<Block> main) {return ()-> new FlowerPotBlock(() -> (FlowerPotBlock)Blocks.FLOWER_POT, main, properties(Blocks.POTTED_OAK_SAPLING));}
     protected static Supplier<AgeableBushBlock> bush(int bonusDrop, int growRarity) {return ()-> new AgeableBushBlock(bonusDrop, growRarity, properties(Blocks.SWEET_BERRY_BUSH));}
 
-    protected static Supplier<ButtonBlock> woodenButton() {return woodenButton(SoundType.WOOD);}
-    protected static Supplier<ButtonBlock> woodenButton(SoundType soundType) {return woodenButton(soundType, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundEvents.WOODEN_BUTTON_CLICK_ON);}
-    protected static Supplier<ButtonBlock> woodenButton(SoundType soundType, SoundEvent soundOffEvent, SoundEvent soundOnEvent) {return button(30, true, soundType, soundOffEvent, soundOnEvent);}
-    protected static Supplier<ButtonBlock> stoneButton() {return stoneButton(SoundType.STONE);}
-    protected static Supplier<ButtonBlock> stoneButton(SoundType soundType) {return stoneButton(soundType, SoundEvents.STONE_BUTTON_CLICK_OFF, SoundEvents.STONE_BUTTON_CLICK_ON);}
-    protected static Supplier<ButtonBlock> stoneButton(SoundType soundType, SoundEvent soundOffEvent, SoundEvent soundOnEvent) {return button(20, false, soundType, soundOffEvent, soundOnEvent);}
-    protected static Supplier<ButtonBlock> button(int ticksStayPressed, boolean arrowsCanPress, SoundType soundType, SoundEvent soundOffEvent, SoundEvent soundOnEvent){
-        return ()-> new ButtonBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(soundType), ticksStayPressed, arrowsCanPress, soundOffEvent, soundOnEvent);
+    protected static Supplier<ButtonBlock> woodenButton() {return woodenButton(BlockSetType.OAK);}
+    protected static Supplier<ButtonBlock> woodenButton(BlockSetType type) {return button(type, 30, true);}
+    protected static Supplier<ButtonBlock> stoneButton() {return stoneButton(BlockSetType.STONE);}
+    protected static Supplier<ButtonBlock> stoneButton(BlockSetType type) {return button(type, 20, false);}
+    protected static Supplier<ButtonBlock> button(BlockSetType type, int ticksStayPressed, boolean arrowsCanPress){
+        return ()-> new ButtonBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F), type, ticksStayPressed, arrowsCanPress);
     }
 
-    protected static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties) {return fenceGate(properties, SoundEvents.FENCE_GATE_CLOSE, SoundEvents.FENCE_GATE_OPEN);}
-    protected static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, SoundEvent closeEvent, SoundEvent openEvent){
-        return ()-> new FenceGateBlock(properties, closeEvent, openEvent);
+    protected static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties) {return fenceGate(properties, WoodType.OAK);}
+    protected static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, WoodType type){
+        return ()-> new FenceGateBlock(properties, type);
     }
-    protected static Supplier<DoorBlock> door(BlockBehaviour.Properties properties) {return door(properties, SoundEvents.WOODEN_DOOR_CLOSE, SoundEvents.WOODEN_DOOR_OPEN);}
-    protected static Supplier<DoorBlock> door(BlockBehaviour.Properties properties, SoundEvent closeEvent, SoundEvent openEvent){
-        return ()-> new DoorBlock(properties, closeEvent, openEvent);
+    protected static Supplier<DoorBlock> door(BlockBehaviour.Properties properties) {return door(properties, BlockSetType.OAK);}
+    protected static Supplier<DoorBlock> door(BlockBehaviour.Properties properties, BlockSetType type){
+        return ()-> new DoorBlock(properties, type);
     }
-    protected static Supplier<TrapDoorBlock> trapDoor(BlockBehaviour.Properties properties) {return trapDoor(properties, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN);}
-    protected static Supplier<TrapDoorBlock> trapDoor(BlockBehaviour.Properties properties, SoundEvent closeEvent, SoundEvent openEvent){
-        return ()-> new TrapDoorBlock(properties, closeEvent, openEvent);
+    protected static Supplier<TrapDoorBlock> trapDoor(BlockBehaviour.Properties properties) {return trapDoor(properties, BlockSetType.OAK);}
+    protected static Supplier<TrapDoorBlock> trapDoor(BlockBehaviour.Properties properties, BlockSetType type){
+        return ()-> new TrapDoorBlock(properties, type);
     }
 
-    protected static Supplier<PressurePlateBlock> woodenPressurePlate(BlockBehaviour.Properties properties) {return pressurePlate(PressurePlateBlock.Sensitivity.EVERYTHING, properties);}
-    protected static Supplier<PressurePlateBlock> stonePressurePlate(BlockBehaviour.Properties properties) {return pressurePlate(PressurePlateBlock.Sensitivity.MOBS, properties);}
-    protected static Supplier<PressurePlateBlock> pressurePlate(PressurePlateBlock.Sensitivity sensitivity, BlockBehaviour.Properties properties) {return pressurePlate(sensitivity, properties, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN);}
-    protected static Supplier<PressurePlateBlock> pressurePlate(PressurePlateBlock.Sensitivity sensitivity, BlockBehaviour.Properties properties, SoundEvent closeEvent, SoundEvent openEvent){
-        return ()-> new PressurePlateBlock(sensitivity, properties, closeEvent, openEvent);
+    protected static Supplier<PressurePlateBlock> woodenPressurePlate(Material material, MaterialColor color, BlockSetType type) {return pressurePlate(PressurePlateBlock.Sensitivity.EVERYTHING, material, color, type);}
+    protected static Supplier<PressurePlateBlock> stonePressurePlate(Material material, MaterialColor color, BlockSetType type) {return pressurePlate(PressurePlateBlock.Sensitivity.MOBS, material, color, type);}
+    protected static Supplier<PressurePlateBlock> woodenPressurePlate(Block base, BlockSetType type) {return pressurePlate(PressurePlateBlock.Sensitivity.EVERYTHING, base, type);}
+    protected static Supplier<PressurePlateBlock> stonePressurePlate(Block base, BlockSetType type) {return pressurePlate(PressurePlateBlock.Sensitivity.MOBS, base, type);}
+    protected static Supplier<PressurePlateBlock> pressurePlate(PressurePlateBlock.Sensitivity sensitivity, Block base, BlockSetType type){
+        return pressurePlate(sensitivity, base.defaultBlockState().getMaterial(), base.defaultMaterialColor(), type);
+    }
+    protected static Supplier<PressurePlateBlock> pressurePlate(PressurePlateBlock.Sensitivity sensitivity, Material material, MaterialColor color, BlockSetType type){
+        return pressurePlate(sensitivity, BlockBehaviour.Properties.of(material, color).noCollission().strength(0.5F), type);
+    }
+    protected static Supplier<PressurePlateBlock> pressurePlate(PressurePlateBlock.Sensitivity sensitivity, BlockBehaviour.Properties properties, BlockSetType type){
+        return ()-> new PressurePlateBlock(sensitivity, properties, type);
     }
 
     protected static ToIntFunction<BlockState> litEmission(int lightLevel) {return (state)-> state.getValue(BlockStateProperties.LIT) ? lightLevel : 0;}
