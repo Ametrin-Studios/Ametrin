@@ -16,7 +16,8 @@ import net.minecraft.world.level.material.MaterialColor;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
-@SuppressWarnings("unused")
+
+@SuppressWarnings("unused") @Deprecated(forRemoval = true)
 public abstract class BlockRegistry {
     protected static BlockBehaviour.Properties properties(Block parent) {return BlockBehaviour.Properties.copy(parent);}
     protected static BlockBehaviour.Properties properties(Material material) {return BlockBehaviour.Properties.of(material);}
