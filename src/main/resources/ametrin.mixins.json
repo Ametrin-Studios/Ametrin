@@ -4,8 +4,7 @@
   "package": "com.ametrinstudios.ametrin.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MixinBlockBehaviorProperties",
-    "MixinEnchantment"
+    "MixinBlockBehaviorProperties"
   ],
   "client": [
   ],
