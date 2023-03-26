@@ -1,4 +1,4 @@
-package com.ametrinstudios.ametrin.datagen;
+package com.ametrinstudios.ametrin.data;
 
 import net.minecraft.world.item.Item;
 

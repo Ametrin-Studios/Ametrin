@@ -1,5 +1,6 @@
-package com.ametrinstudios.ametrin.datagen;
+package com.ametrinstudios.ametrin.data.provider;
 
+import com.ametrinstudios.ametrin.data.BlockTagProviderRule;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -17,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ametrinstudios.ametrin.datagen.DataProviderExtensions.getBlockName;
-import static com.ametrinstudios.ametrin.datagen.DataProviderExtensions.isWooden;
+import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getBlockName;
+import static com.ametrinstudios.ametrin.data.DataProviderExtensions.isWooden;
 
 public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
     public ArrayList<Block> excludedBlocks = new ArrayList<>();

@@ -1,5 +1,6 @@
-package com.ametrinstudios.ametrin.datagen;
+package com.ametrinstudios.ametrin.data.provider;
 
+import com.ametrinstudios.ametrin.data.BlockStateProviderRule;
 import com.ametrinstudios.ametrin.world.block.*;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
@@ -16,7 +17,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static com.ametrinstudios.ametrin.datagen.DataProviderExtensions.*;
+import static com.ametrinstudios.ametrin.data.DataProviderExtensions.*;
 
 public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     /**
@@ -52,7 +53,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
      * @param name name of the block
      * @return texture used for the given block
      */
-    protected String getTexture(String name) {
+    protected String getTextureLocation(String name) {
         return name;
     }
 
@@ -74,10 +75,11 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
                 if(clazz.isInstance(block)) {return;}
             }
             if(excludedBlocks.contains(block)) {return;}
-            final String name = getBlockName(block);
-            String texture = getTexture(name);
 
-            for(BlockStateProviderRule provider : blockStateProviderRules){
+            final var name = getBlockName(block);
+            var texture = getTextureLocation(name);
+
+            for(var provider : blockStateProviderRules){
                 if(provider.generate(block, name, texture)) {return;}
             }
 

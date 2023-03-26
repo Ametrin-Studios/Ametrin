@@ -1,4 +1,4 @@
-package com.ametrinstudios.ametrin.datagen;
+package com.ametrinstudios.ametrin.data.provider;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.PackOutput;

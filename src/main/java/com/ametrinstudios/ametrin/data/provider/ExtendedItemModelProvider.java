@@ -1,5 +1,7 @@
-package com.ametrinstudios.ametrin.datagen;
+package com.ametrinstudios.ametrin.data.provider;
 
+import com.ametrinstudios.ametrin.data.BlockItemModelProviderRule;
+import com.ametrinstudios.ametrin.data.ItemModelProviderRule;
 import com.ametrinstudios.ametrin.world.item.CustomHeadBlockItem;
 import com.ametrinstudios.ametrin.world.item.ItemNameDoubleHighBlockItem;
 import net.minecraft.data.PackOutput;
@@ -15,7 +17,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static com.ametrinstudios.ametrin.datagen.DataProviderExtensions.*;
+import static com.ametrinstudios.ametrin.data.DataProviderExtensions.*;
 
 public abstract class ExtendedItemModelProvider extends ItemModelProvider{
     protected final ModelFile generated = getExistingFile(mcLoc("item/generated"));
@@ -39,7 +41,7 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
      * those rules get called before the build-in rules
      * you can add custom rules
      */
-    public ArrayList<ItemModelProviderRule> prorityItemModelProviderRules = new ArrayList<>();
+    public ArrayList<ItemModelProviderRule> priorityItemModelProviderRules = new ArrayList<>();
     /**
      * contains all rules
      * you can add custom rules
@@ -170,13 +172,14 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
                 if(clazz.isInstance(item)) {return;}
             }
             if(excludedItems.contains(item)) {return;}
-            final String name = getItemName(item);
-            String texture = getTexture(name);
 
-            for(ItemModelProviderRule provider : prorityItemModelProviderRules){
+            final var name = getItemName(item);
+            var texture = getTexture(name);
+
+            for(var provider : priorityItemModelProviderRules){
                 if(provider.generate(item, name, texture)) {return;}
             }
-            for(ItemModelProviderRule provider : itemModelProviderRules){
+            for(var provider : itemModelProviderRules){
                 if(provider.generate(item, name, texture)) {return;}
             }
 

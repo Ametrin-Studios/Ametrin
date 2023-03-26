@@ -1,4 +1,4 @@
-package com.ametrinstudios.ametrin.datagen;
+package com.ametrinstudios.ametrin.data.provider;
 
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
