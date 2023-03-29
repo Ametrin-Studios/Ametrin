@@ -7,7 +7,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class TestBlockStateProvider extends ExtendedBlockStateProvider {
-
     public TestBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, AmetrinTestMod.MOD_ID, existingFileHelper);
     }

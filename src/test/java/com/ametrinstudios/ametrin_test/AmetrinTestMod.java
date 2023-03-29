@@ -5,13 +5,14 @@ import com.ametrinstudios.ametrin_test.data.provider.TestBlockStateProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestItemModelProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootSubProvider;
 import com.ametrinstudios.ametrin_test.world.TestBlocks;
+import com.ametrinstudios.ametrin_test.world.TestItems;
+import com.google.common.reflect.Reflection;
 import com.mojang.logging.LogUtils;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -24,12 +25,14 @@ public class AmetrinTestMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public AmetrinTestMod(){
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
+        var modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        var forgeBus = MinecraftForge.EVENT_BUS;
         LOGGER.info("---------------------- TEST MOD LOADED ----------------------");
 
-        modEventBus.addListener(AmetrinTestMod::gatherData);
-        TestBlocks.REGISTRY.register(modEventBus);
+        Reflection.initialize(TestBlocks.class, TestItems.class);
+
+        modBus.addListener(AmetrinTestMod::gatherData);
+        TestBlocks.REGISTRY.register(modBus);
     }
 
     public static void gatherData(GatherDataEvent event){
@@ -41,7 +44,6 @@ public class AmetrinTestMod {
         var runServer = event.includeServer();
 
         generator.addProvider(runServer, new TestBlockStateProvider(output, existingFileHelper));
-        generator.addProvider(runServer, new TestItemModelProvider(output, existingFileHelper));
         generator.addProvider(runServer, new TestItemModelProvider(output, existingFileHelper));
 
         var  lootTableProvider = List.of(new LootTableProvider.SubProviderEntry(TestBlockLootSubProvider::new, LootContextParamSets.BLOCK), new LootTableProvider.SubProviderEntry(TestBlockLootSubProvider::new, LootContextParamSets.CHEST));
