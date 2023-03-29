@@ -19,6 +19,8 @@ import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourProper
 
 @SuppressWarnings("unused")
 public class BlockRegistryHelper {
+    private BlockRegistryHelper() {}
+
     public static Supplier<StairBlock> stair(StairBlock.Properties properties, Supplier<BlockState> base) {return ()-> new StairBlock(base, properties);}
     public static Supplier<StairBlock> stair(Block parent) {return stair(CopyProperties(parent), parent::defaultBlockState);}
 
