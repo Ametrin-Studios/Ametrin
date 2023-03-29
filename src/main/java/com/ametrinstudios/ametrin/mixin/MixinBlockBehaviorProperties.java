@@ -43,7 +43,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow BlockBehaviour.StatePredicate emissiveRendering;
     @Shadow boolean dynamicShape;
     @Shadow FeatureFlagSet requiredFeatures;
-    @Shadow Optional<BlockBehaviour.OffsetFunction> offsetFunction = Optional.empty();
+    @Shadow Optional<BlockBehaviour.OffsetFunction> offsetFunction;
 
     public BlockBehaviour.Properties copy(){
         BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(material, materialColor)
