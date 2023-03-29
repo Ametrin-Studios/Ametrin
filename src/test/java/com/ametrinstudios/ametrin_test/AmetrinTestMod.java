@@ -4,20 +4,17 @@ import com.ametrinstudios.ametrin.data.provider.CustomLootTableProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestBlockStateProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestItemModelProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootSubProvider;
+import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableSubProvider;
 import com.ametrinstudios.ametrin_test.world.TestBlocks;
 import com.ametrinstudios.ametrin_test.world.TestItems;
 import com.google.common.reflect.Reflection;
 import com.mojang.logging.LogUtils;
-import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
-
-import java.util.List;
 
 @Mod(AmetrinTestMod.MOD_ID)
 public class AmetrinTestMod {
@@ -46,8 +43,8 @@ public class AmetrinTestMod {
         generator.addProvider(runServer, new TestBlockStateProvider(output, existingFileHelper));
         generator.addProvider(runServer, new TestItemModelProvider(output, existingFileHelper));
 
-        var  lootTableProvider = List.of(new LootTableProvider.SubProviderEntry(TestBlockLootSubProvider::new, LootContextParamSets.BLOCK), new LootTableProvider.SubProviderEntry(TestBlockLootSubProvider::new, LootContextParamSets.CHEST));
-        generator.addProvider(runServer, new CustomLootTableProvider(output, lootTableProvider));
+        var lootTableProvider = CustomLootTableProvider.Builder().AddBlockProvider(TestBlockLootSubProvider::new).AddChestProvider(TestLootTableSubProvider::new).Build(output);
+        generator.addProvider(runServer, lootTableProvider);
     }
 
     public static ResourceLocation locate(String key){
