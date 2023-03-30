@@ -3,6 +3,7 @@ package com.ametrinstudios.ametrin.world.block.helper;
 import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeFeature;
 import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeGrower;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,6 +41,10 @@ public class BlockRegistryHelper {
     public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, WoodType type){
         return ()-> new FenceGateBlock(properties, type);
     }
+    public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, SoundEvent openSound, SoundEvent closeSound){
+        return ()-> new FenceGateBlock(properties, openSound, closeSound);
+    }
+
     public static Supplier<DoorBlock> door(BlockBehaviour.Properties properties) {return door(properties, BlockSetType.OAK);}
     public static Supplier<DoorBlock> door(BlockBehaviour.Properties properties, BlockSetType type){
         return ()-> new DoorBlock(properties, type);
