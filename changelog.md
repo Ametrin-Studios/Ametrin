@@ -1,3 +1,14 @@
+## 0.0.35 (BETA)
+* added LootTableProviderHelper#tag()
+
+## 0.0.34 (BETA)
+* more `BlockBehaviourPropertiesHelper` methods
+* fenceGate helper for non-wooden fence gates
+
+## 0.0.33 (ALPHA)
+* new `LootTableProvider` System
+* refactoring
+
 ## 0.0.32 (ALPHA)
 * ported to 1.19.4
 

@@ -1,12 +1,15 @@
 package com.ametrinstudios.ametrin.data;
 
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.TagEntry;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
@@ -15,6 +18,9 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 public class LootTableProviderHelper {
     public static LootPoolEntryContainer.Builder<?> item(ItemLike item, int weight, NumberProvider amount){
         return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
+    }
+    public static LootPoolEntryContainer.Builder<?> tag(TagKey<Item> tagKey, int weight, NumberProvider amount){
+        return TagEntry.expandTag(tagKey).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
     }
     public static LootPoolEntryContainer.Builder<?> enchantedItem(ItemLike item, int weight, NumberProvider enchant, NumberProvider amount){
         return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(EnchantWithLevelsFunction.enchantWithLevels(enchant));
