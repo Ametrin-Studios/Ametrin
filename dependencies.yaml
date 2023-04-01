@@ -5,7 +5,7 @@ minecraft:
 
 minecraftforge:
   toolchain: forge
-  version: 45.0.39
+  version: 45.0.40
 
 mixin:
   enabled: True
