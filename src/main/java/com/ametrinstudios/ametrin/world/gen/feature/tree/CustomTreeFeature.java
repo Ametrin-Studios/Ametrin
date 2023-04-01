@@ -26,17 +26,16 @@ import java.util.function.BiConsumer;
  * This is an alternative method of adding trees, if possible use the vanilla way!
  */
 public abstract class CustomTreeFeature extends TreeFeature{
-
     public CustomTreeFeature(Codec<TreeConfiguration> codec) {super(codec);}
 
     @Override @ApiStatus.Internal @ParametersAreNonnullByDefault
     protected boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> changedLogs, BiConsumer<BlockPos, BlockState> changedLeaves, FoliagePlacer.FoliageSetter foliageSetter, TreeConfiguration configuration) {
-        return place(level, random, pos, changedLogs, changedLeaves, foliageSetter);
+        return place(new PlaceContext(level, pos, changedLogs, changedLeaves, foliageSetter, random));
     }
 
     protected boolean isValidGround(BlockState state) {return isDirt(state);}
 
-    public abstract boolean place(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> changedLogs, BiConsumer<BlockPos, BlockState> changedLeaves, FoliagePlacer.FoliageSetter foliageSetter);
+    public abstract boolean place(PlaceContext context);
 
     protected BlockPos placeTrunk(BlockState log, int height, BlockPos pos, WorldGenLevel level, BiConsumer<BlockPos, BlockState> changedLogs){
         for(int i = 0; i <= height; i++){
@@ -139,4 +138,6 @@ public abstract class CustomTreeFeature extends TreeFeature{
             return true;
         }
     }
+
+    public record PlaceContext(WorldGenLevel level, BlockPos pos, BiConsumer<BlockPos, BlockState> changedLogs, BiConsumer<BlockPos, BlockState> changedLeaves, FoliagePlacer.FoliageSetter foliageSetter, RandomSource random) {}
 }

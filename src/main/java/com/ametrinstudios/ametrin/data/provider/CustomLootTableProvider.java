@@ -44,6 +44,9 @@ public class CustomLootTableProvider extends LootTableProvider {
         public Builder AddChestProvider(Supplier<LootTableSubProvider> subProviderSupplier){
             return AddProvider(new SubProviderEntry(subProviderSupplier, LootContextParamSets.CHEST));
         }
+        public Builder AddEntityProvider(Supplier<LootTableSubProvider> subProviderSupplier){
+            return AddProvider(new SubProviderEntry(subProviderSupplier, LootContextParamSets.ENTITY));
+        }
         public Builder AddArcheologyProvider(Supplier<LootTableSubProvider> subProviderSupplier){
             return AddProvider(new SubProviderEntry(subProviderSupplier, LootContextParamSets.ARCHAEOLOGY));
         }
