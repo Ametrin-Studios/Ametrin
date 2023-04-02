@@ -26,18 +26,18 @@ import java.util.Map;
 public class CustomBoatRenderer <B extends Boat & ICustomBoat> extends EntityRenderer<B> {
     private final Map<CustomBoatType, Pair<ResourceLocation, ListModel<Boat>>> BoatResources;
 
-    public CustomBoatRenderer(EntityRendererProvider.Context context, BoatVariant variant) {
+    public CustomBoatRenderer(EntityRendererProvider.Context context, BoatVariant<B> variant) {
         super(context);
         BoatResources = createBoatResources(context, variant);
     }
 
-    private static Map<CustomBoatType, Pair<ResourceLocation, ListModel<Boat>>> createBoatResources(EntityRendererProvider.Context context, BoatVariant variant){
+    private static <B extends Boat & ICustomBoat> Map<CustomBoatType, Pair<ResourceLocation, ListModel<Boat>>> createBoatResources(EntityRendererProvider.Context context, BoatVariant<B> variant){
         return CustomBoatType.getAll().stream().collect(ImmutableMap.toImmutableMap((type) -> type,
                 (type) -> Pair.of(new ResourceLocation(type.modID(), "textures/entity/" + variant.textureFolder() + type.name() + ".png"),
                         createBoatModel(context, type, variant))));
     }
 
-    private static ListModel<Boat> createBoatModel(EntityRendererProvider.Context context, CustomBoatType type, BoatVariant variant) {
+    private static <B extends Boat & ICustomBoat> ListModel<Boat> createBoatModel(EntityRendererProvider.Context context, CustomBoatType type, BoatVariant<B> variant) {
         var modelLayerLocation = new ModelLayerLocation(new ResourceLocation(variant.textureFolder() + "oak"), "main");
         var modelPart = context.bakeLayer(modelLayerLocation);
         return variant.getModel(modelPart, type);

@@ -1,3 +1,6 @@
+## 0.0.36 (ALPHA)
+* added Boat API
+
 ## 0.0.35 (BETA)
 * added LootTableProviderHelper#tag()
 
