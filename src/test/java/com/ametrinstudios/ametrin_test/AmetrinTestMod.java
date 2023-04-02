@@ -7,7 +7,6 @@ import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootSubProvid
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableSubProvider;
 import com.ametrinstudios.ametrin_test.world.TestBlocks;
 import com.ametrinstudios.ametrin_test.world.TestItems;
-import com.google.common.reflect.Reflection;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,10 +25,11 @@ public class AmetrinTestMod {
         var forgeBus = MinecraftForge.EVENT_BUS;
         LOGGER.info("---------------------- TEST MOD LOADED ----------------------");
 
-        Reflection.initialize(TestBlocks.class, TestItems.class);
+        TestBlocks.REGISTRY.register(modBus);
+        TestItems.REGISTRY.register(modBus);
+//        Ametrin.enableBoatSystem();
 
         modBus.addListener(AmetrinTestMod::gatherData);
-        TestBlocks.REGISTRY.register(modBus);
     }
 
     public static void gatherData(GatherDataEvent event){

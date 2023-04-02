@@ -6,5 +6,5 @@ import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public class AmUtil {
-    public static ResourceLocation location(String key) {return new ResourceLocation(Ametrin.ModID, key);}
+    public static ResourceLocation location(String key) {return new ResourceLocation(Ametrin.MOD_ID, key);}
 }

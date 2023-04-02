@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-@Mod.EventBusSubscriber(modid = Ametrin.ModID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = Ametrin.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AmEvents {
     @SubscribeEvent
     public static void register(RegisterEvent event){
