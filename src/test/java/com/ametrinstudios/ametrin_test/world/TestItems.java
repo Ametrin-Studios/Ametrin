@@ -16,4 +16,6 @@ public class TestItems {
     public static final RegistryObject<Item> TEST_ITEM = REGISTRY.register("test_item", ()-> new BlockItem(TestBlocks.TEST_BLOCK.get(), new Item.Properties().setNoRepair().stacksTo(16).rarity(Rarity.EPIC)));
     public static final RegistryObject<CustomBoatItem> TROLL_BOAT = REGISTRY.register("troll_boat", ()-> new CustomBoatItem(TestBoatTypes.TROLL, BoatVariants.DEFAULT));
     public static final RegistryObject<CustomBoatItem> TROLL_CHEST_BOAT = REGISTRY.register("troll_chest_boat", ()-> new CustomBoatItem(TestBoatTypes.TROLL, BoatVariants.CHEST));
+    public static final RegistryObject<CustomBoatItem> BEECH_BOAT = REGISTRY.register("beech_boat", ()-> new CustomBoatItem(TestBoatTypes.BEECH, BoatVariants.DEFAULT));
+    public static final RegistryObject<CustomBoatItem> BEECH_CHEST_BOAT = REGISTRY.register("beech_chest_boat", ()-> new CustomBoatItem(TestBoatTypes.BEECH, BoatVariants.CHEST));
 }

@@ -14,6 +14,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public class AmetrinEntityTypes{
+    @ApiStatus.Internal
     public static final DeferredRegister<EntityType<?>> REGISTER = DeferredRegister.create(Registries.ENTITY_TYPE, Ametrin.MOD_ID);
 
     public static RegistryObject<EntityType<CustomBoat>> BOAT = register("boat", boat(CustomBoat::new));
