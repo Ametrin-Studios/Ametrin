@@ -12,21 +12,21 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class BoatVariant<B extends Boat & ICustomBoat> {
-    private static final Map<String, BoatVariant<?>> VARIANTS = new HashMap<>();
-    private static BoatVariant<?> get(String name) {return VARIANTS.get(name);}
+    protected static final Map<String, BoatVariant<?>> VARIANTS = new HashMap<>();
+    protected static BoatVariant<?> get(String name) {return VARIANTS.get(name);}
 
-    private final String Name;
-    private final String TextureFolder;
-    private final BiFunction<ModelPart, CustomBoatType, BoatModel> ModelFactory;
-    private final BiFunction<Level, Vec3, B> EntityFactory;
+    protected final String Name;
+    protected final String TextureFolder;
+    protected final BiFunction<ModelPart, CustomBoatType, BoatModel> ModelFactory;
+    protected final BiFunction<Level, Vec3, B> EntityFactory;
 
-    private BoatVariant(String name, String textureFolder, BiFunction<ModelPart, CustomBoatType, BoatModel> modelFactory, BiFunction<Level, Vec3, B> entityFactory){
-        if(VARIANTS.containsKey(name)) throw new IllegalArgumentException("Duplicate Boat Variant!");
+    protected BoatVariant(Builder<B> builder){
+        if(VARIANTS.containsKey(builder.Name)) throw new IllegalArgumentException("Duplicate Boat Variant!");
 
-        Name = name;
-        TextureFolder = textureFolder;
-        ModelFactory = modelFactory;
-        EntityFactory = entityFactory;
+        Name = builder.Name;
+        TextureFolder = builder.TextureFolder;
+        ModelFactory = builder.ModelFactory;
+        EntityFactory = builder.EntityFactory;
         VARIANTS.put(Name, this);
     }
 
@@ -37,10 +37,10 @@ public class BoatVariant<B extends Boat & ICustomBoat> {
     @Override public String toString() {return name();}
 
     public static class Builder <B extends Boat & ICustomBoat>{
-        private final String Name;
-        private final BiFunction<Level, Vec3, B> EntityFactory;
-        private String TextureFolder;
-        BiFunction<ModelPart, CustomBoatType, BoatModel> ModelFactory = (modelPart, type) -> new BoatModel(modelPart);
+        protected final String Name;
+        protected final BiFunction<Level, Vec3, B> EntityFactory;
+        protected String TextureFolder;
+        protected BiFunction<ModelPart, CustomBoatType, BoatModel> ModelFactory = (modelPart, type) -> new BoatModel(modelPart);
 
 
         public Builder(String name, BiFunction<Level, Vec3, B> entityFactory){
@@ -62,8 +62,6 @@ public class BoatVariant<B extends Boat & ICustomBoat> {
             ModelFactory = factory;
             return this;
         }
-        public BoatVariant<B> register() {
-            return new BoatVariant<>(Name, TextureFolder, ModelFactory, EntityFactory);
-        }
+        public BoatVariant<B> register() {return new BoatVariant<>(this);}
     }
 }
