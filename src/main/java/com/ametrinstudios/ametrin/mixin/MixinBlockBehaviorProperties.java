@@ -19,7 +19,6 @@ import java.util.function.ToIntFunction;
 
 @Mixin(BlockBehaviour.Properties.class)
 public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehaviorProperties {
-
     @Shadow Material material;
     @Shadow Function<BlockState, MaterialColor> materialColor;
     @Shadow boolean hasCollision;
@@ -68,6 +67,19 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
         if(drops == BuiltInLootTables.EMPTY) {properties.noLootTable();}
         if(isViewBlocking != isSuffocating) {properties.isViewBlocking(isViewBlocking);}
 
+        ((IMixinBlockBehaviorProperties) properties).SetFeatureFlagSet(requiredFeatures);
+        ((IMixinBlockBehaviorProperties) properties).SetOffsetFunction(offsetFunction);
+
         return properties;
+    }
+
+    @Override
+    public void SetOffsetFunction(Optional<BlockBehaviour.OffsetFunction> func) {
+        offsetFunction = func;
+    }
+
+    @Override
+    public void SetFeatureFlagSet(FeatureFlagSet featureFlags) {
+        requiredFeatures = featureFlags;
     }
 }

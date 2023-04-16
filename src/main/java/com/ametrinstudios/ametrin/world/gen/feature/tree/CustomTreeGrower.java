@@ -1,5 +1,6 @@
 package com.ametrinstudios.ametrin.world.gen.feature.tree;
 
+import com.ametrinstudios.ametrin.world.gen.feature.tree.helper.TreePlaceContext;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,12 +36,8 @@ public class CustomTreeGrower extends AbstractTreeGrower {
     public boolean growTree(ServerLevel level, ChunkGenerator generator, BlockPos pos, BlockState blockState, RandomSource random) {
         final Set<BlockPos> foliage = Sets.newHashSet();
 
-        BiConsumer<BlockPos, BlockState> placedLogs = (blockPos, state) -> {
-            level.setBlock(blockPos, state, 19);
-        };
-        BiConsumer<BlockPos, BlockState> placedLeaves = (blockPos, state) -> {
-            level.setBlock(blockPos, state, 19);
-        };
+        BiConsumer<BlockPos, BlockState> placedLogs = (blockPos, state) -> TreeFeature.setBlockKnownShape(level, blockPos, state);
+        BiConsumer<BlockPos, BlockState> placedLeaves = (blockPos, state) -> TreeFeature.setBlockKnownShape(level, blockPos, state);
 
         var foliageSetter = new FoliagePlacer.FoliageSetter() {
             public void set(BlockPos blockPos, BlockState state) {
@@ -51,6 +49,6 @@ public class CustomTreeGrower extends AbstractTreeGrower {
             }
         };
 
-        return Tree.get().place(new CustomTreeFeature.PlaceContext(level, pos, placedLogs, placedLeaves, foliageSetter, random));
+        return Tree.get().place(new TreePlaceContext(pos, level, random, placedLogs, placedLeaves, foliageSetter));
     }
 }
