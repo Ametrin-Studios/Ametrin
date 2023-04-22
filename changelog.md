@@ -1,3 +1,12 @@
+## 0.0.38 (ALPHA)
+* overhauled custom Tree API
+* ExperimentalTerrainAnalyzer is now properly implemented
+* old TerrainAnalyzer methods are now deprecated
+
+## 0.0.37 (ALPHA)
+* Boat API clean up
+* added `ItemRegisterHelper`
+
 ## 0.0.36 (ALPHA)
 * added Boat API
 

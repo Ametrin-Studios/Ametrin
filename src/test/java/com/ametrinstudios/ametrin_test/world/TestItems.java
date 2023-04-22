@@ -9,8 +9,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import static com.ametrinstudios.ametrin.world.item.helper.ItemRegistryHelper.boat;
-import static com.ametrinstudios.ametrin.world.item.helper.ItemRegistryHelper.chestBoat;
+import static com.ametrinstudios.ametrin.world.item.helper.ItemRegisterHelper.boat;
+import static com.ametrinstudios.ametrin.world.item.helper.ItemRegisterHelper.chestBoat;
 
 public class TestItems {
     public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, AmetrinTestMod.MOD_ID);

@@ -25,12 +25,10 @@ import java.util.function.Supplier;
 public class CustomTreeGrower extends AbstractTreeGrower {
     protected final Supplier<? extends CustomTreeFeature> Tree;
 
-    public CustomTreeGrower(Supplier<? extends CustomTreeFeature> tree) {
-        Tree = tree;
-    }
+    public CustomTreeGrower(Supplier<? extends CustomTreeFeature> tree) {Tree = tree;}
 
     @Override
-    protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(@NotNull RandomSource random, boolean pLargeHive) {return null;}
+    protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(@NotNull RandomSource random, boolean hasFlowers) {return null;}
 
     @Override @ParametersAreNonnullByDefault
     public boolean growTree(ServerLevel level, ChunkGenerator generator, BlockPos pos, BlockState blockState, RandomSource random) {
@@ -42,7 +40,7 @@ public class CustomTreeGrower extends AbstractTreeGrower {
         var foliageSetter = new FoliagePlacer.FoliageSetter() {
             public void set(BlockPos blockPos, BlockState state) {
                 foliage.add(blockPos.immutable());
-                level.setBlock(blockPos, state, 19);
+                TreeFeature.setBlockKnownShape(level, blockPos, state);
             }
             public boolean isSet(BlockPos blockPos) {
                 return foliage.contains(blockPos);

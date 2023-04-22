@@ -8,10 +8,10 @@ import net.minecraft.util.random.SimpleWeightedRandomList;
 public class StructurePieces {
     private final SimpleWeightedRandomList<Piece> pieces;
 
-    public StructurePieces(final Builder builder) {this(builder.buildList());}
-    public StructurePieces(final SimpleWeightedRandomList<Piece> pieces){
+    protected StructurePieces(final Builder builder) {this(builder.buildList());}
+    protected StructurePieces(final SimpleWeightedRandomList<Piece> pieces){
         if(pieces.isEmpty()) {
-            throw new IllegalArgumentException("The given builder is empty");
+            throw new IllegalArgumentException("The Structure Pieces builder is empty");
         }
         this.pieces = pieces;
     }
@@ -48,15 +48,14 @@ public class StructurePieces {
         }
 
         public Builder offset(int x, int y, int z) {return offset(new BlockPos(x, y, z));}
+        public Builder offsetY(int y) {return offset(0, y, 0);}
 
         public Builder add(ResourceLocation resource){
             pieces.add(new Piece(resource, offset), weight);
             return this;
         }
 
-        private SimpleWeightedRandomList<Piece> buildList() {
-            return pieces.build();
-        }
+        private SimpleWeightedRandomList<Piece> buildList() {return pieces.build();}
 
         public StructurePieces build() {return new StructurePieces(this);}
     }

@@ -16,9 +16,13 @@ import net.minecraft.world.level.levelgen.RandomState;
 
 import java.util.function.Predicate;
 
+/**
+ * everything is now {@link TerrainAnalyzer}
+ */
+@Deprecated(forRemoval = true)
 public class ExperimentalTerrainAnalyzer {
     /**
-     * @return whether the average height difference between the corner points are smaller than the threshold and the average height, always true on {@link FlatLevelSource}
+     * @return the average height between the corner points and weather the difference is larger than the threshold, always true on {@link FlatLevelSource}
      */
     public static Pair<Float, Boolean> isFlatEnough(BlockPos pos, Vec3i size, int padding, int threshold, ChunkGenerator generator, LevelHeightAccessor heightAccessor, RandomState randomState){
         if(generator instanceof FlatLevelSource) {return Pair.of((float)generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.OCEAN_FLOOR_WG, heightAccessor, randomState), true);}

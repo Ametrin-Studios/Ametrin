@@ -16,8 +16,6 @@ import java.util.function.BiConsumer;
 import static net.minecraft.world.level.levelgen.feature.Feature.isDirt;
 
 public class TreeHelper {
-    public static final double CIRCULAR_LEAVES_ROUNDING_MULTIPLIER = 1.7;
-
     public static boolean setBlockChecked(BlockState blockState, BlockPos pos, WorldGenLevel level, @Nullable BiConsumer<BlockPos, BlockState> changedBlocks) {
         var block = blockState.getBlock();
 

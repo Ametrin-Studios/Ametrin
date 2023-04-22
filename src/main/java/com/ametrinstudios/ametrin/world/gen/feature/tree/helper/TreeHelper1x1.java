@@ -1,14 +1,13 @@
 package com.ametrinstudios.ametrin.world.gen.feature.tree.helper;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.function.BiConsumer;
 
 import static com.ametrinstudios.ametrin.world.gen.feature.tree.helper.TreeHelper.setBlockChecked;
 
 public class TreeHelper1x1 {
+    public static final double CIRCULAR_LEAVES_ROUNDING_MULTIPLIER = 1.7;
+
     /**
      * Places a vertical trunk.
      * @param log trunk {@link BlockState}
@@ -50,7 +49,7 @@ public class TreeHelper1x1 {
     public static void circularLeaves(BlockState leaf, int radius, TreePlaceContext context){
         for(int x = -radius; x <= radius; x++) {
             for(int z = -radius; z <= radius; z++) {
-                if (Math.abs(z) + Math.abs(x) > radius*1.7) continue;
+                if (Math.abs(z) + Math.abs(x) > radius*CIRCULAR_LEAVES_ROUNDING_MULTIPLIER) continue;
                 setBlockChecked(leaf, context.pos().offset(x, 0, z), context.level(), context.changedLeaves());
             }
         }
@@ -59,7 +58,7 @@ public class TreeHelper1x1 {
         for(int x = -radius; x <= radius; x++) {
             for(int z = -radius; z <= radius; z++) {
                 if(context.random().nextBoolean()) continue;
-                if (Math.abs(z) + Math.abs(x) > radius*1.7) continue;
+                if (Math.abs(z) + Math.abs(x) > radius*CIRCULAR_LEAVES_ROUNDING_MULTIPLIER) continue;
                 setBlockChecked(leaf, context.pos().offset(x, 0, z), context.level(), context.changedLeaves());
             }
         }
@@ -68,7 +67,7 @@ public class TreeHelper1x1 {
         for(int x = -radius; x <= radius; x++) {
             for(int z = -radius; z <= radius; z++) {
                 if(context.random().nextDouble() <= decayChance) continue;
-                if (Math.abs(z) + Math.abs(x) > radius*1.7) continue;
+                if (Math.abs(z) + Math.abs(x) > radius*CIRCULAR_LEAVES_ROUNDING_MULTIPLIER) continue;
                 setBlockChecked(leaf, context.pos().offset(x, 0, z), context.level(), context.changedLeaves());
             }
         }

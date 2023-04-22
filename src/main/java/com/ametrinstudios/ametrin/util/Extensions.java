@@ -22,8 +22,8 @@ public class Extensions {
     @Deprecated(forRemoval = true) public static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos) {return ChunkPosToBlockPos(chunkPos, 0);}
     public static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos, int y) {return new BlockPos(chunkPos.getMinBlockX(), y, chunkPos.getMinBlockZ());}
 
-    public static BlockPos ChunkPosToBlockPosFromHeightMap(ChunkPos chunkPos, ChunkGenerator chunkGenerator, Heightmap.Types heightmapType, LevelHeightAccessor heightAccessor, RandomState randomState){
-        BlockPos pos = chunkPos.getWorldPosition();
+    public static BlockPos ChunkPosToBlockPosFromHeightMap(ChunkPos chunkPos, Heightmap.Types heightmapType, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState){
+        var pos = chunkPos.getWorldPosition();
         return pos.atY(chunkGenerator.getBaseHeight(pos.getX(), pos.getZ(), heightmapType, heightAccessor, randomState));
     }
 }
