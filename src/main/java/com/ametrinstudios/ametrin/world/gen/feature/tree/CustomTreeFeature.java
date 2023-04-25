@@ -18,7 +18,7 @@ import java.util.function.BiConsumer;
  * This is an alternative method of adding trees, if possible use the vanilla way!
  */
 public abstract class CustomTreeFeature extends TreeFeature{
-    public CustomTreeFeature(BlockState log, BlockState leaf, Codec<TreeConfiguration> codec) {
+    public CustomTreeFeature(Codec<TreeConfiguration> codec) {
         super(codec);
     }
 

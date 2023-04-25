@@ -1,3 +1,7 @@
+## 0.0.39 (ALPHA)
+* fixed `CustomTreeFeature` constructor
+* added docs to build
+
 ## 0.0.38 (ALPHA)
 * overhauled custom Tree API
 * ExperimentalTerrainAnalyzer is now properly implemented

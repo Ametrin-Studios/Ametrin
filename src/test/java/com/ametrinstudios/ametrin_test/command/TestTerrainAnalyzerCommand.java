@@ -1,6 +1,6 @@
 package com.ametrinstudios.ametrin_test.command;
 
-import com.ametrinstudios.ametrin.world.gen.util.ExperimentalTerrainAnalyzer;
+import com.ametrinstudios.ametrin.world.gen.util.TerrainAnalyzer;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -21,7 +21,7 @@ public class TestTerrainAnalyzerCommand {
     }
 
     private int lol(CommandSourceStack source, BlockPos pos, ServerLevel level){
-        source.sendSuccess(Component.literal(String.valueOf(ExperimentalTerrainAnalyzer.isFlatEnough(pos, new Vec3i(8, 1, 8), 1, 2, level.getChunkSource().getGenerator(), level, level.getChunkSource().randomState()).getSecond())), true);
+        source.sendSuccess(Component.literal(String.valueOf(TerrainAnalyzer.isFlatEnough(pos, new Vec3i(8, 1, 8), 1, 2, new TerrainAnalyzer.Context(level.getChunkSource().getGenerator(), level, level.getChunkSource().randomState())).getSecond())), true);
         return 1;
     }
 }
