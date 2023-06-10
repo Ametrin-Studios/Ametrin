@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
 loaderVersion="[45,)" #mandatory
-license="All rights reserved"
+license="MIT License"
 issueTrackerURL="https://github.com/BarionLP/Ametrin/issues" #optional
 
 [[mods]] #mandatory
@@ -19,7 +19,7 @@ Commonly used code for Ametrin Studios mods.
 [[dependencies.ametrin]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[45,)" #mandatory
+    versionRange="[45,46)" #mandatory
     ordering="NONE"
     side="BOTH"
 
