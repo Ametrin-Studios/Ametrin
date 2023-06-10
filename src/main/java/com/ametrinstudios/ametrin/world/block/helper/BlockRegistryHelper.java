@@ -18,7 +18,7 @@ import java.util.function.ToIntFunction;
 
 import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourPropertiesHelper.CopyProperties;
 
-@SuppressWarnings("unused") // TODO: rename -> BlockRegisterHelper
+@SuppressWarnings("unused")
 public class BlockRegistryHelper {
     private BlockRegistryHelper() {}
 
