@@ -88,8 +88,8 @@ dependencies {
 }
 
 mixin {
-    add sourceSets.main, 'ametrin.mixin.refmap.json'
-    config 'ametrin.mixin.json'
+    add sourceSets.main, 'ametrin.mixins.refmap.json'
+    config 'ametrin.mixins.json'
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']

@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
@@ -105,10 +104,10 @@ public class TreeHelper {
         return isReplaceableByLogs(level.getBlockState(pos));
     }
     public static boolean isReplaceableByLeaves(BlockState state) {
-        return state.getMaterial().isReplaceable() || state.is(BlockTags.LEAVES);
+        return state.canBeReplaced() || state.is(BlockTags.LEAVES);
     }
     public static boolean isReplaceableByLogs(BlockState state) {
-        return state.getMaterial().isReplaceable() || isLeavesOrLog(state) || state.getMaterial() == Material.PLANT;
+        return state.canBeReplaced() || isLeavesOrLog(state); //|| state.getMaterial() == Material.PLANT;
     }
     public static boolean isLeavesOrLog(BlockState state) {return state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES);}
 }

@@ -36,8 +36,8 @@ public class KeepStateRandomBlockSwapProcessor extends StructureProcessor {
 
     @Override @Nullable @ParametersAreNonnullByDefault
     public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos pos, BlockPos pos2, StructureTemplate.StructureBlockInfo existing, StructureTemplate.StructureBlockInfo placed, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-        if(placed.state.is(condition) && (chance == 1 || new Random(Mth.getSeed(placed.pos)).nextFloat() < chance)){
-            return new StructureTemplate.StructureBlockInfo(placed.pos, changeTo.withPropertiesOf(placed.state), placed.nbt);
+        if(placed.state().is(condition) && (chance == 1 || new Random(Mth.getSeed(placed.pos())).nextFloat() < chance)){
+            return new StructureTemplate.StructureBlockInfo(placed.pos(), changeTo.withPropertiesOf(placed.state()), placed.nbt());
         }
         return placed;
     }

@@ -20,11 +20,11 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,8 +42,12 @@ public abstract class PortalBlock extends Block {
     protected static final VoxelShape X_AABB = Block.box(0, 0, 6, 16, 16, 10);
     protected static final VoxelShape Z_AABB = Block.box(6, 0, 0, 10, 16, 16);
 
-    public PortalBlock(int lightLevel) {
-        super(Properties.of(Material.PORTAL).strength(-1).noCollission().lightLevel((state) -> lightLevel).noLootTable());
+    public PortalBlock(int lightLevel){
+        this(SoundType.GLASS, lightLevel);
+    }
+
+    public PortalBlock(SoundType soundType, int lightLevel) {
+        super(Properties.of().strength(-1).noCollission().lightLevel((state) -> lightLevel).noLootTable().randomTicks().sound(soundType));
         registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
 
@@ -99,19 +103,19 @@ public abstract class PortalBlock extends Block {
                 entity.setPortalCooldown();
             }
             else {
-                if(!entity.level.isClientSide && !pos.equals(entity.portalEntrancePos)){
+                if(!entity.level().isClientSide && !pos.equals(entity.portalEntrancePos)){
                     entity.portalEntrancePos = pos.immutable();
                 }
-                Level entityWorld = entity.level;
+                Level entityWorld = entity.level();
                 MinecraftServer server = entityWorld.getServer();
-                ResourceKey<Level> destination = entity.level.dimension() == targetLevel() ? Level.OVERWORLD : targetLevel();
+                ResourceKey<Level> destination = entity.level().dimension() == targetLevel() ? Level.OVERWORLD : targetLevel();
                 if(server != null) {
                     ServerLevel destinationWorld = server.getLevel(destination);
                     if(destinationWorld != null && server.isNetherEnabled() && !entity.isPassenger()){
-                        entity.level.getProfiler().push("kaupen_portal");
+                        entity.level().getProfiler().push("kaupen_portal");
                         entity.setPortalCooldown();
                         entity.changeDimension(destinationWorld, new CustomTeleporter(destinationWorld, poi(), targetLevel(), registeredBlock(), defaultPortalFrameBlock()));
-                        entity.level.getProfiler().pop();
+                        entity.level().getProfiler().pop();
                     }
                 }
             }
