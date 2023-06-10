@@ -75,6 +75,26 @@ minecraft {
                 }
             }
         }
+
+        clientTest {
+            parent runs.client
+
+            mods {
+                ametrin_test { sources sourceSets.test }
+            }
+        }
+
+        dataTest {
+            parent runs.data
+
+            args { parentArgs ->
+                return ['--mod', 'ametrin_test', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/test/resources/'), file('src/main/resources/')]
+            }
+
+            mods {
+                ametrin_test { sources sourceSets.test }
+            }
+        }
     }
 }
 

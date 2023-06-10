@@ -21,7 +21,7 @@ public class TestTerrainAnalyzerCommand {
     }
 
     private int lol(CommandSourceStack source, BlockPos pos, ServerLevel level){
-        source.sendSuccess(Component.literal(String.valueOf(TerrainAnalyzer.isFlatEnough(pos, new Vec3i(8, 1, 8), 1, 2, new TerrainAnalyzer.Context(level.getChunkSource().getGenerator(), level, level.getChunkSource().randomState())).getSecond())), true);
+        source.sendSuccess(()-> Component.literal(String.valueOf(TerrainAnalyzer.isFlatEnough(pos, new Vec3i(8, 1, 8), 1, 2, new TerrainAnalyzer.Context(level.getChunkSource().getGenerator(), level, level.getChunkSource().randomState())).getSecond())), true);
         return 1;
     }
 }
