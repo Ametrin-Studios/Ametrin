@@ -1,3 +1,7 @@
+## 0.1.0 (ALPHA)
+* ported to 1.20
+* removed deprecated stuff
+
 ## 0.0.39 (ALPHA)
 * fixed `CustomTreeFeature` constructor
 * added docs to build

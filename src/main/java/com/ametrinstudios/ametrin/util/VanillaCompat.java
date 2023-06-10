@@ -1,6 +1,5 @@
 package com.ametrinstudios.ametrin.util;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShovelItem;
@@ -12,20 +11,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.Map;
 import java.util.function.Supplier;
 
 /**
  * all methods should be called during {@link FMLCommonSetupEvent#enqueueWork}
  */
 public class VanillaCompat {
-    /**
-     * all given blocks must have an axis property like {@link net.minecraft.world.level.block.RotatedPillarBlock}
-     */
-    @Deprecated(forRemoval = true) public static void addStrippables(Map<Block, Block> strippables){
-        AxeItem.STRIPPABLES = (new ImmutableMap.Builder<Block, Block>()).putAll(AxeItem.STRIPPABLES).putAll(strippables).build();
-    }
-
     public static void addBrewingRecipe(Potion startPotion, Item ingredient, Potion resultPotion){
         PotionBrewing.addMix(startPotion, ingredient, resultPotion);
     }
@@ -46,12 +37,10 @@ public class VanillaCompat {
     }
 
     public static void addStrippable(Block log, Block strippedLog){
-        //AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
         AxeItem.STRIPPABLES.put(log, strippedLog);
     }
 
     public static void addFlattenable(Block block, BlockState flattenedBlock){
-        //ShovelItem.FLATTENABLES = Maps.newHashMap(ShovelItem.FLATTENABLES);
         ShovelItem.FLATTENABLES.put(block, flattenedBlock);
     }
 

@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -17,8 +16,6 @@ import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 import java.util.function.Predicate;
-
-import static com.ametrinstudios.ametrin.util.Extensions.ChunkPosToBlockPosFromHeightMap;
 
 public class TerrainAnalyzer{
 
@@ -78,83 +75,6 @@ public class TerrainAnalyzer{
     public static Context context(Structure.GenerationContext generationContext) {
         return context(generationContext.chunkGenerator(), generationContext.heightAccessor(), generationContext.randomState());
     }
+
     public record Context(ChunkGenerator generator, LevelHeightAccessor heightAccessor, RandomState randomState) {}
-
-    @Deprecated(forRemoval = true)
-    public static final Settings defaultCheckSettings = new Settings(1, 3, 3);
-
-    @Deprecated(forRemoval = true)
-    public static boolean isFlatEnough(ChunkPos chunkPos, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState) {return isFlatEnough(chunkPos, chunkGenerator, defaultCheckSettings, heightAccessor, randomState);}
-    @Deprecated(forRemoval = true)
-    public static boolean isFlatEnough(ChunkPos chunkPos, ChunkGenerator chunkGenerator, Settings settings, LevelHeightAccessor heightAccessor, RandomState randomState){
-        return isFlatEnough(ChunkPosToBlockPosFromHeightMap(chunkPos, Heightmap.Types.WORLD_SURFACE_WG, chunkGenerator, heightAccessor, randomState), chunkGenerator, settings, heightAccessor, randomState);
-    }
-    @Deprecated(forRemoval = true)
-    public static boolean isFlatEnough(BlockPos pos, ChunkGenerator chunkGenerator, Settings settings, LevelHeightAccessor heightAccessor, RandomState randomState){
-        if(getBlockAt(pos.below(), chunkGenerator, heightAccessor, randomState).is(Blocks.WATER)) {return false;}
-
-        int columSpreading = settings.columSpreading();
-        if(isColumBlocked(pos.east(columSpreading), settings, chunkGenerator, heightAccessor, randomState)) {return false;}
-        if(isColumBlocked(pos.west(columSpreading), settings, chunkGenerator, heightAccessor, randomState)) {return false;}
-        if(isColumBlocked(pos.south(columSpreading), settings, chunkGenerator, heightAccessor, randomState)) {return false;}
-        return !isColumBlocked(pos.north(columSpreading), settings, chunkGenerator, heightAccessor, randomState);
-    }
-
-    @Deprecated(forRemoval = true)
-    public static boolean isUnderwater(ChunkPos chunkPos, ChunkGenerator chunkGenerator, int depth, LevelHeightAccessor heightAccessor, RandomState randomState) {
-        return getBlockAt(ChunkPosToBlockPosFromHeightMap(chunkPos, Heightmap.Types.OCEAN_FLOOR_WG, chunkGenerator, heightAccessor, randomState).above(depth), chunkGenerator, heightAccessor, randomState).is(Blocks.WATER);
-    }
-
-    @Deprecated(forRemoval = true)
-    public static boolean isGroundLevelAbove(ChunkPos chunkPos, ChunkGenerator chunkGenerator, int height, LevelHeightAccessor heightAccessor, RandomState randomState){
-        return getSurfaceLevelAt(chunkPos, Heightmap.Types.WORLD_SURFACE_WG, chunkGenerator, heightAccessor, randomState) > height;
-    }
-
-    @Deprecated(forRemoval = true)
-    public static boolean isGroundLevelBelow(ChunkPos chunkPos, ChunkGenerator chunkGenerator, int height, LevelHeightAccessor heightAccessor, RandomState randomState){
-        return getSurfaceLevelAt(chunkPos, Heightmap.Types.WORLD_SURFACE_WG, chunkGenerator, heightAccessor, randomState) < height;
-    }
-
-    @Deprecated(forRemoval = true)
-    public static boolean areNearbyBiomesValid(BiomeSource biomeSource, ChunkPos chunkPos, ChunkGenerator generator, int radius, Predicate<Holder<Biome>> validBiome, RandomState randomState){
-        for(Holder<Biome> biome : biomeSource.getBiomesWithin(chunkPos.getMiddleBlockX(), generator.getSeaLevel(), chunkPos.getMiddleBlockZ(), radius, randomState.sampler())) {
-            if (!validBiome.test(biome)) {return false;}
-        }
-        return true;
-    }
-
-    @Deprecated(forRemoval = true)
-    protected static boolean isColumBlocked(BlockPos pos, Settings settings, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState){
-        if(!isDownwardsFree(pos, settings.stepSize(), settings.steps(), chunkGenerator, heightAccessor, randomState)){
-            return isUpwardsBlocked(pos, settings.stepSize(), settings.steps(), chunkGenerator, heightAccessor, randomState);
-        }
-        return true;
-    }
-
-    @Deprecated(forRemoval = true)
-    protected static boolean isUpwardsBlocked(BlockPos pos, int stepSize, int steps, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState){
-        for(int i = 1; i <= steps; i++){
-            if(!getBlockAt(pos.above(i * stepSize), chunkGenerator, heightAccessor, randomState).isAir()) {return true;}
-        }
-        return false;
-    }
-
-    @Deprecated(forRemoval = true)
-    protected static boolean isDownwardsFree(BlockPos pos, int stepSize, int steps, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState){
-        for(int i = 1; i <= steps; i++){
-            if(getBlockAt(pos.below(i * stepSize), chunkGenerator, heightAccessor, randomState).isAir()) {return true;}
-        }
-        return false;
-    }
-
-    @Deprecated(forRemoval = true)
-    protected static int getSurfaceLevelAt(ChunkPos pos, Heightmap.Types heightmapType, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState){
-        return ChunkPosToBlockPosFromHeightMap(pos, heightmapType, chunkGenerator, heightAccessor, randomState).getY();
-    }
-
-    @Deprecated(forRemoval = true)
-    public static BlockState getBlockAt(BlockPos pos, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState) {return getBlockAt(pos.getX(), pos.getY(), pos.getZ(), context(chunkGenerator, heightAccessor, randomState));}
-
-    @Deprecated(forRemoval = true)
-    public record Settings(int steps, int stepSize, int columSpreading) {}
 }

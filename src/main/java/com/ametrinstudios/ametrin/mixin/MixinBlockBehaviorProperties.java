@@ -87,7 +87,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
 
         var mixinProperties = ((IMixinBlockBehaviorProperties) properties);
         mixinProperties.SetFeatureFlagSet(requiredFeatures);
-        if(offsetFunction.isPresent()) mixinProperties.SetOffsetFunction(offsetFunction);
+        offsetFunction.ifPresent(mixinProperties::SetOffsetFunction);
 
         if(lootTableSupplier != null){
             mixinProperties.SetLootTableSupplier(lootTableSupplier);
@@ -99,8 +99,8 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     }
 
     @Override
-    public void SetOffsetFunction(Optional<BlockBehaviour.OffsetFunction> func) {
-        offsetFunction = func;
+    public void SetOffsetFunction(BlockBehaviour.OffsetFunction func) {
+        offsetFunction = Optional.of(func);
     }
 
     @Override

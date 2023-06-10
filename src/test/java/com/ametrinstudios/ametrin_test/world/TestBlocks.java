@@ -13,6 +13,6 @@ import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourProper
 public class TestBlocks {
     public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, AmetrinTestMod.MOD_ID);
 
-    private static final BlockBehaviour.Properties DEFAULT_PROPERTIES = BlockBehaviour.Properties.copy(Blocks.STONE);
+    private static final BlockBehaviour.Properties DEFAULT_PROPERTIES = CopyProperties(Blocks.STONE);
     public static final RegistryObject<Block> TEST_BLOCK = REGISTRY.register("test_block", ()-> new Block(CopyProperties(DEFAULT_PROPERTIES).friction(0.1f)));
 }

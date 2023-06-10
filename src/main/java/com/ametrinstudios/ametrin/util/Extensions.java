@@ -16,10 +16,6 @@ public class Extensions {
     public static int SecondsToTicks(int seconds) {return seconds * 20;}
     public static int MinutesToTicks(int minutes) {return SecondsToTicks(minutes * 60);}
 
-    /**
-     * use {@link ChunkPos#getWorldPosition()} instead
-     */
-    @Deprecated(forRemoval = true) public static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos) {return ChunkPosToBlockPos(chunkPos, 0);}
     public static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos, int y) {return new BlockPos(chunkPos.getMinBlockX(), y, chunkPos.getMinBlockZ());}
 
     public static BlockPos ChunkPosToBlockPosFromHeightMap(ChunkPos chunkPos, Heightmap.Types heightmapType, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState){
