@@ -4,8 +4,9 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.LootDataId;
+import net.minecraft.world.level.storage.loot.LootDataType;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -24,7 +25,8 @@ public class CustomLootTableProvider extends LootTableProvider {
 
     @Override
     protected void validate(Map<ResourceLocation, LootTable> map, @NotNull ValidationContext validationContext) {
-        map.forEach((resourceLocation, lootTable) -> LootTables.validate(validationContext, resourceLocation, lootTable));
+        map.forEach((resourceLocation, lootTable) ->
+                lootTable.validate(validationContext.setParams(lootTable.getParamSet()).enterElement("{" + resourceLocation + "}", new LootDataId<>(LootDataType.TABLE, resourceLocation))));
     }
 
     public static Builder Builder(){
@@ -32,39 +34,39 @@ public class CustomLootTableProvider extends LootTableProvider {
     }
 
     public static class Builder{
-        private final List<SubProviderEntry> SubProvider;
+        private final List<SubProviderEntry> SubProviders;
 
         public Builder(){
-             SubProvider = new ArrayList<>();
+             SubProviders = new ArrayList<>();
         }
 
         public Builder AddBlockProvider(Supplier<LootTableSubProvider> subProviderSupplier){
-            return AddProvider(new SubProviderEntry(subProviderSupplier, LootContextParamSets.BLOCK));
+            return AddProvider(subProviderSupplier, LootContextParamSets.BLOCK);
         }
         public Builder AddChestProvider(Supplier<LootTableSubProvider> subProviderSupplier){
-            return AddProvider(new SubProviderEntry(subProviderSupplier, LootContextParamSets.CHEST));
+            return AddProvider(subProviderSupplier, LootContextParamSets.CHEST);
         }
         public Builder AddEntityProvider(Supplier<LootTableSubProvider> subProviderSupplier){
-            return AddProvider(new SubProviderEntry(subProviderSupplier, LootContextParamSets.ENTITY));
+            return AddProvider(subProviderSupplier, LootContextParamSets.ENTITY);
         }
         public Builder AddArcheologyProvider(Supplier<LootTableSubProvider> subProviderSupplier){
-            return AddProvider(new SubProviderEntry(subProviderSupplier, LootContextParamSets.ARCHAEOLOGY));
+            return AddProvider(subProviderSupplier, LootContextParamSets.ARCHAEOLOGY);
         }
         public Builder AddFishingProvider(Supplier<LootTableSubProvider> subProviderSupplier){
-            return AddProvider(new SubProviderEntry(subProviderSupplier, LootContextParamSets.FISHING));
+            return AddProvider(subProviderSupplier, LootContextParamSets.FISHING);
         }
         public Builder AddProvider(Supplier<LootTableSubProvider> subProviderSupplier, LootContextParamSet paramSet){
             return AddProvider(new SubProviderEntry(subProviderSupplier, paramSet));
         }
 
         public Builder AddProvider(SubProviderEntry subProviderEntry){
-            SubProvider.add(subProviderEntry);
+            SubProviders.add(subProviderEntry);
             return this;
         }
 
         public CustomLootTableProvider Build(PackOutput output){
-            if(SubProvider.isEmpty()) throw new IllegalStateException("Cannot run an empty LootTableProvider");
-            return new CustomLootTableProvider(output, SubProvider);
+            if(SubProviders.isEmpty()) throw new IllegalStateException("Cannot run an empty LootTableProvider");
+            return new CustomLootTableProvider(output, SubProviders);
         }
     }
 }

@@ -1,56 +1,144 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.moddinglegacy.com/maven' } // Modding Legacy Maven
-        maven { url 'https://maven.minecraftforge.net' } // Minecraft Forge Maven
-        maven { url 'https://repo.spongepowered.org/maven' } // SpongePowered Maven
-        maven { url 'https://maven.parchmentmc.org' } // ParchmentMC Maven
-    }
-    dependencies {
-        classpath group: 'me.jonathing', name: 'gradleworks', version: '5.0.0-alpha.2' // GradleWorks
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true // Minecraft Forge ForgeGradle
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+', changing: true // SpongePowered MixinGradle
-        classpath group: 'org.parchmentmc', name: 'librarian', version: '1.+', changing: true // ParchmentMC Librarian
-    }
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-apply plugin: 'me.jonathing.gradleworks'
+version = mod_version
+group = mod_group_id
 
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+//println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    copyIdeResources = true
     runs {
-        // Client test run configuration
-        clientTest {
-            parent runs.client
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', mod_id
 
             mods {
-                tests { sources sourceSets.test }
+                "${mod_id}" {
+                    source sourceSets.main
+                }
             }
         }
 
-        // Server test run configuration
-        serverTest {
-            parent runs.server
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', mod_id
 
             mods {
-                tests { sources sourceSets.test }
+                "${mod_id}" {
+                    source sourceSets.main
+                }
             }
         }
 
-        dataTest {
-            parent runs.data
+        gameTestServer {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', mod_id
 
             mods {
-                tests { sources sourceSets.test }
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
             }
         }
     }
 }
 
-java {
-    withSourcesJar()
-    withJavadocJar()
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
-artifacts {
-    archives javadocJar
-    archives sourcesJar
+mixin {
+    add sourceSets.main, 'ametrin.mixin.refmap.json'
+    config 'ametrin.mixin.json'
+}
+
+def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
+def replaceProperties = [
+        minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
+        forge_version: forge_version, forge_version_range: forge_version_range,
+        loader_version_range: loader_version_range,
+        mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+        mod_authors: mod_authors, mod_description: mod_description
+]
+processResources {
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
+
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : mod_id,
+                "Specification-Vendor"    : mod_authors,
+                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Vendor"   : mod_authors,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+
+jar.finalizedBy('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }

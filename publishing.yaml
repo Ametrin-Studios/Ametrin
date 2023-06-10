@@ -1,7 +1,0 @@
-publication:
-  enabled: True
-  group: DEFAULT
-  artifact_id: ametrin
-  version: DEFAULT
-
-repositories:
