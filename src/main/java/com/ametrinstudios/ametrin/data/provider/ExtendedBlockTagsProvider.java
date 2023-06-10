@@ -134,8 +134,20 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
             if(block instanceof WallSignBlock){
                 tag(BlockTags.WALL_SIGNS).add(block);
             }
+            if(block instanceof CeilingHangingSignBlock){
+                tag(BlockTags.CEILING_HANGING_SIGNS).add(block);
+            }
+            if(block instanceof WallHangingSignBlock){
+                tag(BlockTags.WALL_HANGING_SIGNS).add(block);
+            }
+            if(block instanceof WallSignBlock){
+                tag(BlockTags.WALL_SIGNS).add(block);
+            }
             if(block instanceof CauldronBlock){
                 tag(BlockTags.CAULDRONS).add(block);
+            }
+            if(block.defaultBlockState().canBeReplaced()){
+                tag(BlockTags.REPLACEABLE).add(block);
             }
         });
     }
