@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     }
 
     @Override
-    protected abstract void addTags(@Nullable HolderLookup.Provider provider);
+    protected abstract void addTags(@NotNull HolderLookup.Provider provider);
 
     protected void runRules(DeferredRegister<Item> register){
         runRules(register.getEntries().stream().map(RegistryObject::get).iterator());

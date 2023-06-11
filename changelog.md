@@ -1,4 +1,7 @@
-## 0.1.0 (ALPHA)
+## 0.1.2 (ALPHA)
+* fixes
+
+## 0.1.1 (ALPHA)
 * added `ExtendedItemTagsProvider`
 * fixes
 

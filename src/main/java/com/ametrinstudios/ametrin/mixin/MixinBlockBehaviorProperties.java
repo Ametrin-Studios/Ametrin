@@ -81,7 +81,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
         if(forceSolidOn) {properties.forceSolidOn();}
         if(forceSolidOff) {properties.forceSolidOff();}
         if(!spawnParticlesOnBreak) {properties.noParticlesOnBreak();}
-        if(!replaceable) {properties.replaceable();}
+        if(replaceable) {properties.replaceable();}
         if(isViewBlocking != isSuffocating) {properties.isViewBlocking(isViewBlocking);}
         if(dynamicShape) {properties.dynamicShape();}
 
