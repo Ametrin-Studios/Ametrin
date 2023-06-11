@@ -18,17 +18,15 @@ public class DataProviderExtensions {
         plankIndicators.add(indicator);
     }
     public static boolean isPlank(String name) {
-        for(String indicator : plankIndicators){
-            if(name.contains(indicator)){
-                return true;
-            }
+        for(var indicator : plankIndicators){
+            if(name.contains(indicator)) return true;
         }
         return false;
     }
 
     public static boolean shouldAppendS(String name) {return name.matches(".*brick(?!s).*|.*tile(?!s).*");}
-    public static boolean isWood(String name) {return name.matches(".*(wood|hyphae).*");}
     public static boolean isLog(String name) {return name.matches(".*(log|stem).*");}
+    public static boolean isWood(String name) {return name.matches(".*(wood|hyphae).*");}
     public static boolean isWooden(String name) {return isLog(name) || isWood(name) || name.contains("plank") || isPlank(name);}
 
     public static String getItemName(Item item) {return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getPath();}

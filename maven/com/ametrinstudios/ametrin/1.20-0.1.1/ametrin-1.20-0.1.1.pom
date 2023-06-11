@@ -3,5 +3,5 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ametrinstudios</groupId>
     <artifactId>ametrin</artifactId>
-    <version>1.19.4-0.0.32</version>
+    <version>1.20-0.1.1</version>
 </project>

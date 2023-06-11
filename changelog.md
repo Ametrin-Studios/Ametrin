@@ -1,4 +1,8 @@
 ## 0.1.0 (ALPHA)
+* added `ExtendedItemTagsProvider`
+* fixes
+
+## 0.1.0 (ALPHA)
 * ported to 1.20
 * removed deprecated stuff
 

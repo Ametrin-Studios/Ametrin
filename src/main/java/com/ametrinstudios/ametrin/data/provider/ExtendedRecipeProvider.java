@@ -10,6 +10,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -27,6 +28,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+@SuppressWarnings("unused")
 public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static final Logger LOGGER = LogUtils.getLogger();
     protected static Set<ResourceLocation> Recipes = Sets.newHashSet();
@@ -58,6 +60,9 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         currentModID = "";
         return CompletableFuture.allOf(list.toArray(CompletableFuture[]::new));
     }
+
+    @Override
+    protected abstract void buildRecipes(@NotNull Consumer<FinishedRecipe> consumer);
 
     protected static void stairSlabWallButton(Consumer<FinishedRecipe> consumer, @Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, boolean hasStonecutting){
         if(stair != null) {stairs(consumer, stair, material, hasStonecutting);}
@@ -416,6 +421,16 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(category, result).requires(block).requires(moss).unlockedBy(getHasName(block), has(block)).save(consumer, recipeID(result, block));
     }
 
+    protected static void dying(Consumer<FinishedRecipe> consumer, TagKey<Item> dyedItems, String idPattern, String group){
+        for(var dye : DyeColor.values()){
+            var resultID = location(idPattern.replace("{color}", dye.getName()));
+            var dyeID = new ResourceLocation(dye.getName() + "_dye");
+            var result = ForgeRegistries.ITEMS.getValue(resultID);
+            var dyeItem = ForgeRegistries.ITEMS.getValue(dyeID);
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result).requires(dyedItems).requires(dyeItem).group(group).unlockedBy("has_needed_dye", has(dyeItem)).save(consumer, "dye_" + getItemName(result));
+        }
+    }
+
     protected static void oreSmelting(Consumer<FinishedRecipe> consumer, ItemLike ingot, ItemLike raw){
         smelting(consumer, RecipeCategory.MISC, ingot, raw, 0.7f, 200);
         blasting(consumer, RecipeCategory.MISC, ingot, raw, 0.7f, 100);
@@ -557,5 +572,10 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static String getHasName(TagKey<Item> tag) {return "has_" + tag.location().getPath().replace('/', '_');}
     protected static String itemID(ItemLike item) {return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath();}
     protected static String getItemTagName(TagKey<Item> tag) {return tag.location().getPath().replace('/', '_');}
-    protected static ResourceLocation location(String key) {return new ResourceLocation(currentModID, key);}
+    protected static ResourceLocation location(String key) {
+        if(key.contains(":")){
+            return ResourceLocation.of(key, ':');
+        }
+        return new ResourceLocation(currentModID, key);
+    }
 }

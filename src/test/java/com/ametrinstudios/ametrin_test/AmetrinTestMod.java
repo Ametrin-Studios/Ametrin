@@ -3,6 +3,7 @@ package com.ametrinstudios.ametrin_test;
 import com.ametrinstudios.ametrin.data.provider.CustomLootTableProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestBlockStateProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestItemModelProvider;
+import com.ametrinstudios.ametrin_test.data.provider.TestRecipeProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootSubProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableSubProvider;
 import com.ametrinstudios.ametrin_test.world.TestBlocks;
@@ -36,6 +37,8 @@ public class AmetrinTestMod {
     }
 
     public static void gatherData(GatherDataEvent event){
+        // somehow the providers don't get run
+
         var generator = event.getGenerator();
         var output = generator.getPackOutput();
         var existingFileHelper = event.getExistingFileHelper();
@@ -45,6 +48,7 @@ public class AmetrinTestMod {
 
         generator.addProvider(runServer, new TestBlockStateProvider(output, existingFileHelper));
         generator.addProvider(runServer, new TestItemModelProvider(output, existingFileHelper));
+        generator.addProvider(runServer, new TestRecipeProvider(output));
 
         var lootTableProvider = CustomLootTableProvider.Builder().AddBlockProvider(TestBlockLootSubProvider::new).AddChestProvider(TestLootTableSubProvider::new).Build(output);
         generator.addProvider(runServer, lootTableProvider);
