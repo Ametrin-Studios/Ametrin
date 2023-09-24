@@ -74,7 +74,7 @@ public class CustomBoatItem extends Item {
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 
-    protected <B extends Boat & ICustomBoat> B getBoat(Level level, HitResult hitResult) {
+    protected <B extends Boat & ICustomBoat> B getBoat(Level level, @NotNull HitResult hitResult) {
         return (B) ICustomBoat.create(Type, Variant, level, hitResult.getLocation());
     }
 }

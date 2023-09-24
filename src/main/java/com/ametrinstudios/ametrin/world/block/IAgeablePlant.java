@@ -17,7 +17,7 @@ public interface IAgeablePlant extends BonemealableBlock{
 
     void onHarvest(BlockState blockState, Level level, BlockPos blockPos);
     @Override @ParametersAreNonnullByDefault
-    default boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState, boolean isClientSide) {return isSparse(blockState);}
+    default boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState) {return isSparse(blockState);}
     @Override @ParametersAreNonnullByDefault
     default boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState) {return true;}
 

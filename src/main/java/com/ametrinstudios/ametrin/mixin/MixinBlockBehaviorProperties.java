@@ -37,10 +37,9 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow boolean isAir;
     @Shadow boolean ignitedByLava;
     @Shadow boolean liquid;
-    @Shadow boolean forceSolidOff;
     @Shadow boolean forceSolidOn;
     @Shadow PushReaction pushReaction;
-    @Shadow boolean spawnParticlesOnBreak;
+    @Shadow boolean spawnTerrainParticles;
     @Shadow NoteBlockInstrument instrument;
     @Shadow boolean replaceable;
     @Shadow Supplier<ResourceLocation> lootTableSupplier;
@@ -79,8 +78,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
         if(ignitedByLava) {properties.ignitedByLava();}
         if(liquid) {properties.liquid();}
         if(forceSolidOn) {properties.forceSolidOn();}
-        if(forceSolidOff) {properties.forceSolidOff();}
-        if(!spawnParticlesOnBreak) {properties.noParticlesOnBreak();}
+        if(!spawnTerrainParticles) {properties.noTerrainParticles();}
         if(replaceable) {properties.replaceable();}
         if(isViewBlocking != isSuffocating) {properties.isViewBlocking(isViewBlocking);}
         if(dynamicShape) {properties.dynamicShape();}

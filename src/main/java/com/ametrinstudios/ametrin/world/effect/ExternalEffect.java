@@ -13,6 +13,4 @@ public class ExternalEffect extends MobEffect {
 
     @Override
     public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {}
-    @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {return true;}
 }
