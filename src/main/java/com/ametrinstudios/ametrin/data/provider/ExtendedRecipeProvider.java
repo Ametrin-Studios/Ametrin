@@ -51,11 +51,10 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                     throw new IllegalStateException("Duplicate recipe " + recipe.id());
                 } else {
                     list.add(DataProvider.saveStable(output, recipe.serializeRecipe(), recipePathProvider.json(recipe.id())));
-                    var advancementholder = recipe.advancement();
+                    var advancementData = recipe.advancementData();
 
-                    if (advancementholder != null) {
-                        var serializedAdvancement = advancementholder.value().serializeToJson();
-                        var saveAdvancementFuture = saveAdvancement(output, serializedAdvancement, advancementholder, recipe);
+                    if (advancementData != null) {
+                        var saveAdvancementFuture = saveAdvancement(output, advancementData.id(), advancementData.data(), recipe);
                         if (saveAdvancementFuture != null) {list.add(saveAdvancementFuture);}
                     }
                 }

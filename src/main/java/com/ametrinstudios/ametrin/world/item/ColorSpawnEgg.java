@@ -8,6 +8,7 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import java.awt.*;
 import java.util.function.Supplier;
 
+@Deprecated(forRemoval = true)
 public class ColorSpawnEgg extends ForgeSpawnEggItem {
     public ColorSpawnEgg(Supplier<? extends EntityType<? extends Mob>> type, Color backgroundColor, Color highlightColor, Properties properties) {
         super(type, Extensions.ColorToInt(backgroundColor), Extensions.ColorToInt(highlightColor), properties);

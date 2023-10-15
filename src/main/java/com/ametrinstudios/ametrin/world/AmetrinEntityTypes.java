@@ -21,10 +21,10 @@ public class AmetrinEntityTypes{
     public static RegistryObject<EntityType<CustomChestBoat>> CHEST_BOAT = register("chest_boat", chestBoat(CustomChestBoat::new));
 
     private static <E extends Entity, EF extends EntityType.EntityFactory<E>> EntityType.Builder<E> boat(EF entity) {
-        return entity(entity, MobCategory.MISC,1.375f,0.5625f).clientTrackingRange(10);
+        return entity(entity, MobCategory.MISC, 1.375f, 0.5625f).clientTrackingRange(10);
     }
     private static <E extends Entity, EF extends EntityType.EntityFactory<E>> EntityType.Builder<E> chestBoat(EF entity) {
-        return entity(entity, MobCategory.MISC,1.375f,0.5625f).clientTrackingRange(10);
+        return entity(entity, MobCategory.MISC, 1.375f, 0.5625f).clientTrackingRange(10);
     }
     private static <E extends Entity, EF extends EntityType.EntityFactory<E>> EntityType.Builder<E> entity(EF entity, MobCategory category, float width, float height){
         return EntityType.Builder.of(entity, category).sized(width, height);
