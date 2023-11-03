@@ -1,7 +1,9 @@
 package com.ametrinstudios.ametrin;
 
+import com.ametrinstudios.ametrin.util.VanillaCompat;
 import com.ametrinstudios.ametrin.world.AmetrinEntityTypes;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -15,5 +17,10 @@ public class Ametrin{
 //        var forgeEventBus = MinecraftForge.EVENT_BUS;
 
         AmetrinEntityTypes.REGISTER.register(modBus);
+        modBus.addListener(Ametrin::setup);
+    }
+
+    private static void setup(final FMLCommonSetupEvent event){
+        event.enqueueWork(VanillaCompat::PushRequests);
     }
 }

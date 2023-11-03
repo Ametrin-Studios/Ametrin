@@ -1,5 +1,6 @@
 package com.ametrinstudios.ametrin.util;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShovelItem;
@@ -10,13 +11,19 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.ApiStatus;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
-/**
- * all methods should be called during {@link FMLCommonSetupEvent#enqueueWork}
- */
 public class VanillaCompat {
+    private static final Map<Block, Block> StrippableRequests = new HashMap<>();
+
+    /**
+     * Registers simple brewing recipes
+     * call during {@link FMLCommonSetupEvent}
+     */
     public static void addBrewingRecipe(Potion startPotion, Item ingredient, Potion resultPotion){
         PotionBrewing.addMix(startPotion, ingredient, resultPotion);
     }
@@ -28,29 +35,60 @@ public class VanillaCompat {
      * Apple/Flower: 0.65
      * Vines: 0.5
      * Sapling/Seed: 0.3
+     * call during {@link FMLCommonSetupEvent}
      */
     public static void addCompostable(ItemLike item, float chance){
         ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
     }
+
+    /**
+     * Registers FlowerPots
+     * call during {@link FMLCommonSetupEvent}
+     */
     public static void addFlowerPot(RegistryObject<? extends Block> plant, Supplier<? extends FlowerPotBlock> fullPot){
         ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant.getId(), fullPot);
     }
 
+    /**
+     * Allows blocks to be converted by an axe (e.g. oak log to stripped oak log)
+     * both blocks need to have the {@link RotatedPillarBlock#AXIS} state (stupid minecraft...)
+     * call during {@link FMLCommonSetupEvent}
+     */
     public static void addStrippable(Block log, Block strippedLog){
-        AxeItem.STRIPPABLES.put(log, strippedLog);
+        StrippableRequests.put(log, strippedLog);
     }
 
-    public static void addFlattenable(Block block, BlockState flattenedBlock){
-        ShovelItem.FLATTENABLES.put(block, flattenedBlock);
+    /**
+     * Allows blocks to be converted by a shovel (e.g. grass block to path block)
+     * call during {@link FMLCommonSetupEvent}
+     */
+    public static void addFlattenable(Block block, BlockState flattenedBlockState){
+        ShovelItem.FLATTENABLES.put(block, flattenedBlockState);
     }
 
-    public static void addFlammable(Block block, int encouragement, int flammability){
-        ((FireBlock)Blocks.FIRE).setFlammable(block, encouragement, flammability);
+    /**
+     * Allows blocks to be converted by a shovel (e.g. grass block to path block)
+     * call during {@link FMLCommonSetupEvent}
+     */
+    public static void addFlattenable(Block block, Block flattenedBlock){
+        addFlattenable(block, flattenedBlock.defaultBlockState());
     }
-    public static void addFlammableLog(Block log) {addFlammable(log, 5, 5);}
-    public static void addFlammablePlank(Block plank) {addFlammable(plank, 5, 20);}
-    public static void addFlammableLeave(Block leave) {addFlammable(leave, 30, 60);}
-    public static void addFlammablePlant(Block plant) {addFlammable(plant, 60, 100);}
-    public static void addFlammableWool(Block wool) {addFlammable(wool, 30, 60);}
-    public static void addFlammableCarpet(Block carpet) {addFlammable(carpet, 60, 20);}
+
+    public interface Flammable{
+        static void add(Block block, int encouragement, int flammability){
+            ((FireBlock)Blocks.FIRE).setFlammable(block, encouragement, flammability);
+        }
+        static void addLog(Block log) {add(log, 5, 5);}
+        static void addPlank(Block plank) {add(plank, 5, 20);}
+        static void addLeave(Block leave) {add(leave, 30, 60);}
+        static void addPlant(Block plant) {add(plant, 60, 100);}
+        static void addWool(Block wool) {add(wool, 30, 60);}
+        static void addCarpet(Block carpet) {add(carpet, 60, 20);}
+    }
+
+
+    @ApiStatus.Internal
+    public static void PushRequests(){
+        AxeItem.STRIPPABLES = (new ImmutableMap.Builder<Block, Block>()).putAll(AxeItem.STRIPPABLES).putAll(StrippableRequests).build();
+    }
 }

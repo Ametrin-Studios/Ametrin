@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin_test;
 
 import com.ametrinstudios.ametrin.data.provider.CustomLootTableProvider;
+import com.ametrinstudios.ametrin.util.VanillaCompat;
 import com.ametrinstudios.ametrin_test.data.provider.TestBlockStateProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestItemModelProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestRecipeProvider;
@@ -12,9 +13,11 @@ import com.ametrinstudios.ametrin_test.world.TestItems;
 import com.google.common.reflect.Reflection;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
@@ -33,7 +36,13 @@ public class AmetrinTestMod {
         TestBlocks.REGISTRY.register(modBus);
         TestItems.REGISTRY.register(modBus);
 
+        modBus.addListener(AmetrinTestMod::setup);
         modBus.addListener(AmetrinTestMod::gatherData);
+    }
+
+    private static void setup(final FMLCommonSetupEvent event){
+//        VanillaCompat.addStrippable(TestBlocks.TEST_BLOCK.get(), Blocks.DIAMOND_BLOCK);
+        VanillaCompat.addFlattenable(TestBlocks.TEST_BLOCK.get(), Blocks.DIAMOND_BLOCK);
     }
 
     public static void gatherData(GatherDataEvent event){
