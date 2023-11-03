@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin.world.item;
 
 import com.ametrinstudios.ametrin.world.entity.boat.BoatVariant;
+import com.ametrinstudios.ametrin.world.entity.boat.BoatVariants;
 import com.ametrinstudios.ametrin.world.entity.boat.CustomBoatType;
 import com.ametrinstudios.ametrin.world.entity.boat.ICustomBoat;
 import net.minecraft.stats.Stats;
@@ -32,6 +33,13 @@ public class CustomBoatItem extends Item {
     }
     public CustomBoatItem(CustomBoatType type, BoatVariant<?> variant){
         this(type, variant, new Properties().stacksTo(1));
+    }
+
+    public static CustomBoatItem chest(CustomBoatType type){
+        return new CustomBoatItem(type, BoatVariants.CHEST);
+    }
+    public static CustomBoatItem boat(CustomBoatType type){
+        return new CustomBoatItem(type, BoatVariants.DEFAULT);
     }
 
     @Override @NotNull

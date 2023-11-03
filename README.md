@@ -13,7 +13,7 @@ public static final CustomBoatType TEST_BOAT_TYPE = CustomBoatType.builder(id).b
 ```
 
 ```java
-public static final RegistryObject<CustomBoatItem> TEST_BOAT = REGISTRY.register("test_boat", ItemRegisterHelper.boat(TEST_BOAT_TYPE));
-public static final RegistryObject<CustomBoatItem> TEST_CHEST_BOAT = REGISTRY.register("test_chest_boat", ItemRegisterHelper.chestBoat(TEST_BOAT_TYPE));
+public static final RegistryObject<CustomBoatItem> TEST_BOAT = REGISTRY.register("test_boat", ()-> CustomBoatItem.boat(TEST_BOAT_TYPE));
+public static final RegistryObject<CustomBoatItem> TEST_CHEST_BOAT = REGISTRY.register("test_chest_boat", ()-> CustomBoatItem.chest(TEST_BOAT_TYPE));
 ```
 - also can create new boat variations check the `BoatVariants` class 

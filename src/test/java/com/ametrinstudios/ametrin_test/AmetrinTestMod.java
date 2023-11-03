@@ -8,9 +8,7 @@ import com.ametrinstudios.ametrin_test.data.provider.TestRecipeProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootSubProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableSubProvider;
 import com.ametrinstudios.ametrin_test.world.TestBlocks;
-import com.ametrinstudios.ametrin_test.world.TestBoatTypes;
 import com.ametrinstudios.ametrin_test.world.TestItems;
-import com.google.common.reflect.Reflection;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
@@ -30,8 +28,6 @@ public class AmetrinTestMod {
         var modBus = FMLJavaModLoadingContext.get().getModEventBus();
         var forgeBus = MinecraftForge.EVENT_BUS;
         LOGGER.info("---------------------- TEST MOD LOADED ----------------------");
-
-        Reflection.initialize(TestBoatTypes.class);
 
         TestBlocks.REGISTRY.register(modBus);
         TestItems.REGISTRY.register(modBus);

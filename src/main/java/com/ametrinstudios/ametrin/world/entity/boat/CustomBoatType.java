@@ -3,7 +3,6 @@ package com.ametrinstudios.ametrin.world.entity.boat;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,7 +39,6 @@ public class CustomBoatType {
 
         public Builder(ResourceLocation guid){
             GUID = guid;
-            boatItem(()-> ForgeRegistries.ITEMS.getValue(GUID.withPath(GUID.getPath() + "_boat")));
         }
         public Builder boatItem(Supplier<Item> item){
             return item(BoatVariants.DEFAULT, item);

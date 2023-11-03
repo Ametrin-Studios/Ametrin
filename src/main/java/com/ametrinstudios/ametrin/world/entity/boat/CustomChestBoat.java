@@ -39,7 +39,7 @@ public class CustomChestBoat extends ChestBoat implements ICustomBoat {
         return CustomBoatType.get(new ResourceLocation(typeString));
     }
     @Override
-    public void setBoatType(CustomBoatType type) {entityData.set(DATA_ID_TYPE, type.serialize());}
+    public void setBoatType(@NotNull CustomBoatType type) {entityData.set(DATA_ID_TYPE, type.serialize());}
 
     @Override
     protected void defineSynchedData() {
