@@ -1,3 +1,12 @@
+## 0.1.4 (BETA)
+* removed ColorSpawnEggItem class (use `ItemRegisterHelper.boat`)
+* fixed Strippable API
+* updated Flammable API
+* clean up
+
+## 0.1.3 (BETA)
+* 1.20.2 port
+
 ## 0.1.2 (ALPHA)
 * fixes
 
