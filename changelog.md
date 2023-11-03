@@ -1,3 +1,6 @@
+## 0.1.5 (BETA)
+* fixed Boat API
+
 ## 0.1.4 (BETA)
 * removed ColorSpawnEggItem class (use `ItemRegisterHelper.boat`)
 * fixed Strippable API
