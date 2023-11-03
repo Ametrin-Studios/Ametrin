@@ -7,7 +7,7 @@ Feel free to join our [Discord Server](https://discord.com/invite/hwA9dd5bVh). W
 ## Docs
 ### Custom Boats
 - put texture in `assets/{mod_id}/textures/entity/{boat/chest_boat}`
-- create and register the custom boat type and items
+- create and register the custom boat type and items<br>(*id* should be `ResourceLocation(mod_id, boat_type_name)`)
 ```java
 public static final CustomBoatType TEST_BOAT_TYPE = CustomBoatType.builder(id).boatItem(TestItems.TEST_BOAT::get).chestBoatItem(TestItems.TEST_CHEST_BOAT::get).register();
 ```
