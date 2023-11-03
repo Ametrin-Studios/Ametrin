@@ -1,6 +1,8 @@
 package com.ametrinstudios.ametrin.data.provider;
 
 import com.ametrinstudios.ametrin.data.ItemTagProviderRule;
+import com.ametrinstudios.ametrin.world.entity.boat.BoatVariants;
+import com.ametrinstudios.ametrin.world.item.CustomBoatItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -34,18 +36,30 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
         itemTagProviderRules.add((item, name)-> {
             if(item instanceof AxeItem){
                 tag(ItemTags.AXES).add(item);
-            }
-            if(item instanceof PickaxeItem){
+            }else if(item instanceof PickaxeItem){
                 tag(ItemTags.PICKAXES).add(item);
-            }
-            if(item instanceof SwordItem){
+            } else if(item instanceof SwordItem){
                 tag(ItemTags.SWORDS).add(item);
-            }
-            if(item instanceof ShovelItem){
+            } else if(item instanceof ShovelItem){
                 tag(ItemTags.SHOVELS).add(item);
-            }
-            if(item instanceof HoeItem){
+            } else if(item instanceof HoeItem){
                 tag(ItemTags.HOES).add(item);
+            }
+        });
+
+        itemTagProviderRules.add((item, name)-> {
+            if(item instanceof CustomBoatItem boat){
+                if(boat.Variant == BoatVariants.DEFAULT) {
+                    tag(ItemTags.BOATS).add(item);
+                } else if (boat.Variant == BoatVariants.CHEST) {
+                    tag(ItemTags.CHEST_BOATS).add(item);
+                }
+            }
+        });
+
+        itemTagProviderRules.add((item, name)-> {
+            if(item instanceof SignItem){
+                tag(ItemTags.SIGNS).add(item);
             }
         });
     }

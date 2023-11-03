@@ -24,8 +24,8 @@ import java.util.function.Predicate;
 public class CustomBoatItem extends Item {
     protected static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
 
-    protected final CustomBoatType Type;
-    protected final BoatVariant<?> Variant;
+    public final CustomBoatType Type;
+    public final BoatVariant<?> Variant;
     public CustomBoatItem(CustomBoatType type, BoatVariant<?> variant, Properties properties) {
         super(properties);
         Type = type;
