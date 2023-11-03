@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin.util;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShovelItem;
@@ -12,13 +13,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 public class VanillaCompat {
+    public static final Logger LOGGER = LogUtils.getLogger();
     private static final Map<Block, Block> StrippableRequests = new HashMap<>();
+    private static boolean Pushed = false;
 
     /**
      * Registers simple brewing recipes
@@ -56,6 +60,9 @@ public class VanillaCompat {
      */
     public static void addStrippable(Block log, Block strippedLog){
         StrippableRequests.put(log, strippedLog);
+        if(Pushed){
+            throw new UnsupportedOperationException("Strippables must be registered during FMLCommonSetupEvent");
+        }
     }
 
     /**
@@ -90,5 +97,6 @@ public class VanillaCompat {
     @ApiStatus.Internal
     public static void PushRequests(){
         AxeItem.STRIPPABLES = (new ImmutableMap.Builder<Block, Block>()).putAll(AxeItem.STRIPPABLES).putAll(StrippableRequests).build();
+        Pushed = true;
     }
 }
