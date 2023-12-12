@@ -15,7 +15,7 @@ public class CustomTorchBlock extends TorchBlock {
     protected final Supplier<SimpleParticleType> particle;
 
     public CustomTorchBlock(Properties properties, Supplier<SimpleParticleType> particle) {
-        super(properties, ParticleTypes.FLAME);
+        super(ParticleTypes.FLAME, properties);
         this.particle = particle;
     }
 

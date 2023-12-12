@@ -1,5 +1,6 @@
 package com.ametrinstudios.ametrin.world.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -13,11 +14,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
+    public static final MapCodec<AgeableBushBlock> CODEC = simpleCodec((properties)-> new AgeableBushBlock(0, 0, properties));
     public final int GrowRarity;
     public final int BonusDrop;
     private static final VoxelShape SaplingShape = Block.box(3, 0, 3, 13, 8, 13);
@@ -37,7 +41,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
         registerDefaultState(stateDefinition.any().setValue(Age, 0));
     }
     @Override @ParametersAreNonnullByDefault
-    public @NotNull ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState blockState) {
+    public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         return new ItemStack(asItem());
     }
     @Override @ParametersAreNonnullByDefault
@@ -49,7 +53,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
         }
     }
 
-    public boolean isRandomlyTicking(BlockState blockState) {return isSparse(blockState);}
+    public boolean isRandomlyTicking(@NotNull BlockState blockState) {return isSparse(blockState);}
 
     @Override @ParametersAreNonnullByDefault
     public void randomTick(BlockState blockState, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -98,4 +102,9 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     @Override public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return true;}
     @Override public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 60;}
     @Override public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 100;}
+
+    @Override @NotNull
+    protected MapCodec<? extends BushBlock> codec() {
+        return CODEC;
+    }
 }

@@ -1,8 +1,6 @@
 package com.ametrinstudios.ametrin.world.block.helper;
 
 import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
-import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeFeature;
-import com.ametrinstudios.ametrin.world.gen.feature.tree.CustomTreeGrower;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.*;
@@ -25,10 +23,10 @@ import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourProper
 public class BlockRegisterHelper {
     private BlockRegisterHelper() {}
 
-    public static Supplier<StairBlock> stair(StairBlock.Properties properties, Supplier<BlockState> base) {return ()-> new StairBlock(base, properties);}
+    public static Supplier<StairBlock> stair(StairBlock.Properties properties, Supplier<BlockState> base) {return ()-> new StairBlock(base.get(), properties);}
     public static Supplier<StairBlock> stair(Block parent) {return stair(CopyProperties(parent), parent::defaultBlockState);}
 
-    public static Supplier<SaplingBlock> sapling(Supplier<? extends CustomTreeFeature> tree) {return ()-> new SaplingBlock(new CustomTreeGrower(tree), CopyProperties(Blocks.OAK_SAPLING));}
+//    public static Supplier<SaplingBlock> sapling(Supplier<? extends CustomTreeFeature> tree) {return ()-> new SaplingBlock(new CustomTreeGrower(tree), CopyProperties(Blocks.OAK_SAPLING));}
     public static Supplier<FlowerPotBlock> potted(Supplier<Block> main) {return ()-> new FlowerPotBlock(() -> (FlowerPotBlock)Blocks.FLOWER_POT, main, CopyProperties(Blocks.POTTED_OAK_SAPLING));}
     public static Supplier<AgeableBushBlock> bush(int bonusDrop, int growRarity) {return ()-> new AgeableBushBlock(bonusDrop, growRarity, CopyProperties(Blocks.SWEET_BERRY_BUSH));}
 
@@ -37,28 +35,31 @@ public class BlockRegisterHelper {
     public static Supplier<ButtonBlock> stoneButton() {return stoneButton(BlockSetType.STONE);}
     public static Supplier<ButtonBlock> stoneButton(BlockSetType type) {return button(type, 20, false);}
     public static Supplier<ButtonBlock> button(BlockSetType type, int ticksStayPressed, boolean arrowsCanPress){
-        return ()-> new ButtonBlock(BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), type, ticksStayPressed, arrowsCanPress);
+        return ()-> new ButtonBlock(type, ticksStayPressed, BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY));
     }
 
+    @Deprecated
     public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties) {return fenceGate(properties, WoodType.OAK);}
     public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, WoodType type){
-        return ()-> new FenceGateBlock(properties, type);
+        return ()-> new FenceGateBlock(type, properties);
     }
-    public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, SoundEvent openSound, SoundEvent closeSound){
-        return ()-> new FenceGateBlock(properties, openSound, closeSound);
+    public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, SoundEvent openSound, SoundEvent closeSound, WoodType type){
+        return ()-> new FenceGateBlock(properties, openSound, closeSound, type);
     }
 
+    @Deprecated
     public static Supplier<DoorBlock> door(BlockBehaviour.Properties properties) {return door(properties, BlockSetType.OAK);}
     public static Supplier<DoorBlock> door(BlockBehaviour.Properties properties, BlockSetType type){
-        return ()-> new DoorBlock(properties, type);
+        return ()-> new DoorBlock(type, properties);
     }
+    @Deprecated
     public static Supplier<TrapDoorBlock> trapDoor(BlockBehaviour.Properties properties) {return trapDoor(properties, BlockSetType.OAK);}
     public static Supplier<TrapDoorBlock> trapDoor(BlockBehaviour.Properties properties, BlockSetType type){
-        return ()-> new TrapDoorBlock(properties, type);
+        return ()-> new TrapDoorBlock(type, properties);
     }
 
-    public static Supplier<PressurePlateBlock> woodenPressurePlate(MapColor mapColor, BlockSetType type) {return pressurePlate(PressurePlateBlock.Sensitivity.EVERYTHING, basePressurePlateProperties(mapColor, NoteBlockInstrument.BASS).ignitedByLava(), type);}
-    public static Supplier<PressurePlateBlock> stonePressurePlate(MapColor mapColor, BlockSetType type) {return pressurePlate(PressurePlateBlock.Sensitivity.MOBS, basePressurePlateProperties(mapColor, NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops(), type);}
+    public static Supplier<PressurePlateBlock> woodenPressurePlate(MapColor mapColor, BlockSetType type) {return pressurePlate(basePressurePlateProperties(mapColor, NoteBlockInstrument.BASS).ignitedByLava(), type);}
+    public static Supplier<PressurePlateBlock> stonePressurePlate(MapColor mapColor, BlockSetType type) {return pressurePlate(basePressurePlateProperties(mapColor, NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops(), type);}
 
     public static BlockBehaviour.Properties basePressurePlateProperties(DyeColor mapColor, NoteBlockInstrument instrument){
         return internalPressurePlateProperties(instrument).mapColor(mapColor);
@@ -72,8 +73,8 @@ public class BlockRegisterHelper {
     private static BlockBehaviour.Properties internalPressurePlateProperties(NoteBlockInstrument instrument){
         return BlockBehaviour.Properties.of().forceSolidOn().instrument(instrument).noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY);
     }
-    public static Supplier<PressurePlateBlock> pressurePlate(PressurePlateBlock.Sensitivity sensitivity, BlockBehaviour.Properties properties, BlockSetType type){
-        return ()-> new PressurePlateBlock(sensitivity, properties, type);
+    public static Supplier<PressurePlateBlock> pressurePlate(BlockBehaviour.Properties properties, BlockSetType type){
+        return ()-> new PressurePlateBlock(type, properties);
     }
 
     public static ToIntFunction<BlockState> litEmission(int lightLevel) {return (state)-> state.getValue(BlockStateProperties.LIT) ? lightLevel : 0;}

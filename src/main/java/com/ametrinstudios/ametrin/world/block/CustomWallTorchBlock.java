@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public class CustomWallTorchBlock extends WallTorchBlock {
     protected final Supplier<SimpleParticleType> particle;
     public CustomWallTorchBlock(Properties properties, Supplier<SimpleParticleType> particle) {
-        super(properties, ParticleTypes.FLAME);
+        super(ParticleTypes.FLAME, properties);
         this.particle = particle;
     }
 

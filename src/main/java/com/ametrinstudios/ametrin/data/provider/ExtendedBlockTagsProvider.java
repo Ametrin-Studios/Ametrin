@@ -116,9 +116,6 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
             if(block instanceof FireBlock){
                 tag(BlockTags.FIRE).add(block);
             }
-            if(block instanceof SandBlock){
-                tag(BlockTags.SAND).add(block);
-            }
             if(block instanceof FlowerBlock){
                 tag(BlockTags.SMALL_FLOWERS).add(block);
             }

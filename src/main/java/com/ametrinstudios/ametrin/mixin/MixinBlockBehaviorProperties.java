@@ -42,7 +42,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow boolean spawnTerrainParticles;
     @Shadow NoteBlockInstrument instrument;
     @Shadow boolean replaceable;
-    @Shadow Supplier<ResourceLocation> lootTableSupplier;
+    @Shadow private Supplier<ResourceLocation> lootTableSupplier;
     @Shadow BlockBehaviour.StateArgumentPredicate<EntityType<?>> isValidSpawn;
     @Shadow BlockBehaviour.StatePredicate isRedstoneConductor;
     @Shadow BlockBehaviour.StatePredicate isSuffocating;

@@ -1,3 +1,7 @@
+## 0.1.6 (ALPHA)
+* ported to 1.20.4
+* disabled tree api (incompatible)
+
 ## 0.1.5 (BETA)
 * fixed Boat API
 

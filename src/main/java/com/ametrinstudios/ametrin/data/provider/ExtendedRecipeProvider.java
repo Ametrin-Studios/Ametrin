@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin.data.provider;
 
 import com.google.common.collect.Sets;
+import com.google.gson.JsonElement;
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.CachedOutput;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -22,7 +24,6 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -43,20 +44,20 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     @Override
     public @NotNull CompletableFuture<?> run(@NotNull CachedOutput output){
         currentModID = modID;
-        List<CompletableFuture<?>> list = new ArrayList<>();
+        final var list = new ArrayList<CompletableFuture<?>>();
         buildRecipes(new RecipeOutput() {
             @Override
-            public void accept(@NotNull FinishedRecipe recipe) {
-                if (!Recipes.add(recipe.id())) {
-                    throw new IllegalStateException("Duplicate recipe " + recipe.id());
+            public void accept(@NotNull ResourceLocation id, @NotNull Recipe<?> recipe, @Nullable ResourceLocation advancementId, @Nullable JsonElement advancement) {
+                if (!Recipes.add(id)) {
+                    throw new IllegalStateException("Duplicate recipe " + id);
                 } else {
-                    list.add(DataProvider.saveStable(output, recipe.serializeRecipe(), recipePathProvider.json(recipe.id())));
-                    var advancementData = recipe.advancementData();
-
-                    if (advancementData != null) {
-                        var saveAdvancementFuture = saveAdvancement(output, advancementData.id(), advancementData.data(), recipe);
-                        if (saveAdvancementFuture != null) {list.add(saveAdvancementFuture);}
+                    list.add(DataProvider.saveStable(output, Recipe.CODEC, recipe, recipePathProvider.json(id)));
+                    if (advancement == null) {return;}
+                    var saveAdvancementFuture = saveAdvancement(output, advancementId, advancement);
+                    if (saveAdvancementFuture != null) {
+                        list.add(saveAdvancementFuture);
                     }
+
                 }
             }
 
