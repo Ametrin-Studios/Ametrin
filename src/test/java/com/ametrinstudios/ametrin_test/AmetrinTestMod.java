@@ -1,6 +1,6 @@
 package com.ametrinstudios.ametrin_test;
 
-import com.ametrinstudios.ametrin.data.provider.CustomLootTableProvider;
+import com.ametrinstudios.ametrin.data.DataProviderHelper;
 import com.ametrinstudios.ametrin.util.VanillaCompat;
 import com.ametrinstudios.ametrin_test.data.provider.TestBlockStateProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestItemModelProvider;
@@ -34,29 +34,20 @@ public class AmetrinTestMod {
     }
 
     private static void setup(final FMLCommonSetupEvent event){
-//        VanillaCompat.addStrippable(TestBlocks.TEST_BLOCK.get(), Blocks.DIAMOND_BLOCK);
-        VanillaCompat.addFlattenable(TestBlocks.TEST_BLOCK.get(), Blocks.DIAMOND_BLOCK);
+        VanillaCompat.addStrippable(TestBlocks.TEST_BLOCK.get(), Blocks.DIAMOND_BLOCK);
+//        VanillaCompat.addFlattenable(TestBlocks.TEST_BLOCK.get(), Blocks.DIAMOND_BLOCK);
     }
 
     public static void gatherData(GatherDataEvent event){
+        var helper = new DataProviderHelper(event);
         // somehow the providers don't get run
 
-        var generator = event.getGenerator();
-        var output = generator.getPackOutput();
-        var existingFileHelper = event.getExistingFileHelper();
-
-        var runClient = event.includeClient();
-        var runServer = event.includeServer();
-
-        generator.addProvider(runServer, new TestBlockStateProvider(output, existingFileHelper));
-        generator.addProvider(runServer, new TestItemModelProvider(output, existingFileHelper));
-        generator.addProvider(runServer, new TestRecipeProvider(output, event.getLookupProvider()));
-
-        var lootTableProvider = CustomLootTableProvider.Builder()
+        helper.add(TestBlockStateProvider::new);
+        helper.add(TestItemModelProvider::new);
+        helper.add(TestRecipeProvider::new);
+        helper.addLootTables(builder -> builder
                 .AddBlockProvider(TestBlockLootSubProvider::new)
-                .AddChestProvider(TestLootTableSubProvider::new)
-                .Build(output);
-        generator.addProvider(runServer, lootTableProvider);
+                .AddChestProvider(TestLootTableSubProvider::new));
     }
 
     public static ResourceLocation locate(String key){

@@ -33,4 +33,4 @@ issueTrackerURL="https://github.com/BarionLP/Ametrin/issues" #optional
     config="ametrin.mixins.json"
 
 [[accessTransformers]]
-    file="ametrin_base.at"
+    file="ametrin_base.cfg"
