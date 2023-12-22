@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.ForgeHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -67,9 +67,9 @@ public class AgeableDoublePlantBlock extends SimpleDoublePlantBlock implements B
         if(currentState.getValue(HALF) == DoubleBlockHalf.UPPER) {return;}
 
         int currentAge = currentState.getValue(Age);
-        if (isSparse(currentAge) && ForgeHooks.onCropsGrowPre(level, pos, currentState,random.nextInt(5) == 0)) {
+        if (isSparse(currentAge) && CommonHooks.onCropsGrowPre(level, pos, currentState,random.nextInt(5) == 0)) {
             setAgeInLevel(currentAge+1, currentState, level, pos);
-            ForgeHooks.onCropsGrowPost(level, pos, currentState);
+            CommonHooks.onCropsGrowPost(level, pos, currentState);
         }
     }
 

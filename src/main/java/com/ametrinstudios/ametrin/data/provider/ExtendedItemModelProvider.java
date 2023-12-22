@@ -8,18 +8,18 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.function.Supplier;
 
 import static com.ametrinstudios.ametrin.data.DataProviderExtensions.*;
 
-public abstract class ExtendedItemModelProvider extends ItemModelProvider{
+public abstract class ExtendedItemModelProvider extends ItemModelProvider {
     protected final ModelFile generated = getExistingFile(mcLoc("item/generated"));
     private final ModelFile spawnEgg = getExistingFile(mcLoc("item/template_spawn_egg"));
     protected final ModelFile handheld = getExistingFile(mcLoc("item/handheld"));
@@ -163,10 +163,10 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider{
         });
     }
 
-    protected void runProviderRules(DeferredRegister<Item> itemRegister){
-        runProviderRules(itemRegister.getEntries().stream().map(RegistryObject::get).iterator());
+    protected void runProviderRules(DeferredRegister.Items itemRegister){
+        runProviderRules(itemRegister.getEntries().stream().map(Supplier::get).iterator());
     }
-    protected void runProviderRules(Iterator<Item> items){
+    protected void runProviderRules(Iterator<? extends Item> items){
         items.forEachRemaining(item -> {
             for(Class<?> clazz : excludedClasses){
                 if(clazz.isInstance(item)) {return;}

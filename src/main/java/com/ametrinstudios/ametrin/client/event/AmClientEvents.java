@@ -4,10 +4,10 @@ import com.ametrinstudios.ametrin.Ametrin;
 import com.ametrinstudios.ametrin.client.renderer.CustomBoatRenderer;
 import com.ametrinstudios.ametrin.world.AmetrinEntityTypes;
 import com.ametrinstudios.ametrin.world.entity.boat.BoatVariants;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

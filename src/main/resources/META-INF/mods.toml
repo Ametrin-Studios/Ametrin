@@ -16,15 +16,21 @@ issueTrackerURL="https://github.com/BarionLP/Ametrin/issues" #optional
     description='''${mod_description}'''
 
 [[dependencies.${mod_id}]] #optional
-    modId="forge" #mandatory
-    mandatory=true #mandatory
-    versionRange="${forge_version_range}" #mandatory
+    modId="neoforge" #mandatory
+    type="required"
+    versionRange="${neo_version_range}" #mandatory
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="minecraft"
-    mandatory=true
+    type="required"
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[mixins]]
+    config="ametrin.mixins.json"
+
+[[accessTransformers]]
+    file="ametrin_base.at"

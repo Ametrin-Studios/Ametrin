@@ -3,9 +3,9 @@ package com.ametrinstudios.ametrin.event;
 import com.ametrinstudios.ametrin.Ametrin;
 import com.ametrinstudios.ametrin.world.gen.structure.processor.AmProcessorTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

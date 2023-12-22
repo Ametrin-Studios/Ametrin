@@ -9,15 +9,15 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getItemName;
 
@@ -67,8 +67,8 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     @Override
     protected abstract void addTags(@NotNull HolderLookup.Provider provider);
 
-    protected void runRules(DeferredRegister<Item> register){
-        runRules(register.getEntries().stream().map(RegistryObject::get).iterator());
+    protected void runRules(DeferredRegister.Items register){
+        runRules(register.getEntries().stream().map(Supplier::get).iterator());
     }
 
     protected void runRules(Iterator<? extends Item> items){

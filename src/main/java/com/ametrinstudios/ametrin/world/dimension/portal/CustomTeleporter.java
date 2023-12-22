@@ -25,7 +25,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.level.portal.PortalShape;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.ITeleporter;
+import net.neoforged.neoforge.common.util.ITeleporter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
@@ -35,12 +35,12 @@ import java.util.function.Function;
 public class CustomTeleporter implements ITeleporter {
     protected final ServerLevel level;
 
-    protected final PoiType poi;
+    protected final ResourceKey<PoiType> poi;
     protected final PortalBlock portalBlock;
     protected final Block portalFrameBlock;
     protected final ResourceKey<Level> targetLevel;
 
-    public CustomTeleporter(ServerLevel level, PoiType poi, ResourceKey<Level> targetLevel, PortalBlock portalBlock, Block portalFrameBlock){
+    public CustomTeleporter(ServerLevel level, ResourceKey<PoiType> poi, ResourceKey<Level> targetLevel, PortalBlock portalBlock, Block portalFrameBlock){
         this.level = level;
         this.poi = poi;
         this.targetLevel = targetLevel;
@@ -51,8 +51,8 @@ public class CustomTeleporter implements ITeleporter {
     public Optional<BlockUtil.FoundRectangle> getExistingPortal(BlockPos pos){
         PoiManager poiManager = this.level.getPoiManager();
         poiManager.ensureLoadedAndValid(this.level, pos, 64);
-        Optional<PoiRecord> optional = poiManager.getInSquare((poiType) ->
-                poiType.get() == poi, pos, 64, PoiManager.Occupancy.ANY).sorted(Comparator.<PoiRecord>comparingDouble((poi) ->
+        var optional = poiManager.getInSquare((poiType) ->
+                poiType.is(poi), pos, 64, PoiManager.Occupancy.ANY).sorted(Comparator.<PoiRecord>comparingDouble((poi) ->
                 poi.getPos().distSqr(pos)).thenComparingInt((poi) ->
                 poi.getPos().getY())).filter((poi) ->
                 this.level.getBlockState(poi.getPos()).hasProperty(BlockStateProperties.HORIZONTAL_AXIS)).findFirst();

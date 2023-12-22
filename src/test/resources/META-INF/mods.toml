@@ -1,31 +1,37 @@
-
 modLoader="javafml" #mandatory
-loaderVersion="[48,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
-license="All rights reserved"
-#issueTrackerURL="https://github.com/BarionLP/Ametrin/issues" #optional
+loaderVersion="${loader_version_range}" #mandatory
+license="${mod_license}"
+issueTrackerURL="https://github.com/BarionLP/Ametrin/issues" #optional
 
 [[mods]] #mandatory
     modId="ametrin_test" #mandatory
-    version="0.0.1" #mandatory
+    version="0.0.0" #mandatory
     displayName="Ametrin Test" #mandatory
-#    displayURL="https://www.curseforge.com/minecraft/mc-mods/ametrin" #optional
-    #logoFile="logo.png" #optional
-    #credits="" #optional
-    authors="Ametrin Studios" #optional
+    #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+    displayURL="https://www.curseforge.com/minecraft/mc-mods/ametrin" #optional
+    #logoFile="examplemod.png" #optional
+    #credits="Thanks to KaupenJoe for his great tutorials" #optional
+    authors="${mod_authors}" #optional
+    #displayTest="MATCH_VERSION" #optional
+    description='''${mod_description}'''
 
-description='''
-Test mod for Ametrin API'''
-
-[[dependencies.ametrin]] #optional
-    modId="forge" #mandatory
-    mandatory=true #mandatory
-    versionRange="[48,)" #mandatory
+[[dependencies.ametrin_test]] #optional
+    modId="neoforge" #mandatory
+    type="required"
+    versionRange="${neo_version_range}" #mandatory
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.ametrin]]
+[[dependencies.ametrin_test]]
     modId="minecraft"
-    mandatory=true
-    versionRange="[1.20.2,1.21)"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.ametrin_test]]
+    modId="ametrin"
+    type="required"
+    versionRange="[0.0.1,)"
     ordering="NONE"
     side="BOTH"

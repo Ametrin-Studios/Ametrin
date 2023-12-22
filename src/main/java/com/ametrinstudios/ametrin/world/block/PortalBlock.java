@@ -30,11 +30,11 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.Cancelable;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,11 +65,10 @@ public abstract class PortalBlock extends Block {
     }
 
     public static boolean onTrySpawnPortal(LevelAccessor world, BlockPos pos, PortalBlock.Size size){
-        return MinecraftForge.EVENT_BUS.post(new PortalSpawnEvent(world, pos, world.getBlockState(pos), size));
+        return !NeoForge.EVENT_BUS.post(new PortalSpawnEvent(world, pos, world.getBlockState(pos), size)).isCanceled();
     }
 
-    @Cancelable
-    public static class PortalSpawnEvent extends BlockEvent{
+    public static class PortalSpawnEvent extends BlockEvent implements ICancellableEvent {
         private final PortalBlock.Size size;
 
         public PortalSpawnEvent(LevelAccessor world, BlockPos pos, BlockState state, PortalBlock.Size size){
@@ -109,9 +108,9 @@ public abstract class PortalBlock extends Block {
                 if(!entity.level().isClientSide && !pos.equals(entity.portalEntrancePos)){
                     entity.portalEntrancePos = pos.immutable();
                 }
-                Level entityWorld = entity.level();
+                var entityWorld = entity.level();
                 MinecraftServer server = entityWorld.getServer();
-                ResourceKey<Level> destination = entity.level().dimension() == targetLevel() ? Level.OVERWORLD : targetLevel();
+                var destination = entity.level().dimension() == targetLevel() ? Level.OVERWORLD : targetLevel();
                 if(server != null) {
                     ServerLevel destinationWorld = server.getLevel(destination);
                     if(destinationWorld != null && server.isNetherEnabled() && !entity.isPassenger()){
@@ -314,6 +313,6 @@ public abstract class PortalBlock extends Block {
     protected abstract TagKey<Block> portalFrameBlocks();
     protected abstract SimpleParticleType particle();
     protected abstract ResourceKey<Level> targetLevel();
-    protected abstract PoiType poi();
+    protected abstract ResourceKey<PoiType> poi();
     protected abstract Block defaultPortalFrameBlock();
 }

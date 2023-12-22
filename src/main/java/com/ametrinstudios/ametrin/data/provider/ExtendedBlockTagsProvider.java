@@ -7,16 +7,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.*;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getBlockName;
 import static com.ametrinstudios.ametrin.data.DataProviderExtensions.isWooden;
@@ -29,8 +29,8 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
         super(output, registries, modID, existingFileHelper);
     }
 
-    protected void runRules(DeferredRegister<Block> blockRegistry){
-        runRules(blockRegistry.getEntries().stream().map(RegistryObject::get).iterator());
+    protected void runRules(DeferredRegister.Blocks blockRegistry){
+        runRules(blockRegistry.getEntries().stream().map(Supplier::get).iterator());
     }
 
     protected void runRules(Iterator<? extends Block> blocks){

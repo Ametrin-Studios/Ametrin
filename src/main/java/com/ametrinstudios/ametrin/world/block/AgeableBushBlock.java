@@ -23,6 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.CommonHooks;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -58,9 +59,9 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     @Override @ParametersAreNonnullByDefault
     public void randomTick(BlockState blockState, ServerLevel level, BlockPos pos, RandomSource random) {
         int i = blockState.getValue(Age);
-        if (i < MaxAge && level.getRawBrightness(pos.above(), 0) >= 9 && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(level, pos, blockState,random.nextInt(GrowRarity) == 0)) {
+        if (i < MaxAge && level.getRawBrightness(pos.above(), 0) >= 9 && CommonHooks.onCropsGrowPre(level, pos, blockState,random.nextInt(GrowRarity) == 0)) {
             level.setBlock(pos, blockState.setValue(Age, i + 1), 2);
-            net.minecraftforge.common.ForgeHooks.onCropsGrowPost(level, pos, blockState);
+            CommonHooks.onCropsGrowPost(level, pos, blockState);
         }
     }
 

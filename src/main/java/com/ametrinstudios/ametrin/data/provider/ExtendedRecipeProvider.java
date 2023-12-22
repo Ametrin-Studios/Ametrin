@@ -1,9 +1,11 @@
 package com.ametrinstudios.ametrin.data.provider;
 
 import com.google.common.collect.Sets;
-import com.google.gson.JsonElement;
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -18,13 +20,16 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.SlabBlock;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.conditions.WithConditions;
+import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -36,38 +41,36 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static String currentModID;
     protected String modID;
 
-    public ExtendedRecipeProvider(PackOutput packOutput, String modID) {
-        super(packOutput);
+    public ExtendedRecipeProvider(PackOutput packOutput, String modID, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(packOutput, lookupProvider);
         this.modID = modID;
     }
 
     @Override
     public @NotNull CompletableFuture<?> run(@NotNull CachedOutput output){
         currentModID = modID;
-        final var list = new ArrayList<CompletableFuture<?>>();
-        buildRecipes(new RecipeOutput() {
-            @Override
-            public void accept(@NotNull ResourceLocation id, @NotNull Recipe<?> recipe, @Nullable ResourceLocation advancementId, @Nullable JsonElement advancement) {
-                if (!Recipes.add(id)) {
-                    throw new IllegalStateException("Duplicate recipe " + id);
-                } else {
-                    list.add(DataProvider.saveStable(output, Recipe.CODEC, recipe, recipePathProvider.json(id)));
-                    if (advancement == null) {return;}
-                    var saveAdvancementFuture = saveAdvancement(output, advancementId, advancement);
-                    if (saveAdvancementFuture != null) {
-                        list.add(saveAdvancementFuture);
+        return this.lookupProvider.thenCompose((provider)->{
+            final var list = new ArrayList<CompletableFuture<?>>();
+            buildRecipes(new RecipeOutput() {
+                @Override
+                public void accept(ResourceLocation id, Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, ICondition... conditions) {
+                    if (!Recipes.add(id)) {throw new IllegalStateException("Duplicate recipe " + id);}
+
+                    list.add(DataProvider.saveStable(output, NeoForgeExtraCodecs.CONDITIONAL_RECIPE_CODEC, Optional.of(new WithConditions<>(recipe, conditions)), recipePathProvider.json(id)));
+                    if(advancementHolder != null){
+                        list.add(DataProvider.saveStable(output, NeoForgeExtraCodecs.CONDITIONAL_ADVANCEMENT_CODEC, Optional.of(new WithConditions<>(advancementHolder.value(), conditions)), advancementPathProvider.json(advancementHolder.id())));
                     }
-
                 }
-            }
 
-            @Override @NotNull
-            public Advancement.Builder advancement() {
-                return Advancement.Builder.recipeAdvancement().parent(RecipeBuilder.ROOT_RECIPE_ADVANCEMENT);
-            }
+                @Override @NotNull
+                public Advancement.Builder advancement() {
+                    return Advancement.Builder.recipeAdvancement().parent(RecipeBuilder.ROOT_RECIPE_ADVANCEMENT);
+                }
+            });
+
+            currentModID = "";
+            return CompletableFuture.allOf(list.toArray(CompletableFuture[]::new));
         });
-        currentModID = "";
-        return CompletableFuture.allOf(list.toArray(CompletableFuture[]::new));
     }
 
     @Override
@@ -434,8 +437,8 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         for(var dye : DyeColor.values()){
             var resultID = location(idPattern.replace("{color}", dye.getName()));
             var dyeID = new ResourceLocation(dye.getName() + "_dye");
-            var result = ForgeRegistries.ITEMS.getValue(resultID);
-            var dyeItem = ForgeRegistries.ITEMS.getValue(dyeID);
+            var result = BuiltInRegistries.ITEM.get(resultID);
+            var dyeItem = BuiltInRegistries.ITEM.get(dyeID);
             ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result).requires(dyedItems).requires(dyeItem).group(group).unlockedBy("has_needed_dye", has(dyeItem)).save(output, "dye_" + getItemName(result));
         }
     }
@@ -579,7 +582,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     protected static String getHasName(TagKey<Item> tag) {return "has_" + tag.location().getPath().replace('/', '_');}
-    protected static String itemID(ItemLike item) {return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath();}
+    protected static String itemID(ItemLike item) {return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.asItem())).getPath();}
     protected static String getItemTagName(TagKey<Item> tag) {return tag.location().getPath().replace('/', '_');}
     protected static ResourceLocation location(String key) {
         if(key.contains(":")){

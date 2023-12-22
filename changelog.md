@@ -1,4 +1,4 @@
-## 0.1.6 (ALPHA)
+## 0.1.6 (BETA)
 * ported to 1.20.4
 * disabled tree api (incompatible)
 

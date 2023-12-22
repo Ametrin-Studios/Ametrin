@@ -7,15 +7,14 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.function.Supplier;
 
 import static com.ametrinstudios.ametrin.data.DataProviderExtensions.*;
 
@@ -61,8 +60,8 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
      * automatically generates block models based on all given {@link #blockStateProviderRules} and some build-in rules
      * @param blockRegistry mod block registry
      */
-    protected void runProviderRules(DeferredRegister<Block> blockRegistry){
-        runProviderRules(blockRegistry.getEntries().stream().map(RegistryObject::get).iterator());
+    protected void runProviderRules(DeferredRegister.Blocks blockRegistry){
+        runProviderRules(blockRegistry.getEntries().stream().map(Supplier::get).iterator());
     }
 
     /**
@@ -148,8 +147,8 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
                     doorBlock((DoorBlock) block, modBlockLoc(name + "_bottom"), modBlockLoc(name + "_top"));
                 }
             }else if(block instanceof DoublePlantBlock){
-                ModelFile top = models().withExistingParent(name + "_top", "block/tinted_cross").texture("cross", modBlockLoc(texture + "_top")).renderType(RenderTypes.Cutout);
-                ModelFile bottom = models().withExistingParent(name + "_bottom", "block/tinted_cross").texture("cross", modBlockLoc(texture + "_bottom")).renderType(RenderTypes.Cutout);
+                var top = models().withExistingParent(name + "_top", "block/tinted_cross").texture("cross", modBlockLoc(texture + "_top")).renderType(RenderTypes.Cutout);
+                var bottom = models().withExistingParent(name + "_bottom", "block/tinted_cross").texture("cross", modBlockLoc(texture + "_bottom")).renderType(RenderTypes.Cutout);
                 getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? bottom : top).build());
             }else if(block instanceof AgeableBushBlock){
                 simpleAgeableBushBlock((AgeableBushBlock) block, name, texture);
@@ -191,64 +190,64 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
 
     protected void portalBlock(PortalBlock portal, String name, String texture){
         ResourceLocation textureLoc = modBlockLoc(texture);
-        ModelFile ew = models().withExistingParent(name + "_ew", "nether_portal_ew").texture("portal", textureLoc).texture("particle", textureLoc).renderType(RenderTypes.Translucent);
-        ModelFile ns = models().withExistingParent(name + "_ns", "nether_portal_ns").texture("portal", textureLoc).texture("particle", textureLoc).renderType(RenderTypes.Translucent);
+        var ew = models().withExistingParent(name + "_ew", "nether_portal_ew").texture("portal", textureLoc).texture("particle", textureLoc).renderType(RenderTypes.Translucent);
+        var ns = models().withExistingParent(name + "_ns", "nether_portal_ns").texture("portal", textureLoc).texture("particle", textureLoc).renderType(RenderTypes.Translucent);
         getVariantBuilder(portal).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(PortalBlock.AXIS) == Direction.Axis.X ? ns : ew).build());
     }
 
     protected void lanternBlock(LanternBlock lantern, String name, String texture){
-        ModelFile model = models().withExistingParent(name, "block/template_lantern").texture("lantern", modBlockLoc(texture)).renderType(RenderTypes.Cutout);
-        ModelFile modelHanging = models().withExistingParent(name + "_hanging", "block/template_hanging_lantern").texture("lantern", modBlockLoc(texture)).renderType(RenderTypes.Cutout);
+        var model = models().withExistingParent(name, "block/template_lantern").texture("lantern", modBlockLoc(texture)).renderType(RenderTypes.Cutout);
+        var modelHanging = models().withExistingParent(name + "_hanging", "block/template_hanging_lantern").texture("lantern", modBlockLoc(texture)).renderType(RenderTypes.Cutout);
         getVariantBuilder(lantern).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(state.getValue(LanternBlock.HANGING) ? modelHanging : model).build(), LanternBlock.WATERLOGGED);
     }
     protected void campfireBlock(CampfireBlock campfire, String name, String texture){
-        ModelFile model = models().withExistingParent(name, "block/template_campfire").texture("fire", modBlockLoc(texture + "_fire")).texture("lit_log", modBlockLoc(texture + "_log_lit")).renderType(RenderTypes.Cutout);
-        ModelFile modelOff = models().getExistingFile(new ResourceLocation("block/campfire_off"));
+        var model = models().withExistingParent(name, "block/template_campfire").texture("fire", modBlockLoc(texture + "_fire")).texture("lit_log", modBlockLoc(texture + "_log_lit")).renderType(RenderTypes.Cutout);
+        var modelOff = models().getExistingFile(new ResourceLocation("block/campfire_off"));
         getVariantBuilder(campfire).forAllStatesExcept(blockState -> ConfiguredModel.builder().modelFile(blockState.getValue(CampfireBlock.LIT) ? model : modelOff).rotationY(horizontalDirectionToYAngleForCampfire(blockState.getValue(CampfireBlock.FACING))).build(), CampfireBlock.WATERLOGGED, CampfireBlock.SIGNAL_FIRE);
     }
     protected void wallTorchBlock(WallTorchBlock wallTorch, String name, String texture){
-        ModelFile model = models().withExistingParent(name, "block/template_torch_wall").texture("torch", modBlockLoc(texture.replace("_wall", ""))).renderType(RenderTypes.Cutout);
+        var model = models().withExistingParent(name, "block/template_torch_wall").texture("torch", modBlockLoc(texture.replace("_wall", ""))).renderType(RenderTypes.Cutout);
         getVariantBuilder(wallTorch).forAllStates(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngleForWallTorch(state.getValue(WallTorchBlock.FACING))).build());
     }
 
     protected void head(CustomHeadBlock head, String name){
         getVariantBuilder(head).forAllStatesExcept(state -> {
             int rotation = state.getValue(CustomHeadBlock.Rotation);
-            ModelFile model = models().withExistingParent( "block/" + name + "/" + rotation, mcLoc("block/head/" + rotation)).texture("texture", modBlockLoc(name));
+            var model = models().withExistingParent( "block/" + name + "/" + rotation, mcLoc("block/head/" + rotation)).texture("texture", modBlockLoc(name));
             return ConfiguredModel.builder().modelFile(model).build();
         }, AbstractHeadBlock.Waterlogged);
     }
     protected void headWall(CustomWallHeadBlock wallHead, String name){
-        ModelFile model = models().withExistingParent( "block/" + name, mcLoc("block/head_wall")).texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
+        var model = models().withExistingParent( "block/" + name, mcLoc("block/head_wall")).texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
         getVariantBuilder(wallHead).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngle(state.getValue(CustomWallHeadBlock.Facing))).build(), AbstractHeadBlock.Waterlogged);
     }
     protected void headCutout(CustomHeadBlock head, String name){
         getVariantBuilder(head).forAllStatesExcept(state -> {
             int rotation = state.getValue(CustomHeadBlock.Rotation);
-            ModelFile model = models().withExistingParent( "block/" + name + "/" + rotation, mcLoc("block/head/cutout/" + rotation)).texture("texture", modBlockLoc(name)).renderType(RenderTypes.Cutout);
+            var model = models().withExistingParent( "block/" + name + "/" + rotation, mcLoc("block/head/cutout/" + rotation)).texture("texture", modBlockLoc(name)).renderType(RenderTypes.Cutout);
             return ConfiguredModel.builder().modelFile(model).build();
         }, AbstractHeadBlock.Waterlogged);
     }
     protected void headCutoutWall(CustomWallHeadBlock wallHead, String name){
-        ModelFile model = models().withExistingParent( "block/" + name, modLoc("block/head_wall_cutout")).texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
+        var model = models().withExistingParent( "block/" + name, modLoc("block/head_wall_cutout")).texture("texture", modBlockLoc(name.replace("_wall", ""))).renderType(RenderTypes.Cutout);
         getVariantBuilder(wallHead).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model).rotationY(horizontalDirectionToYAngle(state.getValue(CustomWallHeadBlock.Facing))).build(), AbstractHeadBlock.Waterlogged);
     }
 
     protected void simpleAgeableBushBlock(AgeableBushBlock bush, String name, String texture) {
-        ModelFile Age0 = models().cross("block/" + name + "/stage0", mcLoc("block/sweet_berry_bush_stage0")).renderType(RenderTypes.Cutout);
-        ModelFile Age1 = models().cross("block/" + name + "/stage1", mcLoc("block/sweet_berry_bush_stage1")).renderType(RenderTypes.Cutout);
-        ModelFile Age2 = models().cross("block/" + name + "/stage2", modBlockLoc(texture + "/stage2")).renderType(RenderTypes.Cutout);
-        ModelFile Age3 = models().cross("block/" + name + "/stage3", modBlockLoc(texture + "/stage3")).renderType(RenderTypes.Cutout);
+        var Age0 = models().cross("block/" + name + "/stage0", mcLoc("block/sweet_berry_bush_stage0")).renderType(RenderTypes.Cutout);
+        var Age1 = models().cross("block/" + name + "/stage1", mcLoc("block/sweet_berry_bush_stage1")).renderType(RenderTypes.Cutout);
+        var Age2 = models().cross("block/" + name + "/stage2", modBlockLoc(texture + "/stage2")).renderType(RenderTypes.Cutout);
+        var Age3 = models().cross("block/" + name + "/stage3", modBlockLoc(texture + "/stage3")).renderType(RenderTypes.Cutout);
         getVariantBuilder(bush).forAllStates(state -> {
             final int age = state.getValue(IAgeablePlant.Age);
             return ConfiguredModel.builder().modelFile((age == 0) ? Age0 : (age == 1) ? Age1 : (age == 2) ? Age2 : Age3).build();
         });
     }
     protected void ageableBushBlock(AgeableBushBlock bush, String name, String texture) {
-        ModelFile Age0 = models().cross("block/" + name + "/stage0", modBlockLoc(texture + "/stage0")).renderType(RenderTypes.Cutout);
-        ModelFile Age1 = models().cross("block/" + name + "/stage1", modBlockLoc(texture + "/stage1")).renderType(RenderTypes.Cutout);
-        ModelFile Age2 = models().cross("block/" + name + "/stage2", modBlockLoc(texture + "/stage2")).renderType(RenderTypes.Cutout);
-        ModelFile Age3 = models().cross("block/" + name + "/stage3", modBlockLoc(texture + "/stage3")).renderType(RenderTypes.Cutout);
+        var Age0 = models().cross("block/" + name + "/stage0", modBlockLoc(texture + "/stage0")).renderType(RenderTypes.Cutout);
+        var Age1 = models().cross("block/" + name + "/stage1", modBlockLoc(texture + "/stage1")).renderType(RenderTypes.Cutout);
+        var Age2 = models().cross("block/" + name + "/stage2", modBlockLoc(texture + "/stage2")).renderType(RenderTypes.Cutout);
+        var Age3 = models().cross("block/" + name + "/stage3", modBlockLoc(texture + "/stage3")).renderType(RenderTypes.Cutout);
         getVariantBuilder(bush).forAllStates(state -> {
             final int age = state.getValue(IAgeablePlant.Age);
             return ConfiguredModel.builder().modelFile((age == 0) ? Age0 : (age == 1) ? Age1 : (age == 2) ? Age2 : Age3).build();

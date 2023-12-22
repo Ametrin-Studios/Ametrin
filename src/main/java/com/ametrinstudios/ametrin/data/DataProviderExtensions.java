@@ -1,8 +1,8 @@
 package com.ametrinstudios.ametrin.data;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -29,6 +29,6 @@ public class DataProviderExtensions {
     public static boolean isWood(String name) {return name.matches(".*(wood|hyphae).*");}
     public static boolean isWooden(String name) {return isLog(name) || isWood(name) || name.contains("plank") || isPlank(name);}
 
-    public static String getItemName(Item item) {return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getPath();}
-    public static String getBlockName(Block block) {return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();}
+    public static String getItemName(Item item) {return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)).getPath();}
+    public static String getBlockName(Block block) {return Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block)).getPath();}
 }

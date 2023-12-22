@@ -18,11 +18,14 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
 import java.util.Map;
 
+@OnlyIn(Dist.CLIENT)
 public class CustomBoatRenderer <B extends Boat & ICustomBoat> extends EntityRenderer<B> {
     private final Map<CustomBoatType, Pair<ResourceLocation, ListModel<Boat>>> BoatResources;
 

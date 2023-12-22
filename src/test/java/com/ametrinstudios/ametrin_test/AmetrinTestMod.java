@@ -12,11 +12,10 @@ import com.ametrinstudios.ametrin_test.world.TestItems;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.slf4j.Logger;
 
 @Mod(AmetrinTestMod.MOD_ID)
@@ -24,9 +23,7 @@ public class AmetrinTestMod {
     public static final String MOD_ID = "ametrin_test";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public AmetrinTestMod(){
-        var modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        var forgeBus = MinecraftForge.EVENT_BUS;
+    public AmetrinTestMod(IEventBus modBus){
         LOGGER.info("---------------------- TEST MOD LOADED ----------------------");
 
         TestBlocks.REGISTRY.register(modBus);
@@ -53,9 +50,12 @@ public class AmetrinTestMod {
 
         generator.addProvider(runServer, new TestBlockStateProvider(output, existingFileHelper));
         generator.addProvider(runServer, new TestItemModelProvider(output, existingFileHelper));
-        generator.addProvider(runServer, new TestRecipeProvider(output));
+        generator.addProvider(runServer, new TestRecipeProvider(output, event.getLookupProvider()));
 
-        var lootTableProvider = CustomLootTableProvider.Builder().AddBlockProvider(TestBlockLootSubProvider::new).AddChestProvider(TestLootTableSubProvider::new).Build(output);
+        var lootTableProvider = CustomLootTableProvider.Builder()
+                .AddBlockProvider(TestBlockLootSubProvider::new)
+                .AddChestProvider(TestLootTableSubProvider::new)
+                .Build(output);
         generator.addProvider(runServer, lootTableProvider);
     }
 

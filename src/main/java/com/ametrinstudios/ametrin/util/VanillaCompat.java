@@ -2,6 +2,7 @@ package com.ametrinstudios.ametrin.util;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.logging.LogUtils;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShovelItem;
@@ -10,8 +11,7 @@ import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 
@@ -49,8 +49,8 @@ public class VanillaCompat {
      * Registers FlowerPots
      * call during {@link FMLCommonSetupEvent}
      */
-    public static void addFlowerPot(RegistryObject<? extends Block> plant, Supplier<? extends FlowerPotBlock> fullPot){
-        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant.getId(), fullPot);
+    public static void addFlowerPot(ResourceLocation plant, Supplier<? extends FlowerPotBlock> fullPot){
+        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant, fullPot);
     }
 
     /**

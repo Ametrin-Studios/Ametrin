@@ -17,8 +17,8 @@ public class CustomBoatType {
     public static Builder builder(ResourceLocation guid) {return new Builder(guid);}
 
     private final ResourceLocation GUID;
-    private final ImmutableMap<BoatVariant, Supplier<Item>> Items;
-    private CustomBoatType(ResourceLocation guid, ImmutableMap<BoatVariant, Supplier<Item>> items) {
+    private final ImmutableMap<BoatVariant<?>, Supplier<Item>> Items;
+    private CustomBoatType(ResourceLocation guid, ImmutableMap<BoatVariant<?>, Supplier<Item>> items) {
         GUID = guid;
         Items = items;
         if(TYPES.containsKey(this.GUID)) throw new IllegalArgumentException("Duplicate Boat Type");
@@ -27,7 +27,7 @@ public class CustomBoatType {
     public ResourceLocation guid() {return GUID;}
     public String name() {return GUID.getPath();}
     public String modID() {return GUID.getNamespace();}
-    public Item item(BoatVariant variant) {
+    public Item item(BoatVariant<?> variant) {
         return Items.get(variant).get();
     }
 
@@ -35,7 +35,7 @@ public class CustomBoatType {
 
     public static class Builder{
         private final ResourceLocation GUID;
-        private final Map<BoatVariant, Supplier<Item>> Items = new HashMap<>();
+        private final Map<BoatVariant<?>, Supplier<Item>> Items = new HashMap<>();
 
         public Builder(ResourceLocation guid){
             GUID = guid;
@@ -46,7 +46,7 @@ public class CustomBoatType {
         public Builder chestBoatItem(Supplier<Item> item){
             return item(BoatVariants.CHEST, item);
         }
-        public Builder item(BoatVariant variant, Supplier<Item> item){
+        public Builder item(BoatVariant<?> variant, Supplier<Item> item){
             Items.put(variant, item);
             return this;
         }

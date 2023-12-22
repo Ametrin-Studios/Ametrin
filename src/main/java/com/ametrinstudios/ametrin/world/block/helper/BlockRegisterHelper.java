@@ -39,12 +39,12 @@ public class BlockRegisterHelper {
     }
 
     @Deprecated
-    public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties) {return fenceGate(properties, WoodType.OAK);}
-    public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, WoodType type){
+    public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties) {return fenceGate(WoodType.OAK, properties);}
+    public static Supplier<FenceGateBlock> fenceGate(WoodType type, BlockBehaviour.Properties properties){
         return ()-> new FenceGateBlock(type, properties);
     }
-    public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, SoundEvent openSound, SoundEvent closeSound, WoodType type){
-        return ()-> new FenceGateBlock(properties, openSound, closeSound, type);
+    public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, SoundEvent openSound, SoundEvent closeSound){
+        return ()-> new FenceGateBlock(properties, openSound, closeSound);
     }
 
     @Deprecated

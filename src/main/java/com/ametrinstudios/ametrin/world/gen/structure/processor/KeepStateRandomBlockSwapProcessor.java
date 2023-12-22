@@ -3,6 +3,7 @@ package com.ametrinstudios.ametrin.world.gen.structure.processor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -10,7 +11,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,9 +19,9 @@ import java.util.Random;
 
 public class KeepStateRandomBlockSwapProcessor extends StructureProcessor {
     public static final Codec<KeepStateRandomBlockSwapProcessor> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-            ForgeRegistries.BLOCKS.getCodec().fieldOf("condition").forGetter(processor -> processor.condition),
+            BuiltInRegistries.BLOCK.byNameCodec().fieldOf("condition").forGetter(processor -> processor.condition),
             Codec.FLOAT.fieldOf("chance").forGetter(processor -> processor.chance),
-            ForgeRegistries.BLOCKS.getCodec().fieldOf("change_to").forGetter(processor -> processor.changeTo))
+            BuiltInRegistries.BLOCK.byNameCodec().fieldOf("change_to").forGetter(processor -> processor.changeTo))
             .apply(instance, KeepStateRandomBlockSwapProcessor::new));
 
     protected final Block condition;
