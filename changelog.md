@@ -1,3 +1,10 @@
+## 0.1.8 (BETA)
+* added DataProviderHelper
+* fixes
+
+## 0.1.7 (ALPHA)
+* ported to NeoForge
+
 ## 0.1.6 (BETA)
 * ported to 1.20.4
 * disabled tree api (incompatible)
