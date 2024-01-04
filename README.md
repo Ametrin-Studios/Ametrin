@@ -29,7 +29,7 @@ public static void gatherData(GatherDataEvent event){
         helper.add(TestItemModelProvider::new);
         helper.add(TestRecipeProvider::new);
 
-        providers.addBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
+        helper.addBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
 
         helper.addLootTables(builder -> builder
                 .AddBlockProvider(TestBlockLootSubProvider::new)
