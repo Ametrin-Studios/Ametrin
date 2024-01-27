@@ -1,5 +1,6 @@
 ## QoL API by Ametrin Studios
 - [Visit the CurseForge page](https://www.curseforge.com/minecraft/mc-mods/ametrin)
+- [Visit the Modrinth page](https://modrinth.com/mod/ametrin)
 - [How to use](https://github.com/BarionLP/MCModsMaven)
 
 Feel free to join our [Discord Server](https://discord.com/invite/hwA9dd5bVh). We're always here to help!
