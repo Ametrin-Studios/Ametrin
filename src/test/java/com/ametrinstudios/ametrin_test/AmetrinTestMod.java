@@ -4,6 +4,7 @@ import com.ametrinstudios.ametrin.data.DataProviderHelper;
 import com.ametrinstudios.ametrin.util.VanillaCompat;
 import com.ametrinstudios.ametrin_test.data.provider.TestBlockStateProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestItemModelProvider;
+import com.ametrinstudios.ametrin_test.data.provider.TestLanguageProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestRecipeProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootSubProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableSubProvider;
@@ -45,6 +46,7 @@ public class AmetrinTestMod {
         helper.add(TestBlockStateProvider::new);
         helper.add(TestItemModelProvider::new);
         helper.add(TestRecipeProvider::new);
+        helper.add(TestLanguageProvider::new);
         helper.addLootTables(builder -> builder
                 .AddBlockProvider(TestBlockLootSubProvider::new)
                 .AddChestProvider(TestLootTableSubProvider::new));

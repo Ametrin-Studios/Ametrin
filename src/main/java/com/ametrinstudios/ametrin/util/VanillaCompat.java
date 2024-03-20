@@ -21,8 +21,8 @@ import java.util.function.Supplier;
 
 public class VanillaCompat {
     public static final Logger LOGGER = LogUtils.getLogger();
-    private static final Map<Block, Block> StrippableRequests = new HashMap<>();
-    private static boolean Pushed = false;
+    private static final Map<Block, Block> _strippableRequests = new HashMap<>();
+    private static boolean _pushed = false;
 
     /**
      * Registers simple brewing recipes
@@ -59,8 +59,8 @@ public class VanillaCompat {
      * call during {@link FMLCommonSetupEvent}
      */
     public static void addStrippable(Block log, Block strippedLog){
-        StrippableRequests.put(log, strippedLog);
-        if(Pushed){
+        _strippableRequests.put(log, strippedLog);
+        if(_pushed){
             throw new UnsupportedOperationException("Strippables must be registered during FMLCommonSetupEvent");
         }
     }
@@ -96,7 +96,7 @@ public class VanillaCompat {
 
     @ApiStatus.Internal
     public static void PushRequests(){
-        AxeItem.STRIPPABLES = (new ImmutableMap.Builder<Block, Block>()).putAll(AxeItem.STRIPPABLES).putAll(StrippableRequests).build();
-        Pushed = true;
+        AxeItem.STRIPPABLES = (new ImmutableMap.Builder<Block, Block>()).putAll(AxeItem.STRIPPABLES).putAll(_strippableRequests).build();
+        _pushed = true;
     }
 }

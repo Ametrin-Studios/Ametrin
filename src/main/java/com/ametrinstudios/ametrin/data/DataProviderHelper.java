@@ -36,6 +36,9 @@ public class DataProviderHelper {
     public void add(DataProvider provider){
         add(includeServer, provider);
     }
+    public void add(DataProviderFromOutput provider){
+        add(provider.build(output));
+    }
     public void add(DataProviderFromOutputFileHelper provider){
         add(provider.build(output, existingFileHelper));
     }
@@ -59,6 +62,10 @@ public class DataProviderHelper {
         add(builder);
     }
 
+    @FunctionalInterface
+    public interface DataProviderFromOutput{
+        DataProvider build(PackOutput output);
+    }
     @FunctionalInterface
     public interface DataProviderFromOutputLookup{
         DataProvider build(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider);

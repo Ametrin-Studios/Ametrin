@@ -95,3 +95,11 @@ public class TestBlockStateProvider extends ExtendedBlockStateProvider {
 #### ExtendedItemTagsProvider
 #### ExtendedRecipeProvider
 #### LootTableProvider
+
+### Modifying Vanilla Behaviour
+The `VanillaHack` class has a lot of helper functions for modifying/overriding vanilla behaviour.<br>
+Call during `FMLCommonSetupEvent`.
+#### Override Item Food Properties
+```java
+VanillaHack.overrideFoodProperties(Items.EXAMPLE_ITEM, Foods.EXAMPLE_FOOD);
+```
