@@ -1,0 +1,31 @@
+modLoader="javafml" #mandatory
+loaderVersion="${loader_version_range}" #mandatory
+license="${mod_license}"
+issueTrackerURL="https://github.com/BarionLP/Ametrin/issues" #optional
+
+[[mods]] #mandatory
+    modId="ametrin_test" #mandatory
+    version="0.0.0" #mandatory
+    displayName="Ametrin Test" #mandatory
+    description='''${mod_description}'''
+
+[[dependencies.ametrin_test]] #optional
+    modId="neoforge" #mandatory
+    type="required"
+    versionRange="${neo_version_range}" #mandatory
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.ametrin_test]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.ametrin_test]]
+    modId="ametrin"
+    type="required"
+    versionRange="[0.0.1,)"
+    ordering="NONE"
+    side="BOTH"

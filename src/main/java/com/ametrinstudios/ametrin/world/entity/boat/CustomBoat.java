@@ -35,20 +35,21 @@ public class CustomBoat extends Boat implements ICustomBoat {
     public CustomBoatType getBoatType() {
         var typeString = entityData.get(DATA_ID_TYPE);
         if(typeString.equals(TYPE_DEFAULT)) throw new IllegalStateException("invalid boat type");
-        return CustomBoatType.get(new ResourceLocation(typeString));
+        return CustomBoatType.get(ResourceLocation.parse(typeString));
     }
     @Override
     public void setBoatType(@NotNull CustomBoatType type) {entityData.set(DATA_ID_TYPE, type.serialize());}
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(DATA_ID_TYPE, TYPE_DEFAULT);
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ID_TYPE, TYPE_DEFAULT);
     }
+
     @Override
     protected void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         if(!compoundTag.contains(TYPE_ID)) return;
-        setBoatType(CustomBoatType.get(new ResourceLocation(compoundTag.getString(TYPE_ID))));
+        setBoatType(CustomBoatType.get(ResourceLocation.parse(compoundTag.getString(TYPE_ID))));
     }
     @Override
     protected void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {

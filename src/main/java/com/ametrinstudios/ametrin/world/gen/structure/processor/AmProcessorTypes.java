@@ -1,19 +1,15 @@
 package com.ametrinstudios.ametrin.world.gen.structure.processor;
 
-import com.ametrinstudios.ametrin.util.AmUtil;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 
-public class AmProcessorTypes {
-    public static final StructureProcessorType<KeepStateRandomBlockSwapProcessor> BlockSwap = ()-> KeepStateRandomBlockSwapProcessor.CODEC;
+public final class AmProcessorTypes {
+    public static final StructureProcessorType<KeepStateRandomBlockSwapProcessor> KEEP_STATE_RANDOM_BLOCK_SWAP = register("keep_state_random_block_swap", (MapCodec<KeepStateRandomBlockSwapProcessor>) KeepStateRandomBlockSwapProcessor.CODEC);
 
-    public static void register() {
-        register("underwater", BlockSwap);
-    }
-
-    private static <P extends StructureProcessor> void register(String key, StructureProcessorType<P> processorType) {
-        Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, AmUtil.location(key), processorType);
+    static <P extends StructureProcessor> StructureProcessorType<P> register(String name, MapCodec<P> codec) {
+        return Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, name, () -> codec);
     }
 }

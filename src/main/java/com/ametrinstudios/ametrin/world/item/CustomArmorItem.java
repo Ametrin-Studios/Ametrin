@@ -1,20 +1,20 @@
 package com.ametrinstudios.ametrin.world.item;
 
-import com.ametrinstudios.ametrin.util.Armor;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.ArmorMaterial;
 
 public class CustomArmorItem extends ArmorItem {
-    protected final Armor Armor;
-
-    public CustomArmorItem(Armor armor, ArmorItem.Type type, Properties properties) {
-        super(armor.getMaterial(), type, properties);
-        Armor = armor;
+    public CustomArmorItem(Holder<ArmorMaterial> p_323783_, Type p_266831_, Properties p_40388_) {
+        super(p_323783_, p_266831_, p_40388_);
     }
+//    protected final Armor Armor;
 
-    @Override @Nullable
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {return Armor.getTexture(slot);}
+//    public CustomArmorItem(Armor armor, ArmorItem.Type type, Properties properties) {
+//        super(armor.getMaterial(), type, properties);
+//        Armor = armor;
+//    }
+//
+//    @Override @Nullable
+//    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {return Armor.getTexture(slot);}
 }

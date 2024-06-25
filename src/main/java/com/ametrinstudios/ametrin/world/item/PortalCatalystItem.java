@@ -14,8 +14,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -46,8 +46,8 @@ public class PortalCatalystItem extends Item{
         return InteractionResult.FAIL;
     }
 
-    @Override
-    public void appendHoverText(@NotNull ItemStack itemStack, @Nullable Level level, @NotNull List<Component> componentList, @NotNull TooltipFlag isAdvanced) {
+    @Override @ParametersAreNonnullByDefault
+    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> componentList, TooltipFlag isAdvanced) {
         componentList.add(Component.translatable(getDescriptionId(itemStack)+".desc"));
     }
 }

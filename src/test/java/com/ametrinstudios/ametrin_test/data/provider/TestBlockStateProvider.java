@@ -13,6 +13,6 @@ public class TestBlockStateProvider extends ExtendedBlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        runProviderRules(TestBlocks.REGISTRY);
+        runProviderRules(TestBlocks.REGISTER);
     }
 }

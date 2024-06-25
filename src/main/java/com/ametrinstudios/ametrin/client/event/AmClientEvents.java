@@ -6,13 +6,13 @@ import com.ametrinstudios.ametrin.world.AmetrinEntityTypes;
 import com.ametrinstudios.ametrin.world.entity.boat.BoatVariants;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-@Mod.EventBusSubscriber(modid = Ametrin.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class AmClientEvents {
+@EventBusSubscriber(modid = Ametrin.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public final class AmClientEvents {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event){
         event.registerEntityRenderer(AmetrinEntityTypes.BOAT.get(), context -> new CustomBoatRenderer<>(context, BoatVariants.DEFAULT));

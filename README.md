@@ -6,7 +6,7 @@ Feel free to join our [Discord Server](https://discord.com/invite/hwA9dd5bVh). W
 
 ## Docs
 ### Custom Boats
-- put texture in `assets/{mod_id}/textures/entity/{boat/chest_boat}`
+- put texture in `assets/{mod_id}/textures/entity/{boat|chest_boat}`
 - create and register the custom boat type and items<br>(*id* should be `ResourceLocation(mod_id, boat_type_name)`)
 ```java
 public static final CustomBoatType TEST_BOAT_TYPE = CustomBoatType.builder(id).boatItem(TestItems.TEST_BOAT::get).chestBoatItem(TestItems.TEST_CHEST_BOAT::get).register();
@@ -16,11 +16,11 @@ public static final CustomBoatType TEST_BOAT_TYPE = CustomBoatType.builder(id).b
 public static final RegistryObject<CustomBoatItem> TEST_BOAT = REGISTRY.register("test_boat", ()-> CustomBoatItem.boat(TEST_BOAT_TYPE));
 public static final RegistryObject<CustomBoatItem> TEST_CHEST_BOAT = REGISTRY.register("test_chest_boat", ()-> CustomBoatItem.chest(TEST_BOAT_TYPE));
 ```
-- also can create new boat variations check the `BoatVariants` class
+- you can create new boat variations, check the `BoatVariants` class
 
 ### Data Providers
 #### Registering
-You can use the ``DataProviderHelper`` to cut down boilerplate
+``DataProviderHelper`` cuts down boilerplate
 ```java
 public static void gatherData(GatherDataEvent event){
         var helper = new DataProviderHelper(event);
@@ -39,7 +39,8 @@ public static void gatherData(GatherDataEvent event){
 ```
 
 #### ExtendedBlockStateProvider
-provides a method that tries to figure out the correct model for a block and generate it.
+provides various helper methods<br>
+`runProviderRules` automatically generates a matching model for each block
 ```java
 public class TestBlockStateProvider extends ExtendedBlockStateProvider {
     public TestBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -59,25 +60,26 @@ public class TestBlockStateProvider extends ExtendedBlockStateProvider {
     }
 }
 ```
-you can add custom Rules
+adding custom provider rules
 ```java
 public TestBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
     //...
-    blockStateProviderRules.add((block, name, texture)->{ // block instance, block id, block texture (just id if not changed)
+    // parameter: block instance, block id, block texture (based on getTextureLocation (see below))
+    blockStateProviderRules.add((block, name, texture)->{
         if(/*rule does not apply*/) {return false;}
         // generate model/state
         return true;
     });   
 }
 ```
-you have some more customization options
+other customization options
 ```java
 public class TestBlockStateProvider extends ExtendedBlockStateProvider {
 
     @Override
     protected String getTextureLocation(String name) {
         //modify texture location
-        //e.g. when the texture of a block is named differently
+        //used when the texture of a block is named differently
         return name;
     }
 

@@ -11,7 +11,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class DataProviderHelper {
     public final DataGenerator generator;
@@ -49,16 +49,15 @@ public class DataProviderHelper {
         add(provider.build(output, lookupProvider, existingFileHelper));
     }
     public void add(CustomLootTableProvider.Builder lootTableBuilder){
-        add(lootTableBuilder.Build(output));
+        add(lootTableBuilder.Build(output, lookupProvider));
     }
     public void addBlockAndItemTags(BlockTagsProvider blockTagsProvider, ItemTagsProvider itemTagsProvider){
         var blockTags = blockTagsProvider.build(output, lookupProvider, existingFileHelper);
         add(blockTags);
         add(itemTagsProvider.build(output, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
     }
-    public void addLootTables(Consumer<CustomLootTableProvider.Builder> consumer){
-        var builder = CustomLootTableProvider.Builder();
-        consumer.accept(builder);
+    public void addLootTables(Function<CustomLootTableProvider.Builder, CustomLootTableProvider.Builder> consumer){
+        var builder = consumer.apply(CustomLootTableProvider.Builder());
         add(builder);
     }
 

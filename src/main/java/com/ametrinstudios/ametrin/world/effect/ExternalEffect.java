@@ -12,5 +12,7 @@ public class ExternalEffect extends MobEffect {
     public ExternalEffect(MobEffectCategory category, Color color) {super(category, Extensions.ColorToInt(color));}
 
     @Override
-    public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {}
+    public boolean applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
+        return super.applyEffectTick(entity, amplifier);
+    }
 }

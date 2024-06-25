@@ -27,7 +27,8 @@ public class AbstractHeadBlock extends Block implements Equipable, SimpleWaterlo
         return blockState.getValue(Waterlogged) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
     }
     @Override @ParametersAreNonnullByDefault
-    public boolean isPathfindable(BlockState blockState, BlockGetter level, BlockPos pos, PathComputationType pathType) {return false;}
+    public boolean isPathfindable(BlockState blockState, PathComputationType pathType) {return false;}
+
     @Override @ParametersAreNonnullByDefault
     public @NotNull VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level, BlockPos pos) {return Shapes.empty();}
 

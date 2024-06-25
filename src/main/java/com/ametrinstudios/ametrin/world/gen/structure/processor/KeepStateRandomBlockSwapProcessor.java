@@ -19,9 +19,9 @@ import java.util.Random;
 
 public class KeepStateRandomBlockSwapProcessor extends StructureProcessor {
     public static final Codec<KeepStateRandomBlockSwapProcessor> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-            BuiltInRegistries.BLOCK.byNameCodec().fieldOf("condition").forGetter(processor -> processor.condition),
-            Codec.FLOAT.fieldOf("chance").forGetter(processor -> processor.chance),
-            BuiltInRegistries.BLOCK.byNameCodec().fieldOf("change_to").forGetter(processor -> processor.changeTo))
+                    BuiltInRegistries.BLOCK.byNameCodec().fieldOf("condition").forGetter(processor -> (processor).condition),
+                    Codec.FLOAT.fieldOf("chance").forGetter(processor -> processor.chance),
+                    BuiltInRegistries.BLOCK.byNameCodec().fieldOf("change_to").forGetter(processor -> processor.changeTo))
             .apply(instance, KeepStateRandomBlockSwapProcessor::new));
 
     protected final Block condition;
@@ -43,5 +43,5 @@ public class KeepStateRandomBlockSwapProcessor extends StructureProcessor {
     }
 
     @Override
-    protected @NotNull StructureProcessorType<?> getType() {return AmProcessorTypes.BlockSwap;}
+    protected @NotNull StructureProcessorType<?> getType() {return AmProcessorTypes.KEEP_STATE_RANDOM_BLOCK_SWAP;}
 }

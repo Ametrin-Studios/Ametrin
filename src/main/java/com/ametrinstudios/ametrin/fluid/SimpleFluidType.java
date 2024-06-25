@@ -19,8 +19,8 @@ import java.util.function.Consumer;
  * Basic implementation of {@link FluidType} that defaults to water texture.
  */
 public class SimpleFluidType extends FluidType {
-    public static final ResourceLocation stillTexture = new ResourceLocation("block/water_still");
-    public static final ResourceLocation flowingTexture = new ResourceLocation("block/water_flow");
+    public static final ResourceLocation stillTexture = ResourceLocation.withDefaultNamespace("block/water_still");
+    public static final ResourceLocation flowingTexture = ResourceLocation.withDefaultNamespace("block/water_flow");
     private final int tintColor;
     private final Vector3f fogColor;
 
@@ -38,28 +38,28 @@ public class SimpleFluidType extends FluidType {
     public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
         consumer.accept(new IClientFluidTypeExtensions() {
             @Override
-            public ResourceLocation getStillTexture() {return stillTexture;}
+            public @NotNull ResourceLocation getStillTexture() { return stillTexture; }
 
             @Override
-            public ResourceLocation getFlowingTexture() {return flowingTexture;}
+            public @NotNull ResourceLocation getFlowingTexture() { return flowingTexture; }
 
             @Override
             public int getTintColor() {return tintColor;}
 
             @Override
-            public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+            public @NotNull Vector3f modifyFogColor(@NotNull Camera camera, float partialTick, @NotNull ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
                 return fogColor;
             }
 
             @Override
-            public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
+            public void modifyFogRender(@NotNull Camera camera, @NotNull FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
                 RenderSystem.setShaderFogStart(1f);
                 RenderSystem.setShaderFogEnd(6f); // distance when the fog starts
             }
         });
     }
 
-    public int getTintColor() {return tintColor;}
+    public int getTintColor() { return tintColor; }
 
-    public Vector3f getFogColor() {return fogColor;}
+    public Vector3f getFogColor() { return fogColor; }
 }

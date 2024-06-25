@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin.mixin;
 
 import com.ametrinstudios.ametrin.util.mixin.IMixinBlockBehaviorProperties;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlagSet;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -32,7 +34,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow float friction;
     @Shadow float speedFactor;
     @Shadow float jumpFactor;
-    @Shadow ResourceLocation drops;
+    @Shadow ResourceKey<LootTable> drops;
     @Shadow boolean canOcclude;
     @Shadow boolean isAir;
     @Shadow boolean ignitedByLava;

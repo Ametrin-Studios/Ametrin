@@ -3,8 +3,12 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.97'
-    id "net.neoforged.gradle.mixin" version '7.0.97'
+    id 'net.neoforged.gradle.userdev' version '7.0.148'
+    id "net.neoforged.gradle.mixin" version '7.0.148'
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 version = mod_version
@@ -15,11 +19,10 @@ repositories {
 }
 
 base {
-    archivesName = mod_id
+    archivesName = "$mod_id-$minecraft_version"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 minecraft {
     accessTransformers {
@@ -37,8 +40,6 @@ runs {
 
     client {
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-//        systemProperty 'forge.enabledGameTestNamespaces', 'ametrin_test'
-//        modSource project.sourceSets.test
     }
 
     server {
@@ -53,45 +54,39 @@ runs {
     data {
         programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
-
-//    client {
-//        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-//        systemProperty 'forge.enabledGameTestNamespaces', 'ametrin_test'
-//
-//    }
-
-//    dataTest {
-//        parent runs.data
-//
-//        programArgument { parentArgs ->
-//            return ['--mod', 'ametrin_test', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/test/resources/'), file('src/main/resources/')]
-//        }
-//
-//        modSource project.sourceSets.test
-//
-//    }
 }
 
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
-//    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
-            minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
-            neo_version         : neo_version, neo_version_range: neo_version_range,
-            loader_version_range: loader_version_range,
-            mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors         : mod_authors, mod_description: mod_description,
+            minecraft_version       : minecraft_version,
+            minecraft_version_range : minecraft_version_range,
+
+            neo_version             : neo_version,
+            neo_version_range       : neo_version_range,
+            loader_version_range    : loader_version_range,
+
+            mod_id                  : mod_id,
+            mod_name                : mod_name,
+            mod_license             : mod_license,
+            mod_version             : mod_version,
+            mod_authors             : mod_authors,
+            mod_description         : mod_description,
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml']) {
-        expand replaceProperties + [project: project]
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
     }
 }
 
@@ -110,4 +105,11 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

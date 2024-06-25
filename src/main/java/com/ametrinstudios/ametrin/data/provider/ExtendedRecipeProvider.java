@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -40,13 +41,13 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static String currentModID;
     protected String modID;
 
-    public ExtendedRecipeProvider(PackOutput packOutput, String modID) {
-        super(packOutput);
+    public ExtendedRecipeProvider(PackOutput packOutput, String modID, CompletableFuture<HolderLookup.Provider> registries) {
+        super(packOutput, registries);
         this.modID = modID;
     }
 
-    @Override
-    public @NotNull CompletableFuture<?> run(@NotNull CachedOutput output){
+    @Override @NotNull @ParametersAreNonnullByDefault
+    protected CompletableFuture<?> run(CachedOutput output, final HolderLookup.Provider lookupProvider){
         currentModID = modID;
         final var list = new ArrayList<CompletableFuture<?>>();
         buildRecipes(new RecipeOutput() {
@@ -54,9 +55,9 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
             public void accept(ResourceLocation resourceLocation, Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, ICondition... conditions) {
                 if (!_recipes.add(resourceLocation)) {throw new IllegalStateException("Duplicate recipe " + resourceLocation);}
 
-                list.add(DataProvider.saveStable(output, Recipe.CONDITIONAL_CODEC, Optional.of(new WithConditions<>(recipe, conditions)), recipePathProvider.json(resourceLocation)));
+                list.add(DataProvider.saveStable(output, lookupProvider, Recipe.CONDITIONAL_CODEC, Optional.of(new WithConditions<>(recipe, conditions)), recipePathProvider.json(resourceLocation)));
                 if(advancementHolder != null){
-                    list.add(DataProvider.saveStable(output, Advancement.CONDITIONAL_CODEC, Optional.of(new WithConditions<>(advancementHolder.value(), conditions)), advancementPathProvider.json(advancementHolder.id())));
+                    list.add(DataProvider.saveStable(output, lookupProvider, Advancement.CONDITIONAL_CODEC, Optional.of(new WithConditions<>(advancementHolder.value(), conditions)), advancementPathProvider.json(advancementHolder.id())));
                 }
             }
 
@@ -431,7 +432,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static void dying(RecipeOutput output, TagKey<Item> dyedItems, String idPattern, String group){
         for(var dye : DyeColor.values()){
             var resultID = location(idPattern.replace("{color}", dye.getName()));
-            var dyeID = new ResourceLocation(dye.getName() + "_dye");
+            var dyeID = ResourceLocation.withDefaultNamespace(dye.getName() + "_dye");
             var result = BuiltInRegistries.ITEM.get(resultID);
             var dyeItem = BuiltInRegistries.ITEM.get(dyeID);
             ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result).requires(dyedItems).requires(dyeItem).group(group).unlockedBy("has_needed_dye", has(dyeItem)).save(output, "dye_" + getItemName(result));
@@ -581,8 +582,8 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static String getItemTagName(TagKey<Item> tag) {return tag.location().getPath().replace('/', '_');}
     protected static ResourceLocation location(String key) {
         if(key.contains(":")){
-            return ResourceLocation.of(key, ':');
+            return ResourceLocation.bySeparator(key, ':');
         }
-        return new ResourceLocation(currentModID, key);
+        return ResourceLocation.fromNamespaceAndPath(currentModID, key);
     }
 }

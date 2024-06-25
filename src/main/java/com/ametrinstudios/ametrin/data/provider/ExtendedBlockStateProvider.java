@@ -202,7 +202,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
     }
     protected void campfireBlock(CampfireBlock campfire, String name, String texture){
         var model = models().withExistingParent(name, "block/template_campfire").texture("fire", modBlockLoc(texture + "_fire")).texture("lit_log", modBlockLoc(texture + "_log_lit")).renderType(RenderTypes.Cutout);
-        var modelOff = models().getExistingFile(new ResourceLocation("block/campfire_off"));
+        var modelOff = models().getExistingFile(ResourceLocation.withDefaultNamespace("block/campfire_off"));
         getVariantBuilder(campfire).forAllStatesExcept(blockState -> ConfiguredModel.builder().modelFile(blockState.getValue(CampfireBlock.LIT) ? model : modelOff).rotationY(horizontalDirectionToYAngleForCampfire(blockState.getValue(CampfireBlock.FACING))).build(), CampfireBlock.WATERLOGGED, CampfireBlock.SIGNAL_FIRE);
     }
     protected void wallTorchBlock(WallTorchBlock wallTorch, String name, String texture){
@@ -239,7 +239,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
         var Age2 = models().cross("block/" + name + "/stage2", modBlockLoc(texture + "/stage2")).renderType(RenderTypes.Cutout);
         var Age3 = models().cross("block/" + name + "/stage3", modBlockLoc(texture + "/stage3")).renderType(RenderTypes.Cutout);
         getVariantBuilder(bush).forAllStates(state -> {
-            final int age = state.getValue(IAgeablePlant.Age);
+            final int age = state.getValue(IAgeablePlant.AGE);
             return ConfiguredModel.builder().modelFile((age == 0) ? Age0 : (age == 1) ? Age1 : (age == 2) ? Age2 : Age3).build();
         });
     }
@@ -249,7 +249,7 @@ public abstract class ExtendedBlockStateProvider extends BlockStateProvider {
         var Age2 = models().cross("block/" + name + "/stage2", modBlockLoc(texture + "/stage2")).renderType(RenderTypes.Cutout);
         var Age3 = models().cross("block/" + name + "/stage3", modBlockLoc(texture + "/stage3")).renderType(RenderTypes.Cutout);
         getVariantBuilder(bush).forAllStates(state -> {
-            final int age = state.getValue(IAgeablePlant.Age);
+            final int age = state.getValue(IAgeablePlant.AGE);
             return ConfiguredModel.builder().modelFile((age == 0) ? Age0 : (age == 1) ? Age1 : (age == 2) ? Age2 : Age3).build();
         });
     }

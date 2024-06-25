@@ -13,6 +13,6 @@ public class TestItemModelProvider extends ExtendedItemModelProvider {
 
     @Override
     protected void registerModels() {
-        runProviderRules(TestItems.REGISTRY);
+        runProviderRules(TestItems.REGISTER);
     }
 }
