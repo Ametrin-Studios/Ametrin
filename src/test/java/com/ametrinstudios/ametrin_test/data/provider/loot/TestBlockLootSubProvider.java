@@ -6,7 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
-public class TestBlockLootSubProvider extends ExtendedBlockLootSubProvider {
+public final class TestBlockLootSubProvider extends ExtendedBlockLootSubProvider {
     public TestBlockLootSubProvider(HolderLookup.Provider registries) {
         super(registries);
     }

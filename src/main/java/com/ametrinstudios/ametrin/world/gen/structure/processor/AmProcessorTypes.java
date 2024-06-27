@@ -7,7 +7,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 
 public final class AmProcessorTypes {
-    public static final StructureProcessorType<KeepStateRandomBlockSwapProcessor> KEEP_STATE_RANDOM_BLOCK_SWAP = register("keep_state_random_block_swap", (MapCodec<KeepStateRandomBlockSwapProcessor>) KeepStateRandomBlockSwapProcessor.CODEC);
+    public static final StructureProcessorType<KeepStateRandomBlockSwapProcessor> KEEP_STATE_RANDOM_BLOCK_SWAP = register("keep_state_random_block_swap", KeepStateRandomBlockSwapProcessor.CODEC);
 
     static <P extends StructureProcessor> StructureProcessorType<P> register(String name, MapCodec<P> codec) {
         return Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, name, () -> codec);

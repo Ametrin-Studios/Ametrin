@@ -6,7 +6,7 @@ import com.ametrinstudios.ametrin_test.world.TestBlocks;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-public class TestBlockStateProvider extends ExtendedBlockStateProvider {
+public final class TestBlockStateProvider extends ExtendedBlockStateProvider {
     public TestBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, AmetrinTestMod.MOD_ID, existingFileHelper);
     }

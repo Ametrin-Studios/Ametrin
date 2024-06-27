@@ -7,7 +7,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 @EventBusSubscriber(modid = AmetrinTestMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
-public class TestGameEvents {
+public final class TestGameEvents {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event){
         new TestTerrainAnalyzerCommand(event.getDispatcher());

@@ -6,7 +6,7 @@ import com.ametrinstudios.ametrin_test.world.TestItems;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-public class TestItemModelProvider extends ExtendedItemModelProvider {
+public final class TestItemModelProvider extends ExtendedItemModelProvider {
     public TestItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, AmetrinTestMod.MOD_ID, existingFileHelper);
     }

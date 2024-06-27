@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-public class TestItems {
+public final class TestItems {
     public static final DeferredRegister.Items REGISTER = DeferredRegister.createItems(AmetrinTestMod.MOD_ID);
 
     public static final Supplier<Item> TEST_ITEM = REGISTER.register("test_item", ()-> new BlockItem(TestBlocks.TEST_BLOCK.get(), new Item.Properties().setNoRepair().stacksTo(16).rarity(Rarity.EPIC)));

@@ -16,7 +16,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -53,7 +52,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow BlockBehaviour.StatePredicate emissiveRendering;
     @Shadow boolean dynamicShape;
     @Shadow FeatureFlagSet requiredFeatures;
-    @Shadow Optional<BlockBehaviour.OffsetFunction> offsetFunction;
+    @Shadow BlockBehaviour.OffsetFunction offsetFunction;
 
     public BlockBehaviour.Properties copy(){
         BlockBehaviour.Properties properties = BlockBehaviour.Properties.of()
@@ -87,7 +86,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
 
         var mixinProperties = ((IMixinBlockBehaviorProperties) properties);
         mixinProperties.SetFeatureFlagSet(requiredFeatures);
-        offsetFunction.ifPresent(mixinProperties::SetOffsetFunction);
+        mixinProperties.SetOffsetFunction(offsetFunction);
 
         if(lootTableSupplier != null){
             mixinProperties.SetLootTableSupplier(lootTableSupplier);
@@ -100,7 +99,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
 
     @Override
     public void SetOffsetFunction(BlockBehaviour.OffsetFunction func) {
-        offsetFunction = Optional.of(func);
+        offsetFunction = func;
     }
 
     @Override

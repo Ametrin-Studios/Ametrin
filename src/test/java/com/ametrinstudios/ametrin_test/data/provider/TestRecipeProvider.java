@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class TestRecipeProvider extends ExtendedRecipeProvider {
+public final class TestRecipeProvider extends ExtendedRecipeProvider {
     public TestRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
         super(packOutput, AmetrinTestMod.MOD_ID, registries);
     }

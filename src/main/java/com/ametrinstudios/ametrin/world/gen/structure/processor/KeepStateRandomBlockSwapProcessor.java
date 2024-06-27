@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin.world.gen.structure.processor;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,7 +19,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
 public class KeepStateRandomBlockSwapProcessor extends StructureProcessor {
-    public static final Codec<KeepStateRandomBlockSwapProcessor> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+    public static final MapCodec<KeepStateRandomBlockSwapProcessor> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
                     BuiltInRegistries.BLOCK.byNameCodec().fieldOf("condition").forGetter(processor -> (processor).condition),
                     Codec.FLOAT.fieldOf("chance").forGetter(processor -> processor.chance),
                     BuiltInRegistries.BLOCK.byNameCodec().fieldOf("change_to").forGetter(processor -> processor.changeTo))
