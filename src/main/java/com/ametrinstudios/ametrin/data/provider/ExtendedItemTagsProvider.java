@@ -62,6 +62,17 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
                 tag(ItemTags.SIGNS).add(item);
             }
         });
+
+        itemTagProviderRules.add((item, name) -> {
+            if(item instanceof ArmorItem armorItem) {
+                switch (armorItem.getEquipmentSlot()) {
+                    case HEAD -> tag(ItemTags.HEAD_ARMOR).add(armorItem);
+                    case CHEST -> tag(ItemTags.CHEST_ARMOR).add(armorItem);
+                    case LEGS -> tag(ItemTags.LEG_ARMOR).add(armorItem);
+                    case FEET -> tag(ItemTags.FOOT_ARMOR).add(armorItem);
+                }
+            }
+        });
     }
 
     @Override

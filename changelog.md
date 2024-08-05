@@ -4,6 +4,7 @@
 * readded `BlockRegisterHelper.sapling`
 * renamed `Extensions` to `ChunkPosHelper`
 * added `TimeHelper.HoursToTicks`
+* added provider rule for armor tags 
 
 ## 0.2.1 (ALPHA)
 * reworked `VanillaCompat` class

@@ -4,14 +4,14 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 
-public class DataProviderExtensions {
+public final class DataProviderExtensions {
     /**
      * blocks containing strings from this list try to use the plank texture in some cases look at the usages to find out where exactly
      */
-    private static final ArrayList<String> plankIndicators = new ArrayList<>();
+    private static final HashSet<String> plankIndicators = new HashSet<>();
 
 
     public static void addPlankIndicator(String indicator){
