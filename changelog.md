@@ -1,3 +1,20 @@
+## 0.2.2 (ALPHA)
+* added `ArmorMaterialBuilder`
+* added `VanillaCompat.addFlowerPot` overload 
+* readded `BlockRegisterHelper.sapling`
+* renamed `Extensions` to `ChunkPosHelper`
+* added `TimeHelper.HoursToTicks`
+
+## 0.2.1 (ALPHA)
+* reworked `VanillaCompat` class
+
+## 0.2.0 (ALPHA)
+* split `Extensions` into `ColorHelper` and `TimeHelper`
+* 1.21 port
+
+## 0.1.9 (BETA)
+* added `LanguageProviderHelper`
+
 ## 0.1.8 (BETA)
 * added DataProviderHelper
 * fixes

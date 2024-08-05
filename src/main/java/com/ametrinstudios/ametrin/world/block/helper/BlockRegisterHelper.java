@@ -4,6 +4,7 @@ import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -33,6 +34,11 @@ public class BlockRegisterHelper {
         );
     }
     public static Supplier<AgeableBushBlock> bush(int bonusDrop, int growRarity) {return ()-> new AgeableBushBlock(bonusDrop, growRarity, CopyProperties(Blocks.SWEET_BERRY_BUSH));}
+
+    public static Supplier<SaplingBlock> sapling(TreeGrower treeGrower) {
+        // all saplings have the same props
+        return () -> new SaplingBlock(treeGrower, CopyProperties(Blocks.OAK_SAPLING));
+    }
 
     public static Supplier<ButtonBlock> woodenButton() {return woodenButton(BlockSetType.OAK);}
     public static Supplier<ButtonBlock> woodenButton(BlockSetType type) {return button(type, 30, true);}

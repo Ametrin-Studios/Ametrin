@@ -6,6 +6,7 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
@@ -22,6 +23,9 @@ public final class VanillaCompat {
      */
     public static void addFlowerPot(ResourceLocation plant, Supplier<? extends FlowerPotBlock> fullPot){
         ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant, fullPot);
+    }
+    public static void addFlowerPot(DeferredBlock<? extends Block> plant, Supplier<? extends FlowerPotBlock> fullPot){
+        addFlowerPot(plant.getId(), fullPot);
     }
 
     /**

@@ -7,7 +7,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 
-public class Extensions {
+@SuppressWarnings("unused")
+public final class ChunkPosHelper {
     public static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos, int y) { return new BlockPos(chunkPos.getMinBlockX(), y, chunkPos.getMinBlockZ()); }
 
     public static BlockPos ChunkPosToBlockPosFromHeightMap(ChunkPos chunkPos, Heightmap.Types heightmapType, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState){
