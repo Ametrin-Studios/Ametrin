@@ -4,9 +4,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 
+//just here for back-compat, might be reused when armor system gets comeback
 public class CustomArmorItem extends ArmorItem {
-    public CustomArmorItem(Holder<ArmorMaterial> p_323783_, Type p_266831_, Properties p_40388_) {
-        super(p_323783_, p_266831_, p_40388_);
+    public CustomArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+        super(material, type, properties);
     }
 //    protected final Armor Armor;
 

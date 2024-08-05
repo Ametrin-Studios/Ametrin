@@ -19,15 +19,19 @@ import java.util.function.ToIntFunction;
 
 import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourPropertiesHelper.CopyProperties;
 
-@SuppressWarnings("unused") // TODO: rename -> BlockRegisterHelper
+@SuppressWarnings("unused")
 public class BlockRegisterHelper {
     private BlockRegisterHelper() {}
 
     public static Supplier<StairBlock> stair(StairBlock.Properties properties, Supplier<BlockState> base) {return ()-> new StairBlock(base.get(), properties);}
     public static Supplier<StairBlock> stair(Block parent) {return stair(CopyProperties(parent), parent::defaultBlockState);}
 
-//    public static Supplier<SaplingBlock> sapling(Supplier<? extends CustomTreeFeature> tree) {return ()-> new SaplingBlock(new CustomTreeGrower(tree), CopyProperties(Blocks.OAK_SAPLING));}
-    public static Supplier<FlowerPotBlock> potted(Supplier<Block> main) {return ()-> new FlowerPotBlock(() -> (FlowerPotBlock)Blocks.FLOWER_POT, main, CopyProperties(Blocks.POTTED_OAK_SAPLING));}
+    public static Supplier<FlowerPotBlock> potted(Supplier<Block> main) {
+        return ()-> new FlowerPotBlock(
+                () -> (FlowerPotBlock)Blocks.FLOWER_POT, main,
+                CopyProperties(Blocks.POTTED_OAK_SAPLING) //All potted plants have the same properties
+        );
+    }
     public static Supplier<AgeableBushBlock> bush(int bonusDrop, int growRarity) {return ()-> new AgeableBushBlock(bonusDrop, growRarity, CopyProperties(Blocks.SWEET_BERRY_BUSH));}
 
     public static Supplier<ButtonBlock> woodenButton() {return woodenButton(BlockSetType.OAK);}

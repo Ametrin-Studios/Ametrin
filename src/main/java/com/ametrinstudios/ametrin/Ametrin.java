@@ -1,16 +1,23 @@
 package com.ametrinstudios.ametrin;
 
+import com.ametrinstudios.ametrin.util.VanillaCompat;
 import com.ametrinstudios.ametrin.world.AmetrinEntityTypes;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.ApiStatus;
 
 @Mod(Ametrin.MOD_ID)
-public class Ametrin{
+public final class Ametrin {
     @ApiStatus.Internal
     public static final String MOD_ID = "ametrin";
 
-    public Ametrin(IEventBus modEventBus){
-        AmetrinEntityTypes.REGISTER.register(modEventBus);
+    public Ametrin(IEventBus modBus) {
+        AmetrinEntityTypes.REGISTER.register(modBus);
+        modBus.addListener(Ametrin::commonSetup);
+    }
+
+    private static void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(VanillaCompat::pushRequests);
     }
 }
