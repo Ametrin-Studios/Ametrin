@@ -1,0 +1,16 @@
+modLoader="javafml" #mandatory
+loaderVersion="[4,)" #mandatory
+license="All rights reserved"
+
+[[mods]] #mandatory
+    modId="ametrin_test" #mandatory
+    version="0.0.0" #mandatory
+    displayName="Ametrin Test" #mandatory
+    description='''No Description'''
+
+[[dependencies.ametrin_test]]
+    modId="ametrin"
+    type="required"
+    versionRange="[0.0.1,)"
+    ordering="NONE"
+    side="BOTH"

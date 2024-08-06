@@ -33,4 +33,4 @@ issueTrackerURL="https://github.com/Ametrin-Studios/Ametrin/issues" #optional
     config="${mod_id}.mixins.json"
 
 [[accessTransformers]]
-    file="${mod_id}_base.cfg"
+    file="${mod_id}.base.cfg"

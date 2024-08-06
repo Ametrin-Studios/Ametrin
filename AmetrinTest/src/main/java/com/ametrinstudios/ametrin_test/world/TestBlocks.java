@@ -11,13 +11,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourPropertiesHelper.CopyProperties;
+import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourPropertiesHelper.copyProperties;
 
 public final class TestBlocks {
     public static final DeferredRegister.Blocks REGISTER = DeferredRegister.createBlocks(AmetrinTestMod.MOD_ID);
 
-    private static final BlockBehaviour.Properties DEFAULT_PROPERTIES = CopyProperties(Blocks.STONE);
-    public static final Supplier<Block> TEST_BLOCK = REGISTER.register("test_block", ()-> new Block(CopyProperties(DEFAULT_PROPERTIES).friction(0.1f)));
+    private static final BlockBehaviour.Properties DEFAULT_PROPERTIES = copyProperties(Blocks.STONE);
+    public static final Supplier<Block> TEST_BLOCK = REGISTER.register("test_block", ()-> new Block(copyProperties(DEFAULT_PROPERTIES).friction(0.1f)));
     public static final Supplier<Block> TEST_PORTAL = REGISTER.register("test_portal", TestPortalBlock::new);
 
     private static <T extends Block>Supplier<T> register(String name, Supplier<T> block, Item.Properties itemProperties) {
