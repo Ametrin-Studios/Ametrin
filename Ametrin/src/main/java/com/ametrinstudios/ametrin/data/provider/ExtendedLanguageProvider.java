@@ -10,7 +10,7 @@ public abstract class ExtendedLanguageProvider extends LanguageProvider {
         super(output, mod_id, locale);
     }
 
-    protected void add(DeferredItem<Item> deferredItem, String name){
+    protected void add(DeferredItem<? extends Item> deferredItem, String name){
         add(deferredItem.asItem(), name);
     }
 }

@@ -49,7 +49,7 @@ public class DataProviderHelper {
         add(provider.build(output, lookupProvider, existingFileHelper));
     }
     public void add(CustomLootTableProvider.Builder lootTableBuilder){
-        add(lootTableBuilder.Build(output, lookupProvider));
+        add(lootTableBuilder.build(output, lookupProvider));
     }
     public void addBlockAndItemTags(BlockTagsProvider blockTagsProvider, ItemTagsProvider itemTagsProvider){
         var blockTags = blockTagsProvider.build(output, lookupProvider, existingFileHelper);
@@ -57,7 +57,7 @@ public class DataProviderHelper {
         add(itemTagsProvider.build(output, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
     }
     public void addLootTables(Function<CustomLootTableProvider.Builder, CustomLootTableProvider.Builder> consumer){
-        var builder = consumer.apply(CustomLootTableProvider.Builder());
+        var builder = consumer.apply(CustomLootTableProvider.builder());
         add(builder);
     }
 

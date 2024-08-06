@@ -18,7 +18,7 @@ public class CustomLootTableProvider extends LootTableProvider {
         super(packOutput, Set.of(), subProviders, registries);
     }
 
-    public static Builder Builder(){
+    public static Builder builder(){
         return new Builder();
     }
 
@@ -29,31 +29,31 @@ public class CustomLootTableProvider extends LootTableProvider {
              _subProviders = new ArrayList<>();
         }
 
-        public Builder AddBlockProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier){
-            return AddProvider(subProviderSupplier, LootContextParamSets.BLOCK);
+        public Builder addBlockProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier){
+            return addProvider(subProviderSupplier, LootContextParamSets.BLOCK);
         }
-        public Builder AddChestProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier){
-            return AddProvider(subProviderSupplier, LootContextParamSets.CHEST);
+        public Builder addChestProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier){
+            return addProvider(subProviderSupplier, LootContextParamSets.CHEST);
         }
-        public Builder AddEntityProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier){
-            return AddProvider(subProviderSupplier, LootContextParamSets.ENTITY);
+        public Builder addEntityProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier){
+            return addProvider(subProviderSupplier, LootContextParamSets.ENTITY);
         }
-        public Builder AddArcheologyProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier){
-            return AddProvider(subProviderSupplier, LootContextParamSets.ARCHAEOLOGY);
+        public Builder addArcheologyProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier){
+            return addProvider(subProviderSupplier, LootContextParamSets.ARCHAEOLOGY);
         }
-        public Builder AddFishingProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier){
-            return AddProvider(subProviderSupplier, LootContextParamSets.FISHING);
+        public Builder addFishingProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier){
+            return addProvider(subProviderSupplier, LootContextParamSets.FISHING);
         }
-        public Builder AddProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier, LootContextParamSet paramSet){
-            return AddProvider(new SubProviderEntry(subProviderSupplier, paramSet));
+        public Builder addProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier, LootContextParamSet paramSet){
+            return addProvider(new SubProviderEntry(subProviderSupplier, paramSet));
         }
 
-        public Builder AddProvider(SubProviderEntry subProviderEntry){
+        public Builder addProvider(SubProviderEntry subProviderEntry){
             _subProviders.add(subProviderEntry);
             return this;
         }
 
-        public CustomLootTableProvider Build(PackOutput output, CompletableFuture<HolderLookup.Provider> registries){
+        public CustomLootTableProvider build(PackOutput output, CompletableFuture<HolderLookup.Provider> registries){
             if(_subProviders.isEmpty()) throw new IllegalStateException("Cannot run an empty LootTableProvider");
             return new CustomLootTableProvider(output, _subProviders, registries);
         }

@@ -1,3 +1,7 @@
+## 0.2.3 (BETA)
+* added `BoatTypeHelper`
+* small qol improvements
+
 ## 0.2.2 (ALPHA)
 * added `ArmorMaterialBuilder`
 * added `VanillaCompat.addFlowerPot` overload 

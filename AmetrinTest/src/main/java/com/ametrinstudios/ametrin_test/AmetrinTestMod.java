@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin_test;
 
 import com.ametrinstudios.ametrin.data.DataProviderHelper;
+import com.ametrinstudios.ametrin.world.entity.helper.BoatTypeHelper;
 import com.ametrinstudios.ametrin_test.data.provider.TestBlockStateProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestItemModelProvider;
 import com.ametrinstudios.ametrin_test.data.provider.TestLanguageProvider;
@@ -8,6 +9,7 @@ import com.ametrinstudios.ametrin_test.data.provider.TestRecipeProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootSubProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableSubProvider;
 import com.ametrinstudios.ametrin_test.world.TestBlocks;
+import com.ametrinstudios.ametrin_test.world.TestBoatTypes;
 import com.ametrinstudios.ametrin_test.world.TestItems;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +32,8 @@ public final class AmetrinTestMod {
 
         modBus.addListener(AmetrinTestMod::setup);
         modBus.addListener(AmetrinTestMod::gatherData);
+
+        LOGGER.info(BoatTypeHelper.getExtensionJson(locate("troll"), TestBoatTypes.class));
     }
 
     private static void setup(final FMLCommonSetupEvent event){
@@ -46,8 +50,8 @@ public final class AmetrinTestMod {
         helper.add(TestRecipeProvider::new);
         helper.add(TestLanguageProvider::new);
         helper.addLootTables(builder -> builder
-                .AddBlockProvider(TestBlockLootSubProvider::new)
-                .AddChestProvider(TestLootTableSubProvider::new));
+                .addBlockProvider(TestBlockLootSubProvider::new)
+                .addChestProvider(TestLootTableSubProvider::new));
     }
 
     public static ResourceLocation locate(String key){

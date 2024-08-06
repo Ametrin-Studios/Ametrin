@@ -103,6 +103,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static void slab(RecipeOutput output, ItemLike slab, ItemLike material, ItemLike... additionalStonecuttingMaterials){
         slab(output, slab, material, true);
         for(ItemLike mat : additionalStonecuttingMaterials){
+            // TODO: rewrite to work with DeferredBlock
             stonecutting(output, RecipeCategory.BUILDING_BLOCKS, slab, mat instanceof SlabBlock ? 1 : 2, mat);
         }
     }

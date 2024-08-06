@@ -54,6 +54,10 @@ neoForge {
         "${mod_id}" {
             sourceSet(sourceSets.main)
         }
+
+        ametrin {
+            sourceSet project(":Ametrin").sourceSets.main
+        }
     }
 }
 
