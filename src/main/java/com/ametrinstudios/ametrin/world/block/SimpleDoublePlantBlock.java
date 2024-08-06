@@ -24,7 +24,12 @@ public class SimpleDoublePlantBlock extends DoublePlantBlock {
         return blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? UpperShape : LowerShape;
     }
 
-    @Override public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return true;}
-    @Override public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 60;}
-    @Override public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 100;}
+    @Override @ParametersAreNonnullByDefault
+    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) { return true; }
+
+    @Override @ParametersAreNonnullByDefault
+    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) { return 60; }
+
+    @Override @ParametersAreNonnullByDefault
+    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) { return 100; }
 }

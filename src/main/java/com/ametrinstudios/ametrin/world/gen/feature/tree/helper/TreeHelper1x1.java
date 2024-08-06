@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import static com.ametrinstudios.ametrin.world.gen.feature.tree.helper.TreeHelper.setBlockChecked;
 
-public class TreeHelper1x1 {
+public final class TreeHelper1x1 {
     public static final double CIRCULAR_LEAVES_ROUNDING_MULTIPLIER = 1.7;
 
     /**

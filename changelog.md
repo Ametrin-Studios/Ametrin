@@ -4,7 +4,9 @@
 * readded `BlockRegisterHelper.sapling`
 * renamed `Extensions` to `ChunkPosHelper`
 * added `TimeHelper.HoursToTicks`
-* added provider rule for armor tags 
+* added provider rule for armor tags
+* removed custom boat stuff in favor of [EnumExtensions](https://docs.neoforged.net/docs/advanced/extensibleenums/)
+* `BlockRegisterHelper` rethinking
 
 ## 0.2.1 (ALPHA)
 * reworked `VanillaCompat` class

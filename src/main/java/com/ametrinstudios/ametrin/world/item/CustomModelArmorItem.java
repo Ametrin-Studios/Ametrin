@@ -4,8 +4,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorMaterial;
 
 public class CustomModelArmorItem extends CustomArmorItem {
-    public CustomModelArmorItem(Holder<ArmorMaterial> p_323783_, Type p_266831_, Properties p_40388_) {
-        super(p_323783_, p_266831_, p_40388_);
+    public CustomModelArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+        super(material, type, properties);
     }
 
 //    public CustomModelArmorItem(CustomModelArmor armor, ArmorItem.Type type, Properties properties) {

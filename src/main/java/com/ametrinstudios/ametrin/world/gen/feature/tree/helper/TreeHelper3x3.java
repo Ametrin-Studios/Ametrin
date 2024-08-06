@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import static com.ametrinstudios.ametrin.world.gen.feature.tree.helper.TreeHelper.setBlockChecked;
 
-public class TreeHelper3x3 {
+public final class TreeHelper3x3 {
     /**
      * Places a vertical 3 by 3 trunk.
      * @param log trunk {@link BlockState}

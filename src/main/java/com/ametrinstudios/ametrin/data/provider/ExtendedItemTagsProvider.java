@@ -1,7 +1,6 @@
 package com.ametrinstudios.ametrin.data.provider;
 
 import com.ametrinstudios.ametrin.data.ItemTagProviderRule;
-import com.ametrinstudios.ametrin.world.entity.boat.BoatVariants;
 import com.ametrinstudios.ametrin.world.item.CustomBoatItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -49,10 +48,10 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
 
         itemTagProviderRules.add((item, name)-> {
             if(item instanceof CustomBoatItem boat){
-                if(boat.Variant == BoatVariants.DEFAULT) {
-                    tag(ItemTags.BOATS).add(item);
-                } else if (boat.Variant == BoatVariants.CHEST) {
+                if(boat.isChestBoat()) {
                     tag(ItemTags.CHEST_BOATS).add(item);
+                } else {
+                    tag(ItemTags.BOATS).add(item);
                 }
             }
         });

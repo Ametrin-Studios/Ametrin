@@ -5,19 +5,6 @@
 Feel free to join our [Discord Server](https://discord.com/invite/hwA9dd5bVh). We're always here to help!
 
 ## Docs
-### Custom Boats
-- put texture in `assets/{mod_id}/textures/entity/{boat|chest_boat}`
-- create and register the custom boat type and items<br>(*id* should be `ResourceLocation(mod_id, boat_type_name)`)
-```java
-public static final CustomBoatType TEST_BOAT_TYPE = CustomBoatType.builder(id).boatItem(TestItems.TEST_BOAT::get).chestBoatItem(TestItems.TEST_CHEST_BOAT::get).register();
-```
-
-```java
-public static final RegistryObject<CustomBoatItem> TEST_BOAT = REGISTRY.register("test_boat", ()-> CustomBoatItem.boat(TEST_BOAT_TYPE));
-public static final RegistryObject<CustomBoatItem> TEST_CHEST_BOAT = REGISTRY.register("test_chest_boat", ()-> CustomBoatItem.chest(TEST_BOAT_TYPE));
-```
-- you can create new boat variations, check the `BoatVariants` class
-
 ### Data Providers
 #### Registering
 ``DataProviderHelper`` cuts down boilerplate
@@ -98,10 +85,5 @@ public class TestBlockStateProvider extends ExtendedBlockStateProvider {
 #### ExtendedRecipeProvider
 #### LootTableProvider
 
-### Modifying Vanilla Behaviour
-The `VanillaHack` class has a lot of helper functions for modifying/overriding vanilla behaviour.<br>
-Call during `FMLCommonSetupEvent`.
-#### Override Item Food Properties
-```java
-VanillaHack.overrideFoodProperties(Items.EXAMPLE_ITEM, Foods.EXAMPLE_FOOD);
-```
+### Custom Boats (removed)
+_use [EnumExtensions](https://docs.neoforged.net/docs/advanced/extensibleenums/) or see [legacy](https://github.com/Ametrin-Studios/Ametrin/tree/1.20.4?tab=readme-ov-file#custom-boats)_

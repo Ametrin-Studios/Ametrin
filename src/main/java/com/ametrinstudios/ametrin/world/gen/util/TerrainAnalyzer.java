@@ -17,18 +17,19 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 
 import java.util.function.Predicate;
 
-public class TerrainAnalyzer{
+public final class TerrainAnalyzer {
 
     /**
      * @return the average height between the corner points and weather the difference is larger than the threshold, always true on {@link FlatLevelSource}
      */
-    public static Pair<Float, Boolean> isFlatEnough(BlockPos pos, Vec3i size, int padding, int threshold, Context context){
-        if(context.generator instanceof FlatLevelSource) {return Pair.of((float)context.generator().getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState()), true);}
+    public static Pair<Float, Boolean> isFlatEnough(BlockPos pos, Vec3i size, int padding, int threshold, Context context) {
+        if(context.generator() instanceof FlatLevelSource) { return Pair.of((float)context.generator().getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState()), true); }
 
-        int x1 = pos.getX()+padding;
-        int x2 = pos.getX()+size.getX()-padding;
-        int z1 = pos.getZ()+padding;
-        int z2 = pos.getZ()+size.getZ()-padding;
+        int x1 = pos.getX() + padding;
+        int z1 = pos.getZ() + padding;
+
+        int x2 = pos.getX() + size.getX() - padding;
+        int z2 = pos.getZ() + size.getZ() - padding;
 
 
         int height1 = context.generator().getBaseHeight(x1, z1, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
@@ -45,17 +46,17 @@ public class TerrainAnalyzer{
         return getBlockAt(pos.above(depth), context).is(Blocks.WATER);
     }
 
-    public static boolean isGroundLevelAbove(BlockPos pos, int height, Context context){
+    public static boolean isGroundLevelAbove(BlockPos pos, int height, Context context) {
         return isGroundLevelAbove(pos.getX(), pos.getZ(), height, context);
     }
-    public static boolean isGroundLevelAbove(int x, int z, int height, Context context){
+    public static boolean isGroundLevelAbove(int x, int z, int height, Context context) {
         return context.generator().getBaseHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState()) > height;
     }
 
-    public static boolean isGroundLevelBelow(BlockPos pos, int height, Context context){
+    public static boolean isGroundLevelBelow(BlockPos pos, int height, Context context) {
         return isGroundLevelBelow(pos.getX(), pos.getZ(), height, context);
     }
-    public static boolean isGroundLevelBelow(int x, int z, int height, Context context){
+    public static boolean isGroundLevelBelow(int x, int z, int height, Context context) {
         return context.generator().getBaseHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState()) < height;
     }
 
@@ -66,8 +67,8 @@ public class TerrainAnalyzer{
         return true;
     }
 
-    public static BlockState getBlockAt(BlockPos pos, Context context) {return getBlockAt(pos.getX(), pos.getY(), pos.getZ(), context);}
-    public static BlockState getBlockAt(int x, int y, int z, Context context) {return context.generator().getBaseColumn(x, z, context.heightAccessor(), context.randomState()).getBlock(y);}
+    public static BlockState getBlockAt(BlockPos pos, Context context) { return getBlockAt(pos.getX(), pos.getY(), pos.getZ(), context); }
+    public static BlockState getBlockAt(int x, int y, int z, Context context) { return context.generator().getBaseColumn(x, z, context.heightAccessor(), context.randomState()).getBlock(y); }
 
     public static Context context(ChunkGenerator generator, LevelHeightAccessor heightAccessor, RandomState randomState) {
         return new Context(generator, heightAccessor, randomState);

@@ -5,8 +5,8 @@ import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemNameDoubleHighBlockItem extends DoubleHighBlockItem {
-    public ItemNameDoubleHighBlockItem(Block block, Properties properties) {super(block, properties);}
+    public ItemNameDoubleHighBlockItem(Block block, Properties properties) { super(block, properties); }
 
     @Override @NotNull
-    public String getDescriptionId() {return this.getOrCreateDescriptionId();}
+    public String getDescriptionId() { return this.getOrCreateDescriptionId(); }
 }

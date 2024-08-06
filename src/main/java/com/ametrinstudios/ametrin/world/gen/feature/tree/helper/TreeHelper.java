@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
 
 import static net.minecraft.world.level.levelgen.feature.Feature.isDirt;
 
-public class TreeHelper {
+public final class TreeHelper {
     public static boolean setBlockChecked(BlockState blockState, BlockPos pos, WorldGenLevel level, @Nullable BiConsumer<BlockPos, BlockState> changedBlocks) {
         var block = blockState.getBlock();
 

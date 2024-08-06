@@ -18,12 +18,12 @@ public interface IAgeablePlant extends BonemealableBlock{
 
     void onHarvest(BlockState blockState, Level level, BlockPos blockPos, Player player);
     @Override @ParametersAreNonnullByDefault
-    default boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState) {return isSparse(blockState);}
+    default boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState) { return isSparse(blockState); }
     @Override @ParametersAreNonnullByDefault
-    default boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState) {return true;}
+    default boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState) { return true; }
 
-    default boolean isSparse(BlockState blockState) {return isSparse(blockState.getValue(AGE));}
-    default boolean isSparse(int age) {return age < MAX_AGE;}
-    default boolean isFullyAged(BlockState blockState) {return isFullyAged(blockState.getValue(AGE));}
-    default boolean isFullyAged(int age) {return age >= MAX_AGE;}
+    default boolean isSparse(BlockState blockState) { return isSparse(blockState.getValue(AGE)); }
+    default boolean isSparse(int age) { return age < MAX_AGE; }
+    default boolean isFullyAged(BlockState blockState) { return isFullyAged(blockState.getValue(AGE)); }
+    default boolean isFullyAged(int age) { return age >= MAX_AGE; }
 }

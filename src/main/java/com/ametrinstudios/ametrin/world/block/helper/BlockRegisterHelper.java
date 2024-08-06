@@ -21,55 +21,68 @@ import java.util.function.ToIntFunction;
 import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourPropertiesHelper.CopyProperties;
 
 @SuppressWarnings("unused")
-public class BlockRegisterHelper {
+public final class BlockRegisterHelper {
     private BlockRegisterHelper() {}
 
-    public static Supplier<StairBlock> stair(StairBlock.Properties properties, Supplier<BlockState> base) {return ()-> new StairBlock(base.get(), properties);}
-    public static Supplier<StairBlock> stair(Block parent) {return stair(CopyProperties(parent), parent::defaultBlockState);}
+    //return an instance instead of a supplier, let the consumer wrap it, this makes them more robust against cyclic references
 
-    public static Supplier<FlowerPotBlock> potted(Supplier<Block> main) {
-        return ()-> new FlowerPotBlock(
-                () -> (FlowerPotBlock)Blocks.FLOWER_POT, main,
+    public static StairBlock stair(BlockState base, StairBlock.Properties properties) {
+        return new StairBlock(base, properties);
+    }
+    public static StairBlock stair(Supplier<BlockState> base, StairBlock.Properties properties) {
+        return new StairBlock(base.get(), properties);
+    }
+    public static StairBlock stair(Block parent) {
+        return stair(parent::defaultBlockState, CopyProperties(parent));
+    }
+
+    private static final Supplier<FlowerPotBlock> EMPTY_POT_SUPPLIER = ()-> (FlowerPotBlock) Blocks.FLOWER_POT;
+    public static FlowerPotBlock potted(Supplier<Block> main) {
+        return new FlowerPotBlock(
+                EMPTY_POT_SUPPLIER, main,
                 CopyProperties(Blocks.POTTED_OAK_SAPLING) //All potted plants have the same properties
         );
     }
-    public static Supplier<AgeableBushBlock> bush(int bonusDrop, int growRarity) {return ()-> new AgeableBushBlock(bonusDrop, growRarity, CopyProperties(Blocks.SWEET_BERRY_BUSH));}
+    public static AgeableBushBlock bush(int bonusDrop, int growRarity) {
+        return new AgeableBushBlock(bonusDrop, growRarity, CopyProperties(Blocks.SWEET_BERRY_BUSH));
+    }
 
-    public static Supplier<SaplingBlock> sapling(TreeGrower treeGrower) {
+    public static SaplingBlock sapling(TreeGrower treeGrower) {
         // all saplings have the same props
-        return () -> new SaplingBlock(treeGrower, CopyProperties(Blocks.OAK_SAPLING));
+        return new SaplingBlock(treeGrower, CopyProperties(Blocks.OAK_SAPLING));
     }
 
-    public static Supplier<ButtonBlock> woodenButton() {return woodenButton(BlockSetType.OAK);}
-    public static Supplier<ButtonBlock> woodenButton(BlockSetType type) {return button(type, 30, true);}
-    public static Supplier<ButtonBlock> stoneButton() {return stoneButton(BlockSetType.STONE);}
-    public static Supplier<ButtonBlock> stoneButton(BlockSetType type) {return button(type, 20, false);}
-    public static Supplier<ButtonBlock> button(BlockSetType type, int ticksStayPressed, boolean arrowsCanPress){
-        return ()-> new ButtonBlock(type, ticksStayPressed, BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY));
+    public static ButtonBlock woodenButton() {return woodenButton(BlockSetType.OAK);}
+    public static ButtonBlock woodenButton(BlockSetType type) {return button(type, 30, true);}
+    public static ButtonBlock stoneButton() {return stoneButton(BlockSetType.STONE);}
+    public static ButtonBlock stoneButton(BlockSetType type) {return button(type, 20, false);}
+    public static ButtonBlock button(BlockSetType type, int ticksStayPressed, boolean arrowsCanPress){
+        return new ButtonBlock(type, ticksStayPressed, BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY));
     }
 
-    @Deprecated
-    public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties) {return fenceGate(WoodType.OAK, properties);}
-    public static Supplier<FenceGateBlock> fenceGate(WoodType type, BlockBehaviour.Properties properties){
-        return ()-> new FenceGateBlock(type, properties);
+    public static FenceGateBlock fenceGate(WoodType type, BlockBehaviour.Properties properties){
+        return new FenceGateBlock(type, properties);
     }
-    public static Supplier<FenceGateBlock> fenceGate(BlockBehaviour.Properties properties, SoundEvent openSound, SoundEvent closeSound){
-        return ()-> new FenceGateBlock(properties, openSound, closeSound);
+    public static FenceGateBlock fenceGate(BlockBehaviour.Properties properties, SoundEvent openSound, SoundEvent closeSound){
+        return new FenceGateBlock(properties, openSound, closeSound);
     }
 
-    @Deprecated
-    public static Supplier<DoorBlock> door(BlockBehaviour.Properties properties) {return door(properties, BlockSetType.OAK);}
-    public static Supplier<DoorBlock> door(BlockBehaviour.Properties properties, BlockSetType type){
-        return ()-> new DoorBlock(type, properties);
+    public static DoorBlock door(BlockBehaviour.Properties properties, BlockSetType type){
+        return new DoorBlock(type, properties);
     }
-    @Deprecated
-    public static Supplier<TrapDoorBlock> trapDoor(BlockBehaviour.Properties properties) {return trapDoor(properties, BlockSetType.OAK);}
-    public static Supplier<TrapDoorBlock> trapDoor(BlockBehaviour.Properties properties, BlockSetType type){
-        return ()-> new TrapDoorBlock(type, properties);
+    public static TrapDoorBlock trapDoor(BlockBehaviour.Properties properties, BlockSetType type){
+        return new TrapDoorBlock(type, properties);
     }
 
-    public static Supplier<PressurePlateBlock> woodenPressurePlate(MapColor mapColor, BlockSetType type) {return pressurePlate(basePressurePlateProperties(mapColor, NoteBlockInstrument.BASS).ignitedByLava(), type);}
-    public static Supplier<PressurePlateBlock> stonePressurePlate(MapColor mapColor, BlockSetType type) {return pressurePlate(basePressurePlateProperties(mapColor, NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops(), type);}
+    public static PressurePlateBlock woodenPressurePlate(MapColor mapColor, BlockSetType type) {
+        return pressurePlate(basePressurePlateProperties(mapColor, NoteBlockInstrument.BASS).ignitedByLava(), type);
+    }
+    public static PressurePlateBlock stonePressurePlate(MapColor mapColor, BlockSetType type) {
+        return pressurePlate(basePressurePlateProperties(mapColor, NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops(), type);
+    }
+    public static PressurePlateBlock pressurePlate(BlockBehaviour.Properties properties, BlockSetType type){
+        return new PressurePlateBlock(type, properties);
+    }
 
     public static BlockBehaviour.Properties basePressurePlateProperties(DyeColor mapColor, NoteBlockInstrument instrument){
         return internalPressurePlateProperties(instrument).mapColor(mapColor);
@@ -82,9 +95,6 @@ public class BlockRegisterHelper {
     }
     private static BlockBehaviour.Properties internalPressurePlateProperties(NoteBlockInstrument instrument){
         return BlockBehaviour.Properties.of().forceSolidOn().instrument(instrument).noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY);
-    }
-    public static Supplier<PressurePlateBlock> pressurePlate(BlockBehaviour.Properties properties, BlockSetType type){
-        return ()-> new PressurePlateBlock(type, properties);
     }
 
     public static ToIntFunction<BlockState> litEmission(int lightLevel) {return (state)-> state.getValue(BlockStateProperties.LIT) ? lightLevel : 0;}
