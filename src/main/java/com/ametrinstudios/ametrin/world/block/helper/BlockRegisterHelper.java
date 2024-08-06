@@ -18,7 +18,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
-import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourPropertiesHelper.CopyProperties;
+import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourPropertiesHelper.copyProperties;
 
 @SuppressWarnings("unused")
 public final class BlockRegisterHelper {
@@ -26,36 +26,42 @@ public final class BlockRegisterHelper {
 
     //return an instance instead of a supplier, let the consumer wrap it, this makes them more robust against cyclic references
 
-    public static StairBlock stair(BlockState base, StairBlock.Properties properties) {
-        return new StairBlock(base, properties);
-    }
-    public static StairBlock stair(Supplier<BlockState> base, StairBlock.Properties properties) {
-        return new StairBlock(base.get(), properties);
+    public static StairBlock stair(Supplier<Block> parent) {
+        return stair(parent.get());
     }
     public static StairBlock stair(Block parent) {
-        return stair(parent::defaultBlockState, CopyProperties(parent));
+        return stair(parent, copyProperties(parent));
+    }
+    public static StairBlock stair(Block base, StairBlock.Properties properties) {
+        return stair(base.defaultBlockState(), properties);
+    }
+    public static StairBlock stair(Supplier<BlockState> base, StairBlock.Properties properties) {
+        return stair(base.get(), properties);
+    }
+    public static StairBlock stair(BlockState base, StairBlock.Properties properties) {
+        return new StairBlock(base, properties);
     }
 
     private static final Supplier<FlowerPotBlock> EMPTY_POT_SUPPLIER = ()-> (FlowerPotBlock) Blocks.FLOWER_POT;
     public static FlowerPotBlock potted(Supplier<Block> main) {
         return new FlowerPotBlock(
                 EMPTY_POT_SUPPLIER, main,
-                CopyProperties(Blocks.POTTED_OAK_SAPLING) //All potted plants have the same properties
+                copyProperties(Blocks.POTTED_OAK_SAPLING) //All potted plants have the same properties
         );
     }
     public static AgeableBushBlock bush(int bonusDrop, int growRarity) {
-        return new AgeableBushBlock(bonusDrop, growRarity, CopyProperties(Blocks.SWEET_BERRY_BUSH));
+        return new AgeableBushBlock(bonusDrop, growRarity, copyProperties(Blocks.SWEET_BERRY_BUSH));
     }
 
     public static SaplingBlock sapling(TreeGrower treeGrower) {
         // all saplings have the same props
-        return new SaplingBlock(treeGrower, CopyProperties(Blocks.OAK_SAPLING));
+        return new SaplingBlock(treeGrower, copyProperties(Blocks.OAK_SAPLING));
     }
 
-    public static ButtonBlock woodenButton() {return woodenButton(BlockSetType.OAK);}
-    public static ButtonBlock woodenButton(BlockSetType type) {return button(type, 30, true);}
-    public static ButtonBlock stoneButton() {return stoneButton(BlockSetType.STONE);}
-    public static ButtonBlock stoneButton(BlockSetType type) {return button(type, 20, false);}
+    public static ButtonBlock woodenButton() { return woodenButton(BlockSetType.OAK); }
+    public static ButtonBlock woodenButton(BlockSetType type) { return button(type, 30, true); }
+    public static ButtonBlock stoneButton() { return stoneButton(BlockSetType.STONE); }
+    public static ButtonBlock stoneButton(BlockSetType type) { return button(type, 20, false); }
     public static ButtonBlock button(BlockSetType type, int ticksStayPressed, boolean arrowsCanPress){
         return new ButtonBlock(type, ticksStayPressed, BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY));
     }
