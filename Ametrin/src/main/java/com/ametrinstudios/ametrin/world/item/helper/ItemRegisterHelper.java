@@ -18,7 +18,7 @@ public final class ItemRegisterHelper {
         return spawnEgg(type, backgroundColor, highlightColor, new Item.Properties());
     }
     public static DeferredSpawnEggItem spawnEgg(Supplier<? extends EntityType<? extends Mob>> type, Color backgroundColor, Color highlightColor, Item.Properties properties) {
-        return new DeferredSpawnEggItem(type, ColorHelper.ColorToInt(backgroundColor), ColorHelper.ColorToInt(highlightColor), properties);
+        return new DeferredSpawnEggItem(type, ColorHelper.colorToInt(backgroundColor), ColorHelper.colorToInt(highlightColor), properties);
     }
 
     public static CustomBoatItem boat(Boat.Type type){

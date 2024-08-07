@@ -13,14 +13,15 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
-public class DataProviderHelper {
+public final class DataProviderHelper {
     public final DataGenerator generator;
     public final PackOutput output;
     public final ExistingFileHelper existingFileHelper;
     public final CompletableFuture<HolderLookup.Provider> lookupProvider;
     public final boolean includeClient;
     public final boolean includeServer;
-    public DataProviderHelper(GatherDataEvent event){
+
+    public DataProviderHelper(GatherDataEvent event) {
         generator = event.getGenerator();
         output = generator.getPackOutput();
         existingFileHelper = event.getExistingFileHelper();
@@ -29,29 +30,29 @@ public class DataProviderHelper {
         includeServer = event.includeServer();
     }
 
-    public void add(boolean run, DataProvider provider){
+    public void add(boolean run, DataProvider provider) {
         generator.addProvider(run, provider);
     }
 
-    public void add(DataProvider provider){
+    public void add(DataProvider provider) {
         add(includeServer, provider);
     }
-    public void add(DataProviderFromOutput provider){
+    public void add(DataProviderFromOutput provider) {
         add(provider.build(output));
     }
-    public void add(DataProviderFromOutputFileHelper provider){
+    public void add(DataProviderFromOutputFileHelper provider) {
         add(provider.build(output, existingFileHelper));
     }
-    public void add(DataProviderFromOutputLookup provider){
+    public void add(DataProviderFromOutputLookup provider) {
         add(provider.build(output, lookupProvider));
     }
-    public void add(DataProviderFromOutputLookupFileHelper provider){
+    public void add(DataProviderFromOutputLookupFileHelper provider) {
         add(provider.build(output, lookupProvider, existingFileHelper));
     }
-    public void add(CustomLootTableProvider.Builder lootTableBuilder){
+    public void add(CustomLootTableProvider.Builder lootTableBuilder) {
         add(lootTableBuilder.build(output, lookupProvider));
     }
-    public void addBlockAndItemTags(BlockTagsProvider blockTagsProvider, ItemTagsProvider itemTagsProvider){
+    public void addBlockAndItemTags(BlockTagsProvider blockTagsProvider, ItemTagsProvider itemTagsProvider) {
         var blockTags = blockTagsProvider.build(output, lookupProvider, existingFileHelper);
         add(blockTags);
         add(itemTagsProvider.build(output, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
@@ -62,28 +63,28 @@ public class DataProviderHelper {
     }
 
     @FunctionalInterface
-    public interface DataProviderFromOutput{
+    public interface DataProviderFromOutput {
         DataProvider build(PackOutput output);
     }
     @FunctionalInterface
-    public interface DataProviderFromOutputLookup{
+    public interface DataProviderFromOutputLookup {
         DataProvider build(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider);
     }
     @FunctionalInterface
-    public interface DataProviderFromOutputFileHelper{
+    public interface DataProviderFromOutputFileHelper {
         DataProvider build(PackOutput output, ExistingFileHelper existingFileHelper);
     }
     @FunctionalInterface
-    public interface DataProviderFromOutputLookupFileHelper{
+    public interface DataProviderFromOutputLookupFileHelper {
         DataProvider build(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper);
     }
 
     @FunctionalInterface
-    public interface BlockTagsProvider{
+    public interface BlockTagsProvider {
         TagsProvider<Block> build(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper);
     }
     @FunctionalInterface
-    public interface ItemTagsProvider{
+    public interface ItemTagsProvider {
         DataProvider build(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> contentsGetter, ExistingFileHelper existingFileHelper);
     }
 }

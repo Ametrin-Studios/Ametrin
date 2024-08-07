@@ -5,7 +5,7 @@
       "name": "AMETRIN_TEST_TROLL",
       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
       "parameters": {
-        "class": "com/ametrinstudios/ametrin_test/world/TestBoatTypes",
+        "class": "com/ametrinstudios/ametrin_test/registry/TestBoatTypes",
         "field": "TROLL"
       }
     },
@@ -14,7 +14,7 @@
       "name": "AMETRIN_TEST_BEECH",
       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
       "parameters": {
-        "class": "com/ametrinstudios/ametrin_test/world/TestBoatTypes",
+        "class": "com/ametrinstudios/ametrin_test/registry/TestBoatTypes",
         "field": "BEECH"
       }
     }

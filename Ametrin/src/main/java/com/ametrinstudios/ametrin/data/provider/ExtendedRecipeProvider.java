@@ -19,7 +19,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.SlabBlock;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.WithConditions;
 import org.jetbrains.annotations.NotNull;
@@ -103,8 +102,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static void slab(RecipeOutput output, ItemLike slab, ItemLike material, ItemLike... additionalStonecuttingMaterials){
         slab(output, slab, material, true);
         for(ItemLike mat : additionalStonecuttingMaterials){
-            // TODO: rewrite to work with DeferredBlock
-            stonecutting(output, RecipeCategory.BUILDING_BLOCKS, slab, mat instanceof SlabBlock ? 1 : 2, mat);
+            stonecutting(output, RecipeCategory.BUILDING_BLOCKS, slab, getItemName(mat).contains("slab") ? 1 : 2, mat);
         }
     }
 

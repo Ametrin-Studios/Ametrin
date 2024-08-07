@@ -1,18 +1,18 @@
 package com.ametrinstudios.ametrin.world.effect;
 
 import com.ametrinstudios.ametrin.util.ColorHelper;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
 public class ExternalEffect extends MobEffect {
-    public ExternalEffect(MobEffectCategory category, Color color) {super(category, ColorHelper.ColorToInt(color));}
+    public ExternalEffect(MobEffectCategory category, Color color) {
+        super(category, ColorHelper.colorToInt(color));
+    }
 
-    @Override
-    public boolean applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
-        return super.applyEffectTick(entity, amplifier);
+    public ExternalEffect(MobEffectCategory category, Color color, ParticleOptions particle) {
+        super(category, ColorHelper.colorToInt(color), particle);
     }
 }

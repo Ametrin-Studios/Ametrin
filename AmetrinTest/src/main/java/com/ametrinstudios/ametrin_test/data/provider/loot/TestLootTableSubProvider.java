@@ -1,7 +1,7 @@
 package com.ametrinstudios.ametrin_test.data.provider.loot;
 
 import com.ametrinstudios.ametrin_test.AmetrinTestMod;
-import com.ametrinstudios.ametrin_test.world.TestBlocks;
+import com.ametrinstudios.ametrin_test.registry.TestBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;

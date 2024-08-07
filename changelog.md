@@ -1,6 +1,6 @@
 ## 0.2.3 (BETA)
 * added `BoatTypeHelper`
-* small qol improvements
+* qol improvements & refactoring
 
 ## 0.2.2 (ALPHA)
 * added `ArmorMaterialBuilder`

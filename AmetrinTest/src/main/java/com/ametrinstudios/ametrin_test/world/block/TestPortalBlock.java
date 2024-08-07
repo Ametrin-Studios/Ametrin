@@ -2,7 +2,7 @@ package com.ametrinstudios.ametrin_test.world.block;
 
 import com.ametrinstudios.ametrin.world.block.PortalBlock;
 import com.ametrinstudios.ametrin.world.dimension.portal.PortalHelper;
-import com.ametrinstudios.ametrin_test.world.TestBlocks;
+import com.ametrinstudios.ametrin_test.registry.TestBlocks;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;

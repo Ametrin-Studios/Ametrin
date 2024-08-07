@@ -2,15 +2,12 @@ package com.ametrinstudios.ametrin_test;
 
 import com.ametrinstudios.ametrin.data.DataProviderHelper;
 import com.ametrinstudios.ametrin.world.entity.helper.BoatTypeHelper;
-import com.ametrinstudios.ametrin_test.data.provider.TestBlockStateProvider;
-import com.ametrinstudios.ametrin_test.data.provider.TestItemModelProvider;
-import com.ametrinstudios.ametrin_test.data.provider.TestLanguageProvider;
-import com.ametrinstudios.ametrin_test.data.provider.TestRecipeProvider;
+import com.ametrinstudios.ametrin_test.data.provider.*;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootSubProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableSubProvider;
-import com.ametrinstudios.ametrin_test.world.TestBlocks;
-import com.ametrinstudios.ametrin_test.world.TestBoatTypes;
-import com.ametrinstudios.ametrin_test.world.TestItems;
+import com.ametrinstudios.ametrin_test.registry.TestBlocks;
+import com.ametrinstudios.ametrin_test.registry.TestBoatTypes;
+import com.ametrinstudios.ametrin_test.registry.TestItems;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
@@ -33,7 +30,6 @@ public final class AmetrinTestMod {
         modBus.addListener(AmetrinTestMod::setup);
         modBus.addListener(AmetrinTestMod::gatherData);
 
-        LOGGER.info(BoatTypeHelper.getExtensionJson(locate("troll"), TestBoatTypes.class));
     }
 
     private static void setup(final FMLCommonSetupEvent event){
@@ -43,7 +39,6 @@ public final class AmetrinTestMod {
 
     public static void gatherData(GatherDataEvent event){
         var helper = new DataProviderHelper(event);
-        // somehow the providers don't get run
 
         helper.add(TestBlockStateProvider::new);
         helper.add(TestItemModelProvider::new);
@@ -52,6 +47,12 @@ public final class AmetrinTestMod {
         helper.addLootTables(builder -> builder
                 .addBlockProvider(TestBlockLootSubProvider::new)
                 .addChestProvider(TestLootTableSubProvider::new));
+
+        helper.addBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
+
+        LOGGER.info("Dumping generated enum extensions:");
+        LOGGER.info(BoatTypeHelper.getExtensionJson(locate("troll"), TestBoatTypes.class));
+        LOGGER.info(BoatTypeHelper.getExtensionJson(locate("beech"), TestBoatTypes.class));
     }
 
     public static ResourceLocation locate(String key){

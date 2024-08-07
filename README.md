@@ -43,7 +43,7 @@ public class TestBlockStateProvider extends ExtendedBlockStateProvider {
         runProviderRules(TestBlocks.REGISTRY); // run the providers for all Blocks in TestBlocks.REGISTRY
         // runProviderRules(someIteratorOfBlocks); // you can also provide a custom collection or iterator
     
-        someSpecialBlockModel(TestBlocks.SPECIAL_BLOCK); // generate models/states for excluded blocks 
+        // don't forget to generate models/states for excluded blocks 
     }
 }
 ```
@@ -53,7 +53,7 @@ public TestBlockStateProvider(PackOutput output, ExistingFileHelper existingFile
     //...
     // parameter: block instance, block id, block texture (based on getTextureLocation (see below))
     blockStateProviderRules.add((block, name, texture)->{
-        if(/*rule does not apply*/) {return false;}
+        if(/*rule does not apply*/) { return false; }
         // generate model/state
         return true;
     });   
@@ -83,7 +83,10 @@ public class TestBlockStateProvider extends ExtendedBlockStateProvider {
 #### ExtendedBlockTagsProvider
 #### ExtendedItemTagsProvider
 #### ExtendedRecipeProvider
-#### LootTableProvider
+#### LootTableProviders
+#### ExtendedLanguageProvider
 
-### Custom Boats (removed)
-_use [EnumExtensions](https://docs.neoforged.net/docs/advanced/extensibleenums/) or see [legacy](https://github.com/Ametrin-Studios/Ametrin/tree/1.20.4?tab=readme-ov-file#custom-boats)_
+### Custom Boats
+_The [original custom boat helpers](https://github.com/Ametrin-Studios/Ametrin/tree/1.20.4?tab=readme-ov-file#custom-boats) have been removed_<br>
+use [ExtensibleEnums](https://docs.neoforged.net/docs/advanced/extensibleenums/) and `BoatTypeHelper.createProxy`.<br>
+use `BoatTypeHelper.getExtensionJson` to generate the extension json string

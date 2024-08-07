@@ -69,10 +69,18 @@ configurations {
 
 repositories {
     mavenLocal()
+
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
     implementation project(":Ametrin")
+    localRuntime "curse.maven:emi-580555:5497461"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

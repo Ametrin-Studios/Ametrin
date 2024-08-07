@@ -2,7 +2,7 @@ package com.ametrinstudios.ametrin_test.data.provider;
 
 import com.ametrinstudios.ametrin.data.provider.ExtendedBlockStateProvider;
 import com.ametrinstudios.ametrin_test.AmetrinTestMod;
-import com.ametrinstudios.ametrin_test.world.TestBlocks;
+import com.ametrinstudios.ametrin_test.registry.TestBlocks;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 

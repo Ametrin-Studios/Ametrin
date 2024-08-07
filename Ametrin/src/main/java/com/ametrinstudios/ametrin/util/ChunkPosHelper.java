@@ -9,9 +9,9 @@ import net.minecraft.world.level.levelgen.RandomState;
 
 @SuppressWarnings("unused")
 public final class ChunkPosHelper {
-    public static BlockPos ChunkPosToBlockPos(ChunkPos chunkPos, int y) { return new BlockPos(chunkPos.getMinBlockX(), y, chunkPos.getMinBlockZ()); }
+    public static BlockPos chunkPosToBlockPos(ChunkPos chunkPos, int y) { return new BlockPos(chunkPos.getMinBlockX(), y, chunkPos.getMinBlockZ()); }
 
-    public static BlockPos ChunkPosToBlockPosFromHeightMap(ChunkPos chunkPos, Heightmap.Types heightmapType, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState){
+    public static BlockPos chunkPosToBlockPosFromHeightMap(ChunkPos chunkPos, Heightmap.Types heightmapType, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState){
         var pos = chunkPos.getWorldPosition();
         return pos.atY(chunkGenerator.getBaseHeight(pos.getX(), pos.getZ(), heightmapType, heightAccessor, randomState));
     }

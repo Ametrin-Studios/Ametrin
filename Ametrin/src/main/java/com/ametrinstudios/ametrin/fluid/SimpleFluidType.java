@@ -25,7 +25,7 @@ public class SimpleFluidType extends FluidType {
     private final Vector3f fogColor;
 
     public SimpleFluidType(final Color tintColor, final Color fogColor, final Properties properties) {
-        this(ColorHelper.ColorToIntWithAlpha(tintColor), new Vector3f(fogColor.getRed()/255f, fogColor.getGreen()/255f, fogColor.getBlue()/255f), properties);
+        this(ColorHelper.colorToIntWithAlpha(tintColor), new Vector3f(fogColor.getRed()/255f, fogColor.getGreen()/255f, fogColor.getBlue()/255f), properties);
     }
 
     public SimpleFluidType(final int tintColor, final Vector3f fogColor, final Properties properties) {

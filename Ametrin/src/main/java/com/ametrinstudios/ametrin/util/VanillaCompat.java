@@ -69,7 +69,7 @@ public final class VanillaCompat {
 
 
     @ApiStatus.Internal
-    public static void pushRequests(){
+    public static void injectRequests(){
         _pushed = true;
         AxeItem.STRIPPABLES = (new ImmutableMap.Builder<Block, Block>()).putAll(AxeItem.STRIPPABLES).putAll(_strippableRequests).build();
     }

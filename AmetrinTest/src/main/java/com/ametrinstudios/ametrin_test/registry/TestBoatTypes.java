@@ -1,4 +1,4 @@
-package com.ametrinstudios.ametrin_test.world;
+package com.ametrinstudios.ametrin_test.registry;
 
 import com.ametrinstudios.ametrin.world.entity.helper.BoatTypeHelper;
 import com.ametrinstudios.ametrin_test.AmetrinTestMod;
