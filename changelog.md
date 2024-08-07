@@ -1,3 +1,7 @@
+## 0.2.4 (BETA)
+* enabled update checker
+* fixed `ExtendedRecipeProvider.dying` saving to the wrong namespace
+
 ## 0.2.3 (BETA)
 * added `BoatTypeHelper`
 * qol improvements & refactoring
@@ -5,18 +9,19 @@
 ## 0.2.2 (ALPHA)
 * added `ArmorMaterialBuilder`
 * added `VanillaCompat.addFlowerPot` overload 
-* readded `BlockRegisterHelper.sapling`
-* renamed `Extensions` to `ChunkPosHelper`
-* added `TimeHelper.HoursToTicks`
+* re-added `BlockRegisterHelper.sapling`
+* renamed `Extensions` to `ChunkPosHelper` (breaking)
+* added `TimeHelper.hoursToTicks`
 * added provider rule for armor tags
-* removed custom boat stuff in favor of [EnumExtensions](https://docs.neoforged.net/docs/advanced/extensibleenums/)
-* `BlockRegisterHelper` rethinking
+* removed custom boat stuff in favor of [EnumExtensions](https://docs.neoforged.net/docs/advanced/extensibleenums/) (breaking)
+* `BlockRegisterHelper` rethinking (breaking)
 
 ## 0.2.1 (ALPHA)
 * reworked `VanillaCompat` class
 
 ## 0.2.0 (ALPHA)
-* split `Extensions` into `ColorHelper` and `TimeHelper`
+* split `Extensions` into `ColorHelper` and `TimeHelper` (breaking)
+* disabled Armor API (will be reworked)
 * 1.21 port
 
 ## 0.1.9 (BETA)
@@ -37,7 +42,7 @@
 * fixed Boat API
 
 ## 0.1.4 (BETA)
-* removed ColorSpawnEggItem class (use `ItemRegisterHelper.boat`)
+* removed ColorSpawnEggItem class (use `ItemRegisterHelper.spawnEgg`)
 * fixed Strippable API
 * updated Flammable API
 * clean up

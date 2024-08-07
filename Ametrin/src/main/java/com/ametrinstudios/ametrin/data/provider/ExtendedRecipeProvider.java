@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -46,17 +45,20 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     @Override @NotNull @ParametersAreNonnullByDefault
-    protected CompletableFuture<?> run(CachedOutput output, final HolderLookup.Provider lookupProvider){
-        currentModID = modID;
+    protected CompletableFuture<?> run(CachedOutput output, final HolderLookup.Provider registries){
+        currentModID = modID; //todo: try finding a way without an injected modID
         final var list = new ArrayList<CompletableFuture<?>>();
+        // use static set to catch duplicates across multiple instances
+        // edit: unnecessary? data gen will always run for only one mod
+        // edit: in case a mod has multiple recipe providers? (might help large mods by separating)
         buildRecipes(new RecipeOutput() {
             @Override @ParametersAreNonnullByDefault
             public void accept(ResourceLocation resourceLocation, Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, ICondition... conditions) {
-                if (!_recipes.add(resourceLocation)) {throw new IllegalStateException("Duplicate recipe " + resourceLocation);}
+                if (!_recipes.add(resourceLocation)) { throw new IllegalStateException("Duplicate recipe " + resourceLocation); }
 
-                list.add(DataProvider.saveStable(output, lookupProvider, Recipe.CONDITIONAL_CODEC, Optional.of(new WithConditions<>(recipe, conditions)), recipePathProvider.json(resourceLocation)));
+                list.add(DataProvider.saveStable(output, registries, Recipe.CONDITIONAL_CODEC, Optional.of(new WithConditions<>(recipe, conditions)), recipePathProvider.json(resourceLocation)));
                 if(advancementHolder != null){
-                    list.add(DataProvider.saveStable(output, lookupProvider, Advancement.CONDITIONAL_CODEC, Optional.of(new WithConditions<>(advancementHolder.value(), conditions)), advancementPathProvider.json(advancementHolder.id())));
+                    list.add(DataProvider.saveStable(output, registries, Advancement.CONDITIONAL_CODEC, Optional.of(new WithConditions<>(advancementHolder.value(), conditions)), advancementPathProvider.json(advancementHolder.id())));
                 }
             }
 
@@ -430,11 +432,11 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
     protected static void dying(RecipeOutput output, TagKey<Item> dyedItems, String idPattern, String group){
         for(var dye : DyeColor.values()){
-            var resultID = location(idPattern.replace("{color}", dye.getName()));
+            var resultID = locate(idPattern.replace("{color}", dye.getName()));
             var dyeID = ResourceLocation.withDefaultNamespace(dye.getName() + "_dye");
             var result = BuiltInRegistries.ITEM.get(resultID);
             var dyeItem = BuiltInRegistries.ITEM.get(dyeID);
-            ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result).requires(dyedItems).requires(dyeItem).group(group).unlockedBy("has_needed_dye", has(dyeItem)).save(output, "dye_" + getItemName(result));
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result).requires(dyedItems).requires(dyeItem).group(group).unlockedBy("has_needed_dye", has(dyeItem)).save(output, locate("dye_" + getItemName(result)));
         }
     }
 
@@ -482,88 +484,88 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     protected static ResourceLocation recipeID(ItemLike result, ItemLike material) {
-        String itemID = itemID(result);
-        ResourceLocation recipeID = location(itemID);
+        String itemID = getItemName(result);
+        ResourceLocation recipeID = locate(itemID);
         if(_recipes.contains(recipeID)){
-            return location(getConversionRecipeName(itemID, material));
+            return locate(getConversionRecipeName(itemID, material));
         }
         return recipeID;
     }
     protected static ResourceLocation recipeID(ItemLike result, TagKey<Item> material) {
-        String itemID = itemID(result);
-        ResourceLocation recipeID = location(itemID);
+        String itemID = getItemName(result);
+        ResourceLocation recipeID = locate(itemID);
         if(_recipes.contains(recipeID)){
-            return location(getConversionRecipeName(itemID, material));
+            return locate(getConversionRecipeName(itemID, material));
         }
         return recipeID;
     }
 
     protected static ResourceLocation stonecuttingRecipeID(String key) {
-        return location("stonecutting/" + key);
+        return locate("stonecutting/" + key);
     }
     protected static ResourceLocation stonecuttingRecipeID(ItemLike result, ItemLike ingredient) {
-        String itemID = itemID(result);
+        String itemID = getItemName(result);
         ResourceLocation recipeID = stonecuttingRecipeID(itemID);
         if(_recipes.contains(recipeID)){
-            return location("stonecutting/" + getConversionRecipeName(itemID, ingredient));
+            return locate("stonecutting/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
     protected static ResourceLocation smeltingRecipeID(String key) {
-        return location("smelting/" + key);
+        return locate("smelting/" + key);
     }
     protected static ResourceLocation smeltingRecipeID(ItemLike result, ItemLike ingredient) {
-        String itemID = itemID(result);
+        String itemID = getItemName(result);
         ResourceLocation recipeID = smeltingRecipeID(itemID);
         if(_recipes.contains(recipeID)){
-            return location("smelting/" + getConversionRecipeName(itemID, ingredient));
+            return locate("smelting/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
     protected static ResourceLocation smeltingRecipeID(ItemLike result, TagKey<Item> ingredient) {
-        String itemID = itemID(result);
+        String itemID = getItemName(result);
         ResourceLocation recipeID = smeltingRecipeID(itemID);
         if(_recipes.contains(recipeID)){
-            return location("smelting/" + getConversionRecipeName(itemID, ingredient));
+            return locate("smelting/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
     protected static ResourceLocation blastingRecipeID(String key) {
-        return location("blasting/" + key);
+        return locate("blasting/" + key);
     }
     protected static ResourceLocation blastingRecipeID(ItemLike result, ItemLike ingredient) {
-        String itemID = itemID(result);
+        String itemID = getItemName(result);
         ResourceLocation recipeID = blastingRecipeID(itemID);
         if(_recipes.contains(recipeID)){
-            return location("blasting/" + getConversionRecipeName(itemID, ingredient));
+            return locate("blasting/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
     protected static ResourceLocation blastingRecipeID(ItemLike result, TagKey<Item> ingredient) {
-        String itemID = itemID(result);
+        String itemID = getItemName(result);
         ResourceLocation recipeID = blastingRecipeID(itemID);
         if(_recipes.contains(recipeID)){
-            return location("blasting/" + getConversionRecipeName(itemID, ingredient));
+            return locate("blasting/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
 
     protected static ResourceLocation smokingRecipeID(String key) {
-        return location("smoking/" + key);
+        return locate("smoking/" + key);
     }
     protected static ResourceLocation smokingRecipeID(ItemLike result, ItemLike ingredient) {
-        String itemID = itemID(result);
+        String itemID = getItemName(result);
         ResourceLocation recipeID = smokingRecipeID(itemID);
         if(_recipes.contains(recipeID)){
-            return location("smoking/" + getConversionRecipeName(itemID, ingredient));
+            return locate("smoking/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
     protected static ResourceLocation smokingRecipeID(ItemLike result, TagKey<Item> ingredient) {
-        String itemID = itemID(result);
+        String itemID = getItemName(result);
         ResourceLocation recipeID = smokingRecipeID(itemID);
         if(_recipes.contains(recipeID)){
-            return location("smoking/" + getConversionRecipeName(itemID, ingredient));
+            return locate("smoking/" + getConversionRecipeName(itemID, ingredient));
         }
         return recipeID;
     }
@@ -576,10 +578,10 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         return result + "_from_" + getItemTagName(ingredient);
     }
 
-    protected static String getHasName(TagKey<Item> tag) {return "has_" + tag.location().getPath().replace('/', '_');}
-    protected static String itemID(ItemLike item) {return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.asItem())).getPath();}
-    protected static String getItemTagName(TagKey<Item> tag) {return tag.location().getPath().replace('/', '_');}
-    protected static ResourceLocation location(String key) {
+    protected static String getHasName(TagKey<Item> tag) { return "has_" + tag.location().getPath().replace('/', '_'); }
+//    @Deprecated protected static String itemID(ItemLike item) { return getItemName(item); }
+    protected static String getItemTagName(TagKey<Item> tag) { return tag.location().getPath().replace('/', '_'); }
+    protected static ResourceLocation locate(String key) {
         if(key.contains(":")){
             return ResourceLocation.bySeparator(key, ':');
         }

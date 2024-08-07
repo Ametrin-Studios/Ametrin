@@ -1,6 +1,7 @@
 ## QoL API by Ametrin Studios
-- [Visit the CurseForge page](https://www.curseforge.com/minecraft/mc-mods/ametrin)
-- [How to use](https://github.com/BarionLP/MCModsMaven)
+- [Visit CurseForge page](https://www.curseforge.com/minecraft/mc-mods/ametrin)
+- [Visit modrinth page](https://modrinth.com/mod/ametrin)
+- [How to use](https://github.com/Ametrin-Studios/maven)
 
 Feel free to join our [Discord Server](https://discord.com/invite/hwA9dd5bVh). We're always here to help!
 
@@ -10,19 +11,19 @@ Feel free to join our [Discord Server](https://discord.com/invite/hwA9dd5bVh). W
 ``DataProviderHelper`` cuts down boilerplate
 ```java
 public static void gatherData(GatherDataEvent event){
-        var helper = new DataProviderHelper(event);
-        
-        helper.add(TestBlockStateProvider::new);
-        helper.add(TestItemModelProvider::new);
-        helper.add(TestRecipeProvider::new);
+    var helper = new DataProviderHelper(event);
+    
+    helper.add(TestBlockStateProvider::new);
+    helper.add(TestItemModelProvider::new);
+    helper.add(TestRecipeProvider::new);
 
-        providers.addBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
+    providers.addBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
 
-        helper.addLootTables(builder -> builder
-                .AddBlockProvider(TestBlockLootSubProvider::new)
-                //...
-                .AddChestProvider(TestLootTableSubProvider::new));
-    }
+    helper.addLootTables(builder -> builder
+        .AddBlockProvider(TestBlockLootSubProvider::new)
+        //...
+        .AddChestProvider(TestLootTableSubProvider::new));
+}
 ```
 
 #### ExtendedBlockStateProvider
@@ -56,7 +57,7 @@ public TestBlockStateProvider(PackOutput output, ExistingFileHelper existingFile
         if(/*rule does not apply*/) { return false; }
         // generate model/state
         return true;
-    });   
+    });
 }
 ```
 other customization options
