@@ -35,6 +35,9 @@ public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider 
         super(explosionResistant, FeatureFlags.REGISTRY.allFlags(), registries);
     }
 
+    protected void dropOther(DeferredBlock<? extends Block> block, ItemLike other) {
+        dropOther(block.get(), other);
+    }
     protected void dropLeaveLoot(Block block, SaplingBlock sapling) {
         add(block, createLeavesDrops(block, sapling, NORMAL_LEAVES_SAPLING_CHANCES));
     }

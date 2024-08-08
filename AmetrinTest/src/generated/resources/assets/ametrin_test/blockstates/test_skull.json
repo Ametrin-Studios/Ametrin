@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "rotation=0": {
+      "model": "ametrin_test:block/test_skull/0"
+    },
+    "rotation=1": {
+      "model": "ametrin_test:block/test_skull/1"
+    },
+    "rotation=10": {
+      "model": "ametrin_test:block/test_skull/10"
+    },
+    "rotation=11": {
+      "model": "ametrin_test:block/test_skull/11"
+    },
+    "rotation=12": {
+      "model": "ametrin_test:block/test_skull/12"
+    },
+    "rotation=13": {
+      "model": "ametrin_test:block/test_skull/13"
+    },
+    "rotation=14": {
+      "model": "ametrin_test:block/test_skull/14"
+    },
+    "rotation=15": {
+      "model": "ametrin_test:block/test_skull/15"
+    },
+    "rotation=2": {
+      "model": "ametrin_test:block/test_skull/2"
+    },
+    "rotation=3": {
+      "model": "ametrin_test:block/test_skull/3"
+    },
+    "rotation=4": {
+      "model": "ametrin_test:block/test_skull/4"
+    },
+    "rotation=5": {
+      "model": "ametrin_test:block/test_skull/5"
+    },
+    "rotation=6": {
+      "model": "ametrin_test:block/test_skull/6"
+    },
+    "rotation=7": {
+      "model": "ametrin_test:block/test_skull/7"
+    },
+    "rotation=8": {
+      "model": "ametrin_test:block/test_skull/8"
+    },
+    "rotation=9": {
+      "model": "ametrin_test:block/test_skull/9"
+    }
+  }
+}

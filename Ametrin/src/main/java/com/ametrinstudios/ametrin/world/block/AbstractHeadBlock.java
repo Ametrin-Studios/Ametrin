@@ -19,19 +19,23 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class AbstractHeadBlock extends Block implements Equipable, SimpleWaterloggedBlock {
-    public static final BooleanProperty Waterlogged = BlockStateProperties.WATERLOGGED;
-    public AbstractHeadBlock(Properties properties) {super(properties);}
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    public AbstractHeadBlock(Properties properties) {
+        super(properties);
+    }
+
+
 
     @Override
     public @NotNull FluidState getFluidState(BlockState blockState) {
-        return blockState.getValue(Waterlogged) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
+        return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
     }
     @Override @ParametersAreNonnullByDefault
-    public boolean isPathfindable(BlockState blockState, PathComputationType pathType) {return false;}
+    public boolean isPathfindable(BlockState blockState, PathComputationType pathType) { return false; }
 
     @Override @ParametersAreNonnullByDefault
-    public @NotNull VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level, BlockPos pos) {return Shapes.empty();}
+    public @NotNull VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level, BlockPos pos) { return Shapes.empty(); }
 
     @Override
-    public @NotNull EquipmentSlot getEquipmentSlot() {return EquipmentSlot.HEAD;}
+    public @NotNull EquipmentSlot getEquipmentSlot() { return EquipmentSlot.HEAD; }
 }

@@ -15,7 +15,7 @@ import java.util.function.BiConsumer;
 
 import static com.ametrinstudios.ametrin.data.LootTableProviderHelper.*;
 
-public record TestLootTableSubProvider(HolderLookup.Provider registries) implements LootTableSubProvider {
+public record TestLootTableProvider(HolderLookup.Provider registries) implements LootTableSubProvider {
     @Override
     public void generate(@NotNull BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
 //        var enchantmentRegistryLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);

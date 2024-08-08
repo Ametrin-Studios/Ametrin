@@ -29,5 +29,9 @@ public final class TestModEvents {
             event.accept(TestItems.TROLL_CHEST_BOAT);
             event.accept(TestItems.BEECH_CHEST_BOAT);
         }
+
+        if(event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+            event.accept(TestItems.TEST_SKULL);
+        }
     }
 }
