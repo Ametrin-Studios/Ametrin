@@ -17,7 +17,7 @@ public final class Ametrin {
     }
 
     private static void commonSetup(FMLCommonSetupEvent event) {
-        event.enqueueWork(VanillaCompat::injectRequests);
+        event.enqueueWork(VanillaCompat::mergeRequests);
     }
 
     @ApiStatus.Internal

@@ -1,13 +1,14 @@
 package com.ametrinstudios.ametrin.util;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.ApiStatus;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,8 +16,9 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public final class VanillaCompat {
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final Map<Block, Block> _strippableRequests = new HashMap<>();
-    private static boolean _pushed = false;
+    private static boolean _merged = false;
 
     /**
      * Registers FlowerPots
@@ -34,26 +36,26 @@ public final class VanillaCompat {
      * call during {@link FMLCommonSetupEvent}
      */
     public static void addStrippable(Block log, Block strippedLog){
-        if(_pushed){
+        if(_merged){
             throw new UnsupportedOperationException("Strippables must be registered during FMLCommonSetupEvent");
         }
         _strippableRequests.put(log, strippedLog);
     }
 
-    /**
-     * Allows blocks to be converted by a shovel (e.g. grass block to path block)
-     */
-
-    @Deprecated(forRemoval = true)
-    private static void addFlattenable(Block block, BlockState flattenedBlockState){
-    }
-
-    /**
-     * Allows blocks to be converted by a shovel (e.g. grass block to path block)
-     */
-    @Deprecated(forRemoval = true)
-    private static void addFlattenable(Block block, Block flattenedBlock) {
-    }
+//    /**
+//     * Allows blocks to be converted by a shovel (e.g. grass block to path block)
+//     */
+//
+//    @Deprecated(forRemoval = true)
+//    private static void addFlattenable(Block block, BlockState flattenedBlockState){
+//    }
+//
+//    /**
+//     * Allows blocks to be converted by a shovel (e.g. grass block to path block)
+//     */
+//    @Deprecated(forRemoval = true)
+//    private static void addFlattenable(Block block, Block flattenedBlock) {
+//    }
 
     public interface Flammable {
         static void add(Block block, int encouragement, int flammability) {
@@ -69,8 +71,13 @@ public final class VanillaCompat {
 
 
     @ApiStatus.Internal
-    public static void injectRequests(){
-        _pushed = true;
+    public static void mergeRequests() {
+        if(_merged) {
+            LOGGER.error("Vanilla compatibility requests have already been merged!");
+            return;
+        }
+
+        _merged = true;
         AxeItem.STRIPPABLES = (new ImmutableMap.Builder<Block, Block>()).putAll(AxeItem.STRIPPABLES).putAll(_strippableRequests).build();
     }
 }
