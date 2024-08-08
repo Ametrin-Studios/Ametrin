@@ -4,9 +4,12 @@ import com.ametrinstudios.ametrin.world.block.PortalBlock;
 import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
+import net.minecraft.world.entity.ai.village.poi.PoiRecord;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,23 +21,22 @@ import net.minecraft.world.level.portal.PortalShape;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 public final class PortalHelper {
-    private final Supplier<BlockState> portalBlock;
-    private final Supplier<BlockState> frameBlock;
 
-    public PortalHelper(Supplier<BlockState> portalBlock, Supplier<BlockState> frameBlock) {
-        this.portalBlock = portalBlock;
-        this.frameBlock = frameBlock;
+    private final PortalData data;
+
+    public PortalHelper(PortalData data) {
+        this.data = data;
     }
 
     @Nullable
     public DimensionTransition getExitPortal(
             ServerLevel level, Entity entity, BlockPos entryPos, BlockPos exitPos, boolean isTarget, WorldBorder worldBorder
     ) {
-        var closestPortalPosition = level.getPortalForcer().findClosestPortalPosition(exitPos, isTarget, worldBorder);
+        var closestPortalPosition = findClosestPortalPosition(level, exitPos, isTarget, worldBorder);
         BlockUtil.FoundRectangle portalRect;
         DimensionTransition.PostDimensionTransition postTransition;
         if (closestPortalPosition.isPresent()) {
@@ -61,6 +63,17 @@ public final class PortalHelper {
         }
 
         return getDimensionTransitionFromExit(entity, entryPos, portalRect, level, postTransition);
+    }
+
+    private Optional<BlockPos> findClosestPortalPosition(ServerLevel level, BlockPos exitPos, boolean isNether, WorldBorder worldBorder) {
+        PoiManager poimanager = level.getPoiManager();
+        int i = isNether ? 16 : 128;
+        poimanager.ensureLoadedAndValid(level, exitPos, i);
+        return poimanager.getInSquare(poiType -> poiType.is(data.portalPoi()), exitPos, i, PoiManager.Occupancy.ANY)
+                .map(PoiRecord::getPos)
+                .filter(worldBorder::isWithinBounds)
+                .filter(pos -> level.getBlockState(pos).hasProperty(BlockStateProperties.HORIZONTAL_AXIS))
+                .min(Comparator.<BlockPos>comparingDouble(p_352046_ -> p_352046_.distSqr(exitPos)).thenComparingInt(Vec3i::getY));
     }
 
     public static DimensionTransition getDimensionTransitionFromExit(
@@ -165,6 +178,7 @@ public final class PortalHelper {
             d0 = d1;
         }
 
+        var frameState = data.frameBlock().get();
         if (d0 == -1.0) {
             int k1 = Math.max(level.getMinBuildHeight() - -1, 70);
             int i2 = i - 9;
@@ -180,7 +194,7 @@ public final class PortalHelper {
             for (int i3 = -1; i3 < 2; i3++) {
                 for (int j3 = 0; j3 < 2; j3++) {
                     for (int k3 = -1; k3 < 3; k3++) {
-                        var blockState = k3 < 0 ? frameBlock.get() : Blocks.AIR.defaultBlockState();
+                        var blockState = k3 < 0 ? frameState : Blocks.AIR.defaultBlockState();
                         mutablePos.setWithOffset(
                                 blockpos, j3 * direction.getStepX() + i3 * direction1.getStepX(), k3, j3 * direction.getStepZ() + i3 * direction1.getStepZ()
                         );
@@ -194,17 +208,17 @@ public final class PortalHelper {
             for (int j2 = -1; j2 < 4; j2++) {
                 if (l1 == -1 || l1 == 2 || j2 == -1 || j2 == 3) {
                     mutablePos.setWithOffset(blockpos, l1 * direction.getStepX(), j2, l1 * direction.getStepZ());
-                    level.setBlock(mutablePos, frameBlock.get(), 3);
+                    level.setBlock(mutablePos, frameState, 3);
                 }
             }
         }
 
-        var rotatedPortalBlock = portalBlock.get().setValue(PortalBlock.AXIS, axis);
+        var portalState = data.portalBlock().get().setValue(PortalBlock.AXIS, axis);
 
         for (int k2 = 0; k2 < 2; k2++) {
             for (int l2 = 0; l2 < 3; l2++) {
                 mutablePos.setWithOffset(blockpos, k2 * direction.getStepX(), l2, k2 * direction.getStepZ());
-                level.setBlock(mutablePos, rotatedPortalBlock, 18);
+                level.setBlock(mutablePos, portalState, 18);
             }
         }
 

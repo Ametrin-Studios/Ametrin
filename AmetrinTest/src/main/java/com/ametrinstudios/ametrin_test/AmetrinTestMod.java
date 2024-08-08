@@ -3,11 +3,12 @@ package com.ametrinstudios.ametrin_test;
 import com.ametrinstudios.ametrin.data.DataProviderHelper;
 import com.ametrinstudios.ametrin.world.entity.helper.BoatTypeHelper;
 import com.ametrinstudios.ametrin_test.data.provider.*;
-import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootSubProvider;
-import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableSubProvider;
+import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootProvider;
+import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableProvider;
 import com.ametrinstudios.ametrin_test.registry.TestBlocks;
 import com.ametrinstudios.ametrin_test.registry.TestBoatTypes;
 import com.ametrinstudios.ametrin_test.registry.TestItems;
+import com.ametrinstudios.ametrin_test.registry.TestPoiTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
@@ -26,6 +27,7 @@ public final class AmetrinTestMod {
 
         TestBlocks.REGISTER.register(modBus);
         TestItems.REGISTER.register(modBus);
+        TestPoiTypes.REGISTER.register(modBus);
 
         modBus.addListener(AmetrinTestMod::setup);
         modBus.addListener(AmetrinTestMod::gatherData);
@@ -45,8 +47,8 @@ public final class AmetrinTestMod {
         helper.add(TestRecipeProvider::new);
         helper.add(TestLanguageProvider::new);
         helper.addLootTables(builder -> builder
-                .addBlockProvider(TestBlockLootSubProvider::new)
-                .addChestProvider(TestLootTableSubProvider::new));
+                .addBlockProvider(TestBlockLootProvider::new)
+                .addChestProvider(TestLootTableProvider::new));
 
         helper.addBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
 

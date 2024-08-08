@@ -1,6 +1,8 @@
 ## 0.2.4 (BETA)
+* rewrote Portal API
 * enabled update checker
 * fixed `ExtendedRecipeProvider.dying` saving to the wrong namespace
+* fixed `ExtendedBlockStateProvider.head` failing to find head model
 
 ## 0.2.3 (BETA)
 * added `BoatTypeHelper`

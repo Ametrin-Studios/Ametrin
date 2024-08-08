@@ -11,6 +11,11 @@ public final class TestBlockStateProvider extends ExtendedBlockStateProvider {
         super(output, AmetrinTestMod.MOD_ID, existingFileHelper);
     }
 
+    {
+        useCutoutRendererType.add(TestBlocks.TEST_SKULL.get());
+        useCutoutRendererType.add(TestBlocks.TEST_SKULL_WALL.get());
+    }
+
     @Override
     protected void registerStatesAndModels() {
         runProviderRules(TestBlocks.REGISTER);

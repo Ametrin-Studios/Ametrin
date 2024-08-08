@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ametrin_test:block/test_skull_wall",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "ametrin_test:block/test_skull_wall"
+    },
+    "facing=south": {
+      "model": "ametrin_test:block/test_skull_wall",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "ametrin_test:block/test_skull_wall",
+      "y": 270
+    }
+  }
+}

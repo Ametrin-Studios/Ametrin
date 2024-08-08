@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin;
 
 import com.ametrinstudios.ametrin.util.VanillaCompat;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -17,5 +18,10 @@ public final class Ametrin {
 
     private static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(VanillaCompat::injectRequests);
+    }
+
+    @ApiStatus.Internal
+    public static ResourceLocation locate(String key) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, key);
     }
 }

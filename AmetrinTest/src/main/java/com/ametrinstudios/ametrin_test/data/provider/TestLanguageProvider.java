@@ -13,9 +13,10 @@ public final class TestLanguageProvider extends ExtendedLanguageProvider {
 
     @Override
     protected void addTranslations() {
-        add(TestItems.TEST_BLOCK, "Test Block");
+        add(TestItems.TEST_BLOCK, "Test Portal Frame");
         add(TestBlocks.TEST_LOG, "Test Log");
-        add(TestBlocks.TEST_PORTAL, "Test Portal");
+        add(TestItems.TEST_CATALYST, "Test Catalyst");
+        add(TestItems.TEST_SKULL, "Test Skull");
 
         add(TestItems.TROLL_BOAT, "Troll Raft");
         add(TestItems.TROLL_CHEST_BOAT, "Troll Raft with Chest");
