@@ -19,6 +19,7 @@ public final class TestModEvents {
         }
 
         if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(TestItems.TEST_CATALYST);
             event.accept(TestItems.TROLL_CHEST_BOAT);
             event.accept(TestItems.TROLL_BOAT);
             event.accept(TestItems.BEECH_CHEST_BOAT);

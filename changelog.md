@@ -1,7 +1,7 @@
 ## 0.2.4 (BETA)
 * rewrote Portal API
 * enabled update checker
-* removed Portal API
+* disabled Fluid API (will be rewritten #4)
 * fixed `ExtendedRecipeProvider.dying` saving to the wrong namespace
 * fixed `ExtendedBlockStateProvider.head` failing to find head model
 
@@ -24,11 +24,11 @@
 
 ## 0.2.0 (ALPHA)
 * split `Extensions` into `ColorHelper` and `TimeHelper` (breaking)
-* disabled Armor API (will be reworked)
+* disabled Armor API (will be reworked #3)
 * 1.21 port
 
 ## 0.1.9 (BETA)
-* added `LanguageProviderHelper`
+* added `ExtendedLanguageProvider`
 
 ## 0.1.8 (BETA)
 * added DataProviderHelper
