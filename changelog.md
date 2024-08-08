@@ -1,5 +1,6 @@
 ## 0.2.4 (BETA)
 * enabled update checker
+* removed Portal API
 * fixed `ExtendedRecipeProvider.dying` saving to the wrong namespace
 
 ## 0.2.3 (BETA)
