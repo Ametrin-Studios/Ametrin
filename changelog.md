@@ -1,6 +1,7 @@
 ## 0.2.4 (BETA)
 * rewrote Portal API
 * enabled update checker
+* removed Portal API
 * fixed `ExtendedRecipeProvider.dying` saving to the wrong namespace
 * fixed `ExtendedBlockStateProvider.head` failing to find head model
 
