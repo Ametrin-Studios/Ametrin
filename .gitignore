@@ -23,8 +23,6 @@ run
 runs
 run-data
 
-AmetrinTest/src/generated
 AmetrinTest/src/main/resources/assets
-AmetrinTest/src/main/resources/data
 
 repo

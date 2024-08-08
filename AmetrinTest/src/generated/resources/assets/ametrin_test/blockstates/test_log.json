@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "ametrin_test:block/test_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "ametrin_test:block/test_log"
+    },
+    "axis=z": {
+      "model": "ametrin_test:block/test_log_horizontal",
+      "x": 90
+    }
+  }
+}

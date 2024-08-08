@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "ametrin_test:block/test_block"
+    }
+  }
+}

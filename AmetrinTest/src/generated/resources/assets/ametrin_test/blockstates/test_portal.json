@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "ametrin_test:block/test_portal_ns"
+    },
+    "axis=z": {
+      "model": "ametrin_test:block/test_portal_ew"
+    }
+  }
+}

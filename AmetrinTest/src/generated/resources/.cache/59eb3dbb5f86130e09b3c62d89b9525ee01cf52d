@@ -1,0 +1,4 @@
+// 1.21	2024-08-07T13:22:22.9864797	Loot Tables
+dcbe35b317d89f5f6b7f24d92652b2fa48320eac data/ametrin_test/loot_table/blocks/test_block.json
+f07b5919579a2d83e2a40d27f73f92ecf97e12b3 data/ametrin_test/loot_table/blocks/test_log.json
+f2a6ed41d65a76433147dc401f4e1fa1cfe0cd35 data/ametrin_test/loot_table/chests/test.json
