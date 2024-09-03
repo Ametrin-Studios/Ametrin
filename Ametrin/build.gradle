@@ -17,7 +17,7 @@ neoForge {
     version = project.neo_version
 
     accessTransformers = project.files('src/main/resources/ametrin.base.cfg')
-//    validateAccessTransformers = true
+    validateAccessTransformers = true
 
 
     parchment {

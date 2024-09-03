@@ -39,13 +39,13 @@ public final class BoatTypeHelper {
 
                     {
                       "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
-                      "name": %s_%s",
+                      "name": "%s_%s",
                       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
                       "parameters": {
                         "class": "%s",
                         "field": "%s"
                       }
-                    }
+                    },
                     """, modID, boatTypeName, typeDescriptor, boatTypeName);
     }
 }

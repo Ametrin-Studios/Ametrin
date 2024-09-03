@@ -7,6 +7,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -15,14 +16,15 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getItemName;
 
 public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
-    protected ArrayList<Item> excludedItems = new ArrayList<>();
-    protected ArrayList<ItemTagProviderRule> itemTagProviderRules = new ArrayList<>();
+    private final List<Item> excludedItems = new ArrayList<>();
+    private final List<ItemTagProviderRule> itemTagProviderRules = new ArrayList<>();
 
     public ExtendedItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
         super(packOutput, lookupProvider, blockTagProvider, modId, existingFileHelper);
@@ -32,7 +34,7 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     }
 
     {
-        itemTagProviderRules.add((item, name)-> {
+        registerRule((item, name)-> {
             if(item instanceof AxeItem){
                 tag(ItemTags.AXES).add(item);
             }else if(item instanceof PickaxeItem){
@@ -46,7 +48,7 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
             }
         });
 
-        itemTagProviderRules.add((item, name)-> {
+        registerRule((item, name)-> {
             if(item instanceof CustomBoatItem boat){
                 if(boat.isChestBoat()) {
                     tag(ItemTags.CHEST_BOATS).add(item);
@@ -56,13 +58,13 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
             }
         });
 
-        itemTagProviderRules.add((item, name)-> {
+        registerRule((item, name)-> {
             if(item instanceof SignItem){
                 tag(ItemTags.SIGNS).add(item);
             }
         });
 
-        itemTagProviderRules.add((item, name) -> {
+        registerRule((item, name) -> {
             if(item instanceof ArmorItem armorItem) {
                 switch (armorItem.getEquipmentSlot()) {
                     case HEAD -> tag(ItemTags.HEAD_ARMOR).add(armorItem);
@@ -81,8 +83,16 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
         runRules(register.getEntries().stream().map(Supplier::get).iterator());
     }
 
+    protected void excludeItem(ItemLike item) {
+        excludedItems.add(item.asItem());
+    }
+
+    protected void registerRule(ItemTagProviderRule rule) {
+        itemTagProviderRules.add(rule);
+    }
+
     protected void runRules(Iterator<? extends Item> items){
-        items.forEachRemaining(item ->{
+        items.forEachRemaining(item -> {
             if(excludedItems.contains(item)) return;
             final var name = getItemName(item);
 
