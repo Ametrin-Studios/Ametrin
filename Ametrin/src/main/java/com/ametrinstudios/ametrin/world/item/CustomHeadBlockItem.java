@@ -37,9 +37,9 @@ public class CustomHeadBlockItem extends BlockItem {
     }
 
     @Override
-    public @NotNull Block getBlock() {return block.get();}
-    public @NotNull Block getWallBlock() {return wallBlock.get();}
+    public @NotNull Block getBlock() { return block.get(); }
+    public @NotNull Block getWallBlock() { return wallBlock.get(); }
 
     @Override
-    public boolean canFitInsideContainerItems() {return true;}
+    public boolean canFitInsideContainerItems() { return true; }
 }

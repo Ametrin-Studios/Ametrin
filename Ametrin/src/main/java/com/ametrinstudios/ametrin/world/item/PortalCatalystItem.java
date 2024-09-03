@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
 
-public class PortalCatalystItem extends Item{
+public class PortalCatalystItem extends Item {
     protected final PortalData portalData;
     public PortalCatalystItem(PortalData portalData, Properties properties) {
         super(properties);

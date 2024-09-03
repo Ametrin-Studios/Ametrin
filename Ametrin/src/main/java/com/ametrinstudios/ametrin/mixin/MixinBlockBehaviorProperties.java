@@ -54,7 +54,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow FeatureFlagSet requiredFeatures;
     @Shadow BlockBehaviour.OffsetFunction offsetFunction;
 
-    public BlockBehaviour.Properties copy(){
+    public BlockBehaviour.Properties copy() {
         BlockBehaviour.Properties properties = BlockBehaviour.Properties.of()
                 .mapColor(mapColor)
                 .sound(soundType)
@@ -71,18 +71,18 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
                 .hasPostProcess(hasPostProcess)
                 .emissiveRendering(emissiveRendering);
 
-        if(!hasCollision) {properties.noCollission();}
-        if(requiresCorrectToolForDrops) {properties.requiresCorrectToolForDrops();}
-        if(isRandomlyTicking) {properties.randomTicks();}
-        if(!canOcclude) {properties.noOcclusion();}
-        if(isAir) {properties.air();}
-        if(ignitedByLava) {properties.ignitedByLava();}
-        if(liquid) {properties.liquid();}
-        if(forceSolidOn) {properties.forceSolidOn();}
-        if(!spawnTerrainParticles) {properties.noTerrainParticles();}
-        if(replaceable) {properties.replaceable();}
-        if(isViewBlocking != isSuffocating) {properties.isViewBlocking(isViewBlocking);}
-        if(dynamicShape) {properties.dynamicShape();}
+        if(!hasCollision) { properties.noCollission(); }
+        if(requiresCorrectToolForDrops) { properties.requiresCorrectToolForDrops(); }
+        if(isRandomlyTicking) { properties.randomTicks(); }
+        if(!canOcclude) { properties.noOcclusion(); }
+        if(isAir) { properties.air(); }
+        if(ignitedByLava) { properties.ignitedByLava(); }
+        if(liquid) { properties.liquid(); }
+        if(forceSolidOn) { properties.forceSolidOn(); }
+        if(!spawnTerrainParticles) { properties.noTerrainParticles(); }
+        if(replaceable) { properties.replaceable(); }
+        if(isViewBlocking != isSuffocating) { properties.isViewBlocking(isViewBlocking); }
+        if(dynamicShape) { properties.dynamicShape(); }
 
         var mixinProperties = ((IMixinBlockBehaviorProperties) properties);
         mixinProperties.SetFeatureFlagSet(requiredFeatures);
