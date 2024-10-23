@@ -572,13 +572,13 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         private final CompletableFuture<HolderLookup.Provider> registries;
         private final static Set<ResourceKey<Recipe<?>>> recipes = Sets.newHashSet();
 
-        protected Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registires) {
+        protected Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
             this.packOutput = packOutput;
-            this.registries = registires;
+            this.registries = registries;
         }
 
         @Override
-        public final @NotNull CompletableFuture<?> run(@NotNull CachedOutput p_364823_) {
+        public final @NotNull CompletableFuture<?> run(@NotNull CachedOutput output) {
             return this.registries
                     .thenCompose(
                             provider -> {
@@ -616,7 +616,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                                     }
                                     private void saveRecipe(ResourceKey<Recipe<?>> key, Recipe<?> recipe, net.neoforged.neoforge.common.conditions.ICondition... conditions) {
                                         list.add(
-                                                DataProvider.saveStable(p_364823_, provider, Recipe.CONDITIONAL_CODEC, Optional.of(new net.neoforged.neoforge.common.conditions.WithConditions<>(recipe, conditions)), recipeProvider.json(key.location()))
+                                                DataProvider.saveStable(output, provider, Recipe.CONDITIONAL_CODEC, Optional.of(new net.neoforged.neoforge.common.conditions.WithConditions<>(recipe, conditions)), recipeProvider.json(key.location()))
                                         );
                                     }
 
@@ -626,7 +626,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                                     private void saveAdvancement(AdvancementHolder p_363148_, net.neoforged.neoforge.common.conditions.ICondition... conditions) {
                                         list.add(
                                                 DataProvider.saveStable(
-                                                        p_364823_, provider, Advancement.CONDITIONAL_CODEC, Optional.of(new net.neoforged.neoforge.common.conditions.WithConditions<>(p_363148_.value(), conditions)), advancementsProvider.json(p_363148_.id())
+                                                        output, provider, Advancement.CONDITIONAL_CODEC, Optional.of(new net.neoforged.neoforge.common.conditions.WithConditions<>(p_363148_.value(), conditions)), advancementsProvider.json(p_363148_.id())
                                                 )
                                         );
                                     }
