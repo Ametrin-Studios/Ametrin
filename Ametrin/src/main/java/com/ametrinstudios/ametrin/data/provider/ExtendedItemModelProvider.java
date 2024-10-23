@@ -3,7 +3,7 @@ package com.ametrinstudios.ametrin.data.provider;
 import com.ametrinstudios.ametrin.data.BlockItemModelProviderRule;
 import com.ametrinstudios.ametrin.data.ItemModelProviderRule;
 import com.ametrinstudios.ametrin.world.item.CustomHeadBlockItem;
-import com.ametrinstudios.ametrin.world.item.ItemNameDoubleHighBlockItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -131,7 +131,7 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider {
         });
 
         itemModelProviderRules.add((item, name, texture)-> {
-            if(!(item instanceof BlockItem) || (item instanceof ItemNameBlockItem || item instanceof ItemNameDoubleHighBlockItem)) { return false; }
+            if(!(item instanceof BlockItem)) { return false; }
             Block block = ((BlockItem) item).getBlock();
 
             for(BlockItemModelProviderRule provider : blockItemModelProviderRules) {
@@ -152,7 +152,7 @@ public abstract class ExtendedItemModelProvider extends ItemModelProvider {
         });
 
         itemModelProviderRules.add((item, name, texture)-> {
-            if(!(item instanceof TieredItem)) { return false; }
+            if(!(item.components().has(DataComponents.TOOL))) { return false; }
             item(name, handheld, texture);
             return true;
         });

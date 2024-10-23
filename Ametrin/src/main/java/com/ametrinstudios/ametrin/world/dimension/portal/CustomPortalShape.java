@@ -78,7 +78,7 @@ public final class CustomPortalShape {
 
     @Nullable
     private BlockPos calculateBottomLeft(BlockPos pos) {
-        int i = Math.max(this.level.getMinBuildHeight(), pos.getY() - MAX_HEIGHT);
+        int i = Math.max(this.level.getMinY(), pos.getY() - MAX_HEIGHT);
 
         while (pos.getY() > i && isEmpty(this.level.getBlockState(pos.below()))) {
             pos = pos.below();

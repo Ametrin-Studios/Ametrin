@@ -1,7 +1,6 @@
 package com.ametrinstudios.ametrin.data.provider;
 
 import com.ametrinstudios.ametrin.data.ItemTagProviderRule;
-import com.ametrinstudios.ametrin.world.item.CustomBoatItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -49,8 +48,8 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
         });
 
         registerRule((item, name)-> {
-            if(item instanceof CustomBoatItem boat){
-                if(boat.isChestBoat()) {
+            if(item instanceof BoatItem boat){
+                if(boat.getDescriptionId().contains("chest")) {
                     tag(ItemTags.CHEST_BOATS).add(item);
                 } else {
                     tag(ItemTags.BOATS).add(item);
@@ -66,11 +65,12 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
 
         registerRule((item, name) -> {
             if(item instanceof ArmorItem armorItem) {
-                switch (armorItem.getEquipmentSlot()) {
+                switch (armorItem.getEquipmentSlot(armorItem.getDefaultInstance())) {
                     case HEAD -> tag(ItemTags.HEAD_ARMOR).add(armorItem);
                     case CHEST -> tag(ItemTags.CHEST_ARMOR).add(armorItem);
                     case LEGS -> tag(ItemTags.LEG_ARMOR).add(armorItem);
                     case FEET -> tag(ItemTags.FOOT_ARMOR).add(armorItem);
+                    case null, default -> { }
                 }
             }
         });

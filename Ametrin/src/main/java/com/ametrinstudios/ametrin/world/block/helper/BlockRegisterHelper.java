@@ -1,6 +1,8 @@
 package com.ametrinstudios.ametrin.world.block.helper;
 
 import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
+import com.ametrinstudios.ametrin.world.block.PortalBlock;
+import com.ametrinstudios.ametrin.world.dimension.portal.PortalData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.*;
@@ -25,6 +27,14 @@ public final class BlockRegisterHelper {
     private BlockRegisterHelper() {}
 
     //return an instance instead of a supplier, let the consumer wrap it, this makes them more robust against cyclic references
+
+    public static Function<BlockBehaviour.Properties, PortalBlock> portalBlock(PortalData data, int lightLevel){
+        return portalBlock(data, SoundType.GLASS, lightLevel);
+    }
+
+    public static Function<BlockBehaviour.Properties, PortalBlock> portalBlock(PortalData data, SoundType soundType, int lightLevel) {
+        return properties -> new PortalBlock(data, properties.strength(-1).noCollission().lightLevel((state) -> lightLevel).noLootTable().randomTicks().sound(soundType));
+    }
 
     public static StairBlock stair(Supplier<Block> parent) {
         return stair(parent.get());

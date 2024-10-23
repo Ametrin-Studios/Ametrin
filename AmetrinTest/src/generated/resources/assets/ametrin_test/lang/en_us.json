@@ -2,9 +2,5 @@
   "block.ametrin_test.test_block": "Test Portal Frame",
   "block.ametrin_test.test_log": "Test Log",
   "block.ametrin_test.test_skull": "Test Skull",
-  "item.ametrin_test.beech_boat": "Beech Boat",
-  "item.ametrin_test.beech_chest_boat": "Beech Boat with Chest",
-  "item.ametrin_test.test_catalyst": "Test Catalyst",
-  "item.ametrin_test.troll_chest_raft": "Troll Raft with Chest",
-  "item.ametrin_test.troll_raft": "Troll Raft"
+  "item.ametrin_test.test_catalyst": "Test Catalyst"
 }

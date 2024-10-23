@@ -9,22 +9,21 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Portal;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.level.portal.PortalShape;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -35,14 +34,6 @@ public class PortalBlock extends Block implements Portal {
     protected final PortalData data;
     protected final PortalHelper helper;
 
-    public PortalBlock(PortalData data, int lightLevel){
-        this(data, SoundType.GLASS, lightLevel);
-    }
-
-    public PortalBlock(PortalData data, SoundType soundType, int lightLevel) {
-        this(data, Properties.of().strength(-1).noCollission().lightLevel((state) -> lightLevel).noLootTable().randomTicks().sound(soundType));
-    }
-
     public PortalBlock(PortalData data, Properties properties) {
         super(properties);
         this.data = data;
@@ -51,13 +42,13 @@ public class PortalBlock extends Block implements Portal {
     }
 
     @Override @ParametersAreNonnullByDefault
-    protected @NotNull BlockState updateShape(BlockState thisState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos thisPos, BlockPos facingPos) {
+    protected @NotNull BlockState updateShape(BlockState thisState, LevelReader level, ScheduledTickAccess tickAccess, BlockPos thisPos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
         var facingAxis = facing.getAxis();
         var thisAxis = thisState.getValue(AXIS);
         boolean flag = thisAxis != facingAxis && facingAxis.isHorizontal();
-        return !flag && !facingState.is(this) && !new PortalShape(level, thisPos, thisAxis).isComplete()
+        return !flag && !facingState.is(this) && !PortalShape.findAnyShape(level, thisPos, thisAxis).isComplete()
                 ? Blocks.AIR.defaultBlockState()
-                : super.updateShape(thisState, facing, facingState, level, thisPos, facingPos);
+                : super.updateShape(thisState, level, tickAccess, thisPos, facing, facingPos, facingState, random);
     }
 
     @Override @ParametersAreNonnullByDefault
@@ -83,8 +74,9 @@ public class PortalBlock extends Block implements Portal {
     }
 
 
-    @Override @Nullable @ParametersAreNonnullByDefault
-    public DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
+    @Override
+    @ParametersAreNonnullByDefault
+    public TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
         var destinationLevelKey = level.dimension() == data.dimensionA() ? data.dimensionB() : data.dimensionA();
         var destinationLevel = level.getServer().getLevel(destinationLevelKey);
         if (destinationLevel == null) {

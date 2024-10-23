@@ -1,23 +1,23 @@
 package com.ametrinstudios.ametrin.mixin;
 
 import com.ametrinstudios.ametrin.util.mixin.IMixinBlockBehaviorProperties;
+import net.minecraft.resources.DependantName;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 @Mixin(BlockBehaviour.Properties.class)
@@ -33,7 +33,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow float friction;
     @Shadow float speedFactor;
     @Shadow float jumpFactor;
-    @Shadow ResourceKey<LootTable> drops;
+    @Shadow DependantName<Block, Optional<ResourceKey<LootTable>>> drops;
     @Shadow boolean canOcclude;
     @Shadow boolean isAir;
     @Shadow boolean ignitedByLava;
@@ -43,7 +43,6 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow boolean spawnTerrainParticles;
     @Shadow NoteBlockInstrument instrument;
     @Shadow boolean replaceable;
-    @Shadow private Supplier<ResourceLocation> lootTableSupplier;
     @Shadow BlockBehaviour.StateArgumentPredicate<EntityType<?>> isValidSpawn;
     @Shadow BlockBehaviour.StatePredicate isRedstoneConductor;
     @Shadow BlockBehaviour.StatePredicate isSuffocating;
@@ -87,12 +86,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
         var mixinProperties = ((IMixinBlockBehaviorProperties) properties);
         mixinProperties.SetFeatureFlagSet(requiredFeatures);
         mixinProperties.SetOffsetFunction(offsetFunction);
-
-        if(lootTableSupplier != null){
-            mixinProperties.SetLootTableSupplier(lootTableSupplier);
-        }else if(drops == BuiltInLootTables.EMPTY){
-            properties.noLootTable();
-        }
+        mixinProperties.overrideDrops(drops);
 
         return properties;
     }
@@ -108,7 +102,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     }
 
     @Override
-    public void SetLootTableSupplier(Supplier<ResourceLocation> lootTable) {
-        lootTableSupplier = lootTable;
+    public void overrideDrops(DependantName<Block, Optional<ResourceKey<LootTable>>> drops) {
+        this.drops = drops;
     }
 }

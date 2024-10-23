@@ -1,9 +1,5 @@
 package com.ametrinstudios.ametrin.world.block;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.Equipable;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,13 +14,11 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class AbstractHeadBlock extends Block implements Equipable, SimpleWaterloggedBlock {
+public class AbstractHeadBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public AbstractHeadBlock(Properties properties) {
         super(properties);
     }
-
-
 
     @Override
     public @NotNull FluidState getFluidState(BlockState blockState) {
@@ -34,8 +28,5 @@ public class AbstractHeadBlock extends Block implements Equipable, SimpleWaterlo
     public boolean isPathfindable(BlockState blockState, PathComputationType pathType) { return false; }
 
     @Override @ParametersAreNonnullByDefault
-    public @NotNull VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level, BlockPos pos) { return Shapes.empty(); }
-
-    @Override
-    public @NotNull EquipmentSlot getEquipmentSlot() { return EquipmentSlot.HEAD; }
+    public @NotNull VoxelShape getOcclusionShape(BlockState blockState) { return Shapes.empty(); }
 }

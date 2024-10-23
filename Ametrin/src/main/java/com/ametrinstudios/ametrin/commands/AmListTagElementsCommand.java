@@ -31,7 +31,7 @@ public final class AmListTagElementsCommand {
         output.append('\n');
 
 
-        for (var holder : context.getLevel().registryAccess().registry(registryKey).orElseThrow().getTagOrEmpty(tag)) {
+        for (var holder : context.getLevel().registryAccess().lookup(registryKey).orElseThrow().getTagOrEmpty(tag)) {
             output.append(holder.getRegisteredName());
             output.append('\n');
         }

@@ -42,6 +42,6 @@ public class PortalCatalystItem extends Item {
             itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 }

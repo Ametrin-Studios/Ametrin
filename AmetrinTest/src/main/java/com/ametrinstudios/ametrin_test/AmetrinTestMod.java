@@ -1,12 +1,10 @@
 package com.ametrinstudios.ametrin_test;
 
 import com.ametrinstudios.ametrin.data.DataProviderHelper;
-import com.ametrinstudios.ametrin.world.entity.helper.BoatTypeHelper;
 import com.ametrinstudios.ametrin_test.data.provider.*;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableProvider;
 import com.ametrinstudios.ametrin_test.registry.TestBlocks;
-import com.ametrinstudios.ametrin_test.registry.TestBoatTypes;
 import com.ametrinstudios.ametrin_test.registry.TestItems;
 import com.ametrinstudios.ametrin_test.registry.TestPoiTypes;
 import com.mojang.logging.LogUtils;
@@ -44,17 +42,13 @@ public final class AmetrinTestMod {
 
         helper.add(TestBlockStateProvider::new);
         helper.add(TestItemModelProvider::new);
-        helper.add(TestRecipeProvider::new);
+        helper.add(TestRecipeProvider.Runner::new);
         helper.add(TestLanguageProvider::new);
         helper.addLootTables(builder -> builder
                 .addBlockProvider(TestBlockLootProvider::new)
                 .addChestProvider(TestLootTableProvider::new));
 
         helper.addBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
-
-        LOGGER.info("Dumping generated enum extensions:");
-        LOGGER.info(BoatTypeHelper.getExtensionJson(locate("troll"), TestBoatTypes.class));
-        LOGGER.info(BoatTypeHelper.getExtensionJson(locate("beech"), TestBoatTypes.class));
     }
 
     public static ResourceLocation locate(String key){

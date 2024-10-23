@@ -1,18 +1,16 @@
 package com.ametrinstudios.ametrin.world.item;
 
-import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.vehicle.AbstractBoat;
 import net.minecraft.world.item.BoatItem;
+import net.minecraft.world.item.Item;
 
 public class CustomBoatItem extends BoatItem {
 
-    public CustomBoatItem(boolean hasChest, Boat.Type type, Properties properties) {
-        super(hasChest, type, properties);
+    public CustomBoatItem(EntityType<? extends AbstractBoat> entityType, Item.Properties properties) {
+        super(entityType, properties);
     }
-    public CustomBoatItem(boolean hasChest, Boat.Type type){
-        this(hasChest, type, new Properties().stacksTo(1));
-    }
-
-    public boolean isChestBoat() {
-        return hasChest;
+    public CustomBoatItem(EntityType<? extends AbstractBoat> entityType){
+        this(entityType, new Properties().stacksTo(1));
     }
 }

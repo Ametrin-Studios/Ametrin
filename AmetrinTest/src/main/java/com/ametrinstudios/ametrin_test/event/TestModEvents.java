@@ -20,16 +20,16 @@ public final class TestModEvents {
 
         if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(TestItems.TEST_CATALYST);
-            event.accept(TestItems.TROLL_CHEST_BOAT);
-            event.accept(TestItems.TROLL_BOAT);
-            event.accept(TestItems.BEECH_CHEST_BOAT);
-            event.accept(TestItems.BEECH_BOAT);
+//            event.accept(TestItems.TROLL_CHEST_BOAT);
+//            event.accept(TestItems.TROLL_BOAT);
+//            event.accept(TestItems.BEECH_CHEST_BOAT);
+//            event.accept(TestItems.BEECH_BOAT);
         }
 
-        if(event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
-            event.accept(TestItems.TROLL_CHEST_BOAT);
-            event.accept(TestItems.BEECH_CHEST_BOAT);
-        }
+//        if(event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
+//            event.accept(TestItems.TROLL_CHEST_BOAT);
+//            event.accept(TestItems.BEECH_CHEST_BOAT);
+//        }
 
         if(event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             event.accept(TestItems.TEST_SKULL);

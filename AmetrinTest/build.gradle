@@ -80,7 +80,7 @@ repositories {
 
 dependencies {
     implementation project(":Ametrin")
-    localRuntime "curse.maven:emi-580555:5497461"
+//    localRuntime "curse.maven:emi-580555:5793016"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

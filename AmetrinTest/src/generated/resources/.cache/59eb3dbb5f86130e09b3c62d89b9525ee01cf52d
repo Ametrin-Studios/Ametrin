@@ -1,6 +1,6 @@
-// 1.21.1	2024-08-08T20:30:34.7134975	Loot Tables
+// 1.21.3	2024-10-23T16:55:26.1153369	Loot Tables
 dcbe35b317d89f5f6b7f24d92652b2fa48320eac data/ametrin_test/loot_table/blocks/test_block.json
 f07b5919579a2d83e2a40d27f73f92ecf97e12b3 data/ametrin_test/loot_table/blocks/test_log.json
 9c7d7884c3087185cf801e37e26d242945ac4df8 data/ametrin_test/loot_table/blocks/test_skull.json
-90d0a1d05d438fd8465c2c900280ab94fd9a7839 data/ametrin_test/loot_table/blocks/test_skull_wall.json
 f2a6ed41d65a76433147dc401f4e1fa1cfe0cd35 data/ametrin_test/loot_table/chests/test.json
+7dc2ca508d26c3dd5045735abd35ebe075b74bce data/minecraft/loot_table/blocks/skeleton_skull.json

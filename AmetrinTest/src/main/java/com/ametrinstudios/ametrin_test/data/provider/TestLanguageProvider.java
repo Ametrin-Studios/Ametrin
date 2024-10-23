@@ -18,9 +18,9 @@ public final class TestLanguageProvider extends ExtendedLanguageProvider {
         add(TestItems.TEST_CATALYST, "Test Catalyst");
         add(TestItems.TEST_SKULL, "Test Skull");
 
-        add(TestItems.TROLL_BOAT, "Troll Raft");
-        add(TestItems.TROLL_CHEST_BOAT, "Troll Raft with Chest");
-        add(TestItems.BEECH_BOAT, "Beech Boat");
-        add(TestItems.BEECH_CHEST_BOAT, "Beech Boat with Chest");
+//        add(TestItems.TROLL_BOAT, "Troll Raft");
+//        add(TestItems.TROLL_CHEST_BOAT, "Troll Raft with Chest");
+//        add(TestItems.BEECH_BOAT, "Beech Boat");
+//        add(TestItems.BEECH_CHEST_BOAT, "Beech Boat with Chest");
     }
 }

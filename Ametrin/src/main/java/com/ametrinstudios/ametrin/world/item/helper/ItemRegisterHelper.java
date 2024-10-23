@@ -1,12 +1,9 @@
 package com.ametrinstudios.ametrin.world.item.helper;
 
 import com.ametrinstudios.ametrin.util.ColorHelper;
-import com.ametrinstudios.ametrin.world.item.CustomBoatItem;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
-import net.neoforged.fml.common.asm.enumextension.EnumProxy;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 
 import java.awt.*;
@@ -21,17 +18,17 @@ public final class ItemRegisterHelper {
         return new DeferredSpawnEggItem(type, ColorHelper.colorToInt(backgroundColor), ColorHelper.colorToInt(highlightColor), properties);
     }
 
-    public static CustomBoatItem boat(Boat.Type type){
-        return new CustomBoatItem(false, type);
-    }
-    public static CustomBoatItem chestBoat(Boat.Type type){
-        return new CustomBoatItem(true, type);
-    }
+//    public static CustomBoatItem boat(Boat.Type type){
+//        return new CustomBoatItem(false, type);
+//    }
+//    public static CustomBoatItem chestBoat(Boat.Type type){
+//        return new CustomBoatItem(true, type);
+//    }
 
-    public static CustomBoatItem boat(EnumProxy<Boat.Type> type){
-        return boat(type.getValue());
-    }
-    public static CustomBoatItem chestBoat(EnumProxy<Boat.Type> type){
-        return chestBoat(type.getValue());
-    }
+//    public static CustomBoatItem boat(EnumProxy<Boat.Type> type){
+//        return boat(type.getValue());
+//    }
+//    public static CustomBoatItem chestBoat(EnumProxy<Boat.Type> type){
+//        return chestBoat(type.getValue());
+//    }
 }
