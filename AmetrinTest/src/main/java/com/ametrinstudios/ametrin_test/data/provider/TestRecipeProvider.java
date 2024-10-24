@@ -5,15 +5,14 @@ import com.ametrinstudios.ametrin_test.AmetrinTestMod;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public final class TestRecipeProvider extends ExtendedRecipeProvider {
-    public TestRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<ResourceKey<Recipe<?>>> recipeSet) {
+    public TestRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<ResourceLocation> recipeSet) {
         super(AmetrinTestMod.MOD_ID, provider, output, recipeSet);
     }
 
@@ -29,7 +28,7 @@ public final class TestRecipeProvider extends ExtendedRecipeProvider {
         }
 
         @Override
-        protected ExtendedRecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<ResourceKey<Recipe<?>>> recipeSet) {
+        protected ExtendedRecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<ResourceLocation> recipeSet) {
             return new TestRecipeProvider(provider, output, recipeSet);
         }
 

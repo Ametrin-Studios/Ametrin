@@ -37,11 +37,11 @@ import java.util.concurrent.CompletableFuture;
 @SuppressWarnings("unused")
 public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static final Logger LOGGER = LogUtils.getLogger();
-    protected Set<ResourceKey<Recipe<?>>> recipes;
+    protected Set<ResourceLocation> recipes;
 
     protected String modID;
 
-    public ExtendedRecipeProvider(String modID, HolderLookup.Provider registries, RecipeOutput output, Set<ResourceKey<Recipe<?>>> recipeSet) {
+    public ExtendedRecipeProvider(String modID, HolderLookup.Provider registries, RecipeOutput output, Set<ResourceLocation> recipeSet) {
         super(registries, output);
         this.modID = modID;
         this.recipes = recipeSet;
@@ -50,93 +50,93 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     @Override
     protected abstract void buildRecipes();
 
-    protected void stairSlabWallButton(RecipeOutput output, @Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, boolean hasStonecutting){
-        if(stair != null) {stairs(output, stair, material, hasStonecutting);}
-        if(slab != null) {slab(output, slab, material, hasStonecutting);}
-        if(wall != null) {wall(output, wall, material, hasStonecutting);}
-        if(button != null) {button(output, button, material, hasStonecutting);}
+    protected void stairSlabWallButton(@Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, boolean hasStonecutting){
+        if(stair != null) { stairs(stair, material, hasStonecutting); }
+        if(slab != null) { slab(slab, material, hasStonecutting); }
+        if(wall != null) { wall(wall, material, hasStonecutting); }
+        if(button != null) { button(button, material, hasStonecutting); }
     }
-    protected void stairSlabWallButton(RecipeOutput output, @Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, ItemLike... additionalStonecuttingMaterials){
-        if(stair != null) {stairs(output, stair, material, additionalStonecuttingMaterials);}
-        if(slab != null) {slab(output, slab, material, additionalStonecuttingMaterials);}
-        if(wall != null) {wall(output, wall, material, additionalStonecuttingMaterials);}
-        if(button != null) {button(output, button, material, additionalStonecuttingMaterials);}
+    protected void stairSlabWallButton(@Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, ItemLike... additionalStonecuttingMaterials){
+        if(stair != null) { stairs(stair, material, additionalStonecuttingMaterials); }
+        if(slab != null) { slab(slab, material, additionalStonecuttingMaterials); }
+        if(wall != null) { wall(wall, material, additionalStonecuttingMaterials); }
+        if(button != null) { button(button, material, additionalStonecuttingMaterials); }
     }
 
-    protected void stairs(RecipeOutput output, ItemLike stair, ItemLike material, boolean hasStonecutting){
+    protected void stairs(ItemLike stair, ItemLike material, boolean hasStonecutting){
         stairBuilder(stair, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(stair, material));
-        if(hasStonecutting) {stonecutting(output, RecipeCategory.BUILDING_BLOCKS, stair, 1, material);}
+        if(hasStonecutting) { stonecutting(RecipeCategory.BUILDING_BLOCKS, stair, 1, material); }
     }
-    protected void stairs(RecipeOutput output, ItemLike stair, ItemLike material, ItemLike... additionalStonecuttingMaterials){
-        stairs(output, stair, material, true);
-        for(ItemLike mat : additionalStonecuttingMaterials){
-            stonecutting(output, RecipeCategory.BUILDING_BLOCKS, stair, 1, mat);
+    protected void stairs(ItemLike stair, ItemLike material, ItemLike... additionalStonecuttingMaterials){
+        stairs(stair, material, true);
+        for(ItemLike mat : additionalStonecuttingMaterials) {
+            stonecutting(RecipeCategory.BUILDING_BLOCKS, stair, 1, mat);
         }
     }
 
-    protected void slab(RecipeOutput output, ItemLike slab, ItemLike material, boolean hasStonecutting){
+    protected void slab(ItemLike slab, ItemLike material, boolean hasStonecutting){
         slabBuilder(RecipeCategory.BUILDING_BLOCKS, slab, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(slab, material));
-        if(hasStonecutting) {stonecutting(output, RecipeCategory.BUILDING_BLOCKS, slab, 2, material);}
+        if(hasStonecutting) { stonecutting(RecipeCategory.BUILDING_BLOCKS, slab, 2, material); }
     }
-    protected void slab(RecipeOutput output, ItemLike slab, ItemLike material, ItemLike... additionalStonecuttingMaterials){
-        slab(output, slab, material, true);
+    protected void slab(ItemLike slab, ItemLike material, ItemLike... additionalStonecuttingMaterials){
+        slab(slab, material, true);
         for(ItemLike mat : additionalStonecuttingMaterials){
-            stonecutting(output, RecipeCategory.BUILDING_BLOCKS, slab, getItemName(mat).contains("slab") ? 1 : 2, mat);
+            stonecutting(RecipeCategory.BUILDING_BLOCKS, slab, getItemName(mat).contains("slab") ? 1 : 2, mat);
         }
     }
 
-    protected void wall(RecipeOutput output, ItemLike wall, ItemLike material, boolean hasStonecutting){
+    protected void wall(ItemLike wall, ItemLike material, boolean hasStonecutting){
         wallBuilder(RecipeCategory.DECORATIONS, wall, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(wall, material));
-        if(hasStonecutting) {stonecutting(output, RecipeCategory.DECORATIONS, wall, 1, material);}
+        if(hasStonecutting) { stonecutting(RecipeCategory.DECORATIONS, wall, 1, material); }
     }
-    protected void wall(RecipeOutput output, ItemLike wall, ItemLike material, ItemLike... additionalStonecuttingMaterials){
-        wall(output, wall, material, true);
+    protected void wall(ItemLike wall, ItemLike material, ItemLike... additionalStonecuttingMaterials){
+        wall(wall, material, true);
         for(ItemLike mat : additionalStonecuttingMaterials){
-            stonecutting(output, RecipeCategory.DECORATIONS, wall, 1, mat);
+            stonecutting(RecipeCategory.DECORATIONS, wall, 1, mat);
         }
     }
 
-    protected void button(RecipeOutput output, ItemLike button, ItemLike material, boolean hasStonecutting){
+    protected void button(ItemLike button, ItemLike material, boolean hasStonecutting){
         buttonBuilder(button, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(button, material));
-        if(hasStonecutting) {stonecutting(output, RecipeCategory.REDSTONE, button, 1, material);}
+        if(hasStonecutting) {stonecutting(RecipeCategory.REDSTONE, button, 1, material); }
     }
-    protected void button(RecipeOutput output, ItemLike button, ItemLike material, ItemLike... additionalStonecuttingMaterials) {
-        button(output, button, material, true);
-        for(ItemLike item : additionalStonecuttingMaterials) {stonecutting(output, RecipeCategory.REDSTONE, button, 1, item);}
+    protected void button(ItemLike button, ItemLike material, ItemLike... additionalStonecuttingMaterials) {
+        button(button, material, true);
+        for(ItemLike item : additionalStonecuttingMaterials) { stonecutting(RecipeCategory.REDSTONE, button, 1, item); }
     }
 
-    protected void chiseled(RecipeOutput output, ItemLike chiseled, ItemLike material, boolean hasStonecutting){
+    protected void chiseled(ItemLike chiseled, ItemLike material, boolean hasStonecutting){
         chiseledBuilder(RecipeCategory.BUILDING_BLOCKS, chiseled, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(chiseled, material));
-        if(hasStonecutting) {stonecutting(output, RecipeCategory.BUILDING_BLOCKS, chiseled, 1, material);}
+        if(hasStonecutting) { stonecutting(RecipeCategory.BUILDING_BLOCKS, chiseled, 1, material); }
     }
-    protected void fence(RecipeOutput output, ItemLike fence, ItemLike material){
-        fence(output, fence, 3, material, Items.STICK, false);
+    protected void fence(ItemLike fence, ItemLike material){
+        fence(fence, 3, material, Items.STICK, false);
     }
-    protected void netherFence(RecipeOutput output, ItemLike fence, ItemLike material){
-        fence(output, fence, 6, material, Items.NETHER_BRICK, true);
+    protected void netherFence(ItemLike fence, ItemLike material){
+        fence(fence, 6, material, Items.NETHER_BRICK, true);
     }
-    protected void fence(RecipeOutput output, ItemLike fence, int count, ItemLike material, ItemLike stick, boolean hasStonecutting){
+    protected void fence(ItemLike fence, int count, ItemLike material, ItemLike stick, boolean hasStonecutting){
         shaped(RecipeCategory.DECORATIONS, fence, count).define('W', material).define('#', stick).pattern("W#W").pattern("W#W").unlockedBy(getHasName(material), has(material)).save(output, recipeID(fence, material));
-        if(hasStonecutting) {stonecutting(output, RecipeCategory.DECORATIONS, fence, 1, material);}
+        if(hasStonecutting) {stonecutting(RecipeCategory.DECORATIONS, fence, 1, material); }
     }
-    protected void fenceGate(RecipeOutput output, ItemLike fenceGate, ItemLike material){
-        fenceGate(output, fenceGate, material, Items.STICK, false);
+    protected void fenceGate(ItemLike fenceGate, ItemLike material){
+        fenceGate(fenceGate, material, Items.STICK, false);
     }
-    protected void netherFenceGate(RecipeOutput output, ItemLike fenceGate, ItemLike material){
-        fenceGate(output, fenceGate, material, Items.NETHER_BRICK, true);
+    protected void netherFenceGate(ItemLike fenceGate, ItemLike material){
+        fenceGate(fenceGate, material, Items.NETHER_BRICK, true);
     }
-    protected void fenceGate(RecipeOutput output, ItemLike fenceGate, ItemLike material, ItemLike stick, boolean hasStonecutting){
+    protected void fenceGate(ItemLike fenceGate, ItemLike material, ItemLike stick, boolean hasStonecutting){
         shaped(RecipeCategory.REDSTONE, fenceGate).define('#', stick).define('W', material).pattern("#W#").pattern("#W#").unlockedBy(getHasName(material), has(material)).save(output, recipeID(fenceGate, material));
-        if(hasStonecutting) {stonecutting(output, RecipeCategory.REDSTONE, fenceGate, 1, material);}
+        if(hasStonecutting) {stonecutting(RecipeCategory.REDSTONE, fenceGate, 1, material); }
     }
-    protected void door(RecipeOutput output, ItemLike door, ItemLike material){
+    protected void door(ItemLike door, ItemLike material){
         doorBuilder(door, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(door, material));
     }
-    protected void trapdoor(RecipeOutput output, ItemLike trapdoor, ItemLike material){
+    protected void trapdoor(ItemLike trapdoor, ItemLike material){
         trapdoorBuilder(trapdoor, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(trapdoor, material));
     }
 
-    protected void torch(RecipeOutput output, ItemLike torch, ItemLike flammable){
+    protected void torch(ItemLike torch, ItemLike flammable){
         shaped(RecipeCategory.DECORATIONS, torch)
                 .define('#', flammable)
                 .define('|', Items.STICK)
@@ -145,7 +145,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(flammable), has(flammable))
                 .save(output, recipeID(torch, flammable));
     }
-    protected void torch(RecipeOutput output, ItemLike torch, TagKey<Item> flammable){
+    protected void torch(ItemLike torch, TagKey<Item> flammable){
         shaped(RecipeCategory.DECORATIONS, torch)
                 .define('#', flammable)
                 .define('|', Items.STICK)
@@ -155,7 +155,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .save(output, recipeID(torch, flammable));
     }
 
-    protected void campfire(RecipeOutput output, ItemLike campfire, ItemLike flammable){
+    protected void campfire(ItemLike campfire, ItemLike flammable){
         shaped(RecipeCategory.DECORATIONS, campfire)
                 .define('|', Items.STICK)
                 .define('#', flammable)
@@ -166,7 +166,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(flammable), has(flammable))
                 .save(output, recipeID(campfire, flammable));
     }
-    protected void campfire(RecipeOutput output, ItemLike campfire, TagKey<Item> flammable){
+    protected void campfire(ItemLike campfire, TagKey<Item> flammable){
         shaped(RecipeCategory.DECORATIONS, campfire)
                 .define('|', Items.STICK)
                 .define('#', flammable)
@@ -178,7 +178,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .save(output, recipeID(campfire, flammable));
     }
 
-    protected void lantern(RecipeOutput output, ItemLike lantern, ItemLike nugget, ItemLike torch){
+    protected void lantern(ItemLike lantern, ItemLike nugget, ItemLike torch){
         shaped(RecipeCategory.DECORATIONS, lantern)
                 .define('|', nugget)
                 .define('#', torch)
@@ -188,7 +188,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(torch), has(torch))
                 .save(output, recipeID(lantern, nugget));
     }
-    protected void lantern(RecipeOutput output, ItemLike lantern, TagKey<Item> nugget, ItemLike torch){
+    protected void lantern(ItemLike lantern, TagKey<Item> nugget, ItemLike torch){
         shaped(RecipeCategory.DECORATIONS, lantern)
                 .define('|', nugget)
                 .define('#', torch)
@@ -199,21 +199,21 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .save(output, recipeID(lantern, nugget));
     }
 
-    protected void tools(RecipeOutput output, ItemLike sword, ItemLike axe, ItemLike pickaxe, ItemLike shovel, ItemLike hoe, ItemLike material){
-        sword(output, sword, material);
-        axe(output, axe, material);
-        pickaxe(output, pickaxe, material);
-        shovel(output, shovel, material);
-        hoe(output, hoe, material);
+    protected void tools(ItemLike sword, ItemLike axe, ItemLike pickaxe, ItemLike shovel, ItemLike hoe, ItemLike material){
+        sword(sword, material);
+        axe(axe, material);
+        pickaxe(pickaxe, material);
+        shovel(shovel, material);
+        hoe(hoe, material);
     }
-    protected void tools(RecipeOutput output, ItemLike sword, ItemLike axe, ItemLike pickaxe, ItemLike shovel, ItemLike hoe, TagKey<Item> material){
-        sword(output, sword, material);
-        axe(output, axe, material);
-        pickaxe(output, pickaxe, material);
-        shovel(output, shovel, material);
-        hoe(output, hoe, material);
+    protected void tools(ItemLike sword, ItemLike axe, ItemLike pickaxe, ItemLike shovel, ItemLike hoe, TagKey<Item> material){
+        sword(sword, material);
+        axe(axe, material);
+        pickaxe(pickaxe, material);
+        shovel(shovel, material);
+        hoe(hoe, material);
     }
-    protected void sword(RecipeOutput output, ItemLike sword, ItemLike material){
+    protected void sword(ItemLike sword, ItemLike material){
         shaped(RecipeCategory.COMBAT, sword)
                 .define('#', material)
                 .define('|', Items.STICK)
@@ -223,7 +223,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(sword, material));
     }
-    protected void sword(RecipeOutput output, ItemLike sword, TagKey<Item> material){
+    protected void sword(ItemLike sword, TagKey<Item> material){
         shaped(RecipeCategory.COMBAT, sword)
                 .define('#', material)
                 .define('|', Items.STICK)
@@ -233,7 +233,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(sword, material));
     }
-    protected void axe(RecipeOutput output, ItemLike axe, ItemLike material){
+    protected void axe(ItemLike axe, ItemLike material){
         shaped(RecipeCategory.TOOLS, axe)
                 .define('#', material)
                 .define('|', Items.STICK)
@@ -243,7 +243,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(axe, material));
     }
-    protected void axe(RecipeOutput output, ItemLike axe, TagKey<Item> material){
+    protected void axe(ItemLike axe, TagKey<Item> material){
         shaped(RecipeCategory.TOOLS, axe)
                 .define('#', material)
                 .define('|', Items.STICK)
@@ -253,7 +253,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(axe, material));
     }
-    protected void pickaxe(RecipeOutput output, ItemLike pickaxe, ItemLike material){
+    protected void pickaxe(ItemLike pickaxe, ItemLike material){
         shaped(RecipeCategory.TOOLS, pickaxe)
                 .define('#', material)
                 .define('|', Items.STICK)
@@ -263,7 +263,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(pickaxe, material));
     }
-    protected void pickaxe(RecipeOutput output, ItemLike pickaxe, TagKey<Item> material){
+    protected void pickaxe(ItemLike pickaxe, TagKey<Item> material){
         shaped(RecipeCategory.TOOLS, pickaxe)
                 .define('#', material)
                 .define('|', Items.STICK)
@@ -273,7 +273,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(pickaxe, material));
     }
-    protected void shovel(RecipeOutput output, ItemLike shovel, ItemLike material){
+    protected void shovel(ItemLike shovel, ItemLike material){
         shaped(RecipeCategory.TOOLS, shovel)
                 .define('#', material)
                 .define('|', Items.STICK)
@@ -283,7 +283,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(shovel, material));
     }
-    protected void shovel(RecipeOutput output, ItemLike shovel, TagKey<Item> material){
+    protected void shovel(ItemLike shovel, TagKey<Item> material){
         shaped(RecipeCategory.TOOLS, shovel)
                 .define('#', material)
                 .define('|', Items.STICK)
@@ -293,7 +293,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(shovel, material));
     }
-    protected void hoe(RecipeOutput output, ItemLike hoe, ItemLike material){
+    protected void hoe(ItemLike hoe, ItemLike material){
         shaped(RecipeCategory.TOOLS, hoe)
                 .define('#', material)
                 .define('|', Items.STICK)
@@ -303,7 +303,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(hoe, material));
     }
-    protected void hoe(RecipeOutput output, ItemLike hoe, TagKey<Item> material){
+    protected void hoe(ItemLike hoe, TagKey<Item> material){
         shaped(RecipeCategory.TOOLS, hoe)
                 .define('#', material)
                 .define('|', Items.STICK)
@@ -314,33 +314,33 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .save(output, recipeID(hoe, material));
     }
 
-    protected void armor(RecipeOutput output, ItemLike helmet, ItemLike chestplate, ItemLike leggings, ItemLike boots, ItemLike material){
-        helmet(output, helmet, material);
-        chestplate(output, chestplate, material);
-        leggings(output, leggings, material);
-        boots(output, boots, material);
+    protected void armor(ItemLike helmet, ItemLike chestplate, ItemLike leggings, ItemLike boots, ItemLike material){
+        helmet(helmet, material);
+        chestplate(chestplate, material);
+        leggings(leggings, material);
+        boots(boots, material);
     }
-    protected void armor(RecipeOutput output, ItemLike helmet, ItemLike chestplate, ItemLike leggings, ItemLike boots, TagKey<Item> material){
-        helmet(output, helmet, material);
-        chestplate(output, chestplate, material);
-        leggings(output, leggings, material);
-        boots(output, boots, material);
+    protected void armor(ItemLike helmet, ItemLike chestplate, ItemLike leggings, ItemLike boots, TagKey<Item> material){
+        helmet(helmet, material);
+        chestplate(chestplate, material);
+        leggings(leggings, material);
+        boots(boots, material);
     }
-    protected void helmet(RecipeOutput output, ItemLike helmet, ItemLike material){
+    protected void helmet(ItemLike helmet, ItemLike material){
         shaped(RecipeCategory.COMBAT, helmet).define('#', material)
                 .pattern("###")
                 .pattern("# #")
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(helmet, material));
     }
-    protected void helmet(RecipeOutput output, ItemLike helmet, TagKey<Item> material){
+    protected void helmet(ItemLike helmet, TagKey<Item> material){
         shaped(RecipeCategory.COMBAT, helmet).define('#', material)
                 .pattern("###")
                 .pattern("# #")
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(helmet, material));
     }
-    protected void chestplate(RecipeOutput output, ItemLike chestplate, ItemLike material){
+    protected void chestplate(ItemLike chestplate, ItemLike material){
         shaped(RecipeCategory.COMBAT, chestplate).define('#', material)
                 .pattern("# #")
                 .pattern("###")
@@ -348,7 +348,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(chestplate, material));
     }
-    protected void chestplate(RecipeOutput output, ItemLike chestplate, TagKey<Item> material){
+    protected void chestplate(ItemLike chestplate, TagKey<Item> material){
         shaped(RecipeCategory.COMBAT, chestplate).define('#', material)
                 .pattern("# #")
                 .pattern("###")
@@ -356,7 +356,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(chestplate, material));
     }
-    protected void leggings(RecipeOutput output, ItemLike leggings, ItemLike material){
+    protected void leggings(ItemLike leggings, ItemLike material){
         shaped(RecipeCategory.COMBAT, leggings).define('#', material)
                 .pattern("###")
                 .pattern("# #")
@@ -364,7 +364,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(leggings, material));
     }
-    protected void leggings(RecipeOutput output, ItemLike leggings, TagKey<Item> material){
+    protected void leggings(ItemLike leggings, TagKey<Item> material){
         shaped(RecipeCategory.COMBAT, leggings).define('#', material)
                 .pattern("###")
                 .pattern("# #")
@@ -372,14 +372,14 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(leggings, material));
     }
-    protected void boots(RecipeOutput output, ItemLike boots, ItemLike material){
+    protected void boots(ItemLike boots, ItemLike material){
         shaped(RecipeCategory.COMBAT, boots).define('#', material)
                 .pattern("# #")
                 .pattern("# #")
                 .unlockedBy(getHasName(material), has(material))
                 .save(output, recipeID(boots, material));
     }
-    protected void boots(RecipeOutput output, ItemLike boots, TagKey<Item> material){
+    protected void boots(ItemLike boots, TagKey<Item> material){
         shaped(RecipeCategory.COMBAT, boots).define('#', material)
                 .pattern("# #")
                 .pattern("# #")
@@ -387,7 +387,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .save(output, recipeID(boots, material));
     }
 
-    protected void fourConversion(RecipeOutput output, RecipeCategory category, ItemLike to, int count, ItemLike from){
+    protected void fourConversion(RecipeCategory category, ItemLike to, int count, ItemLike from){
         shaped(category, to, count).define('#', from)
                 .pattern("##")
                 .pattern("##")
@@ -395,19 +395,19 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 .save(output, recipeID(to, from));
     }
 
-    protected void nineBlockStorage(RecipeOutput output, RecipeCategory category, ItemLike unpacked, ItemLike packed) {
+    protected void nineBlockStorage(RecipeCategory category, ItemLike unpacked, ItemLike packed) {
         shapeless(category, unpacked, 9).requires(packed).unlockedBy(getHasName(packed), has(packed)).save(output, recipeID(unpacked, packed));
         shaped(category, packed).define('#', unpacked).pattern("###").pattern("###").pattern("###").unlockedBy(getHasName(unpacked), has(unpacked)).save(output, recipeID(packed, unpacked));
     }
 
-    protected void combine(RecipeOutput output, RecipeCategory category, ItemLike result, ItemLike block, ItemLike moss){
+    protected void combine(RecipeCategory category, ItemLike result, ItemLike block, ItemLike moss){
         shapeless(category, result).requires(block).requires(moss).unlockedBy(getHasName(block), has(block)).save(output, recipeID(result, block));
     }
-    protected void combine(RecipeOutput output, RecipeCategory category, ItemLike result, TagKey<Item> block, TagKey<Item> moss){
+    protected void combine(RecipeCategory category, ItemLike result, TagKey<Item> block, TagKey<Item> moss){
         shapeless(category, result).requires(block).requires(moss).unlockedBy(getHasName(block), has(block)).save(output, recipeID(result, block));
     }
 
-    protected void dying(RecipeOutput output, TagKey<Item> dyedItems, String idPattern, String group){
+    protected void dying(TagKey<Item> dyedItems, String idPattern, String group){
         for(var dye : DyeColor.values()){
             var resultID = locate(idPattern.replace("{color}", dye.getName()));
             var dyeID = ResourceLocation.withDefaultNamespace(dye.getName() + "_dye");
@@ -420,46 +420,46 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         }
     }
 
-    protected void oreSmelting(RecipeOutput output, ItemLike ingot, ItemLike raw){
-        smelting(output, RecipeCategory.MISC, ingot, raw, 0.7f, 200);
-        blasting(output, RecipeCategory.MISC, ingot, raw, 0.7f, 100);
+    protected void oreSmelting(ItemLike ingot, ItemLike raw){
+        smelting(RecipeCategory.MISC, ingot, raw, 0.7f, 200);
+        blasting(RecipeCategory.MISC, ingot, raw, 0.7f, 100);
     }
-    protected void oreSmelting(RecipeOutput output, ItemLike ingot, TagKey<Item> raw){
-        smelting(output, RecipeCategory.MISC, ingot, raw, 0.7f, 200);
-        blasting(output, RecipeCategory.MISC, ingot, raw, 0.7f, 100);
+    protected void oreSmelting(ItemLike ingot, TagKey<Item> raw){
+        smelting(RecipeCategory.MISC, ingot, raw, 0.7f, 200);
+        blasting(RecipeCategory.MISC, ingot, raw, 0.7f, 100);
     }
-    protected void stoneSmelting(RecipeOutput output, ItemLike ingot, TagKey<Item> raw){
-        smelting(output, RecipeCategory.BUILDING_BLOCKS, ingot, raw, 0.1f, 200);
+    protected void stoneSmelting(ItemLike ingot, TagKey<Item> raw){
+        smelting(RecipeCategory.BUILDING_BLOCKS, ingot, raw, 0.1f, 200);
     }
-    protected void stoneSmelting(RecipeOutput output, ItemLike ingot, ItemLike raw){
-        smelting(output, RecipeCategory.BUILDING_BLOCKS, ingot, raw, 0.1f, 200);
+    protected void stoneSmelting(ItemLike ingot, ItemLike raw){
+        smelting(RecipeCategory.BUILDING_BLOCKS, ingot, raw, 0.1f, 200);
     }
 
-    protected void shapeless(RecipeOutput output, RecipeCategory category, ItemLike result, int countR, ItemLike material, int countM){
+    protected void shapeless(RecipeCategory category, ItemLike result, int countR, ItemLike material, int countM){
         shapeless(category, result, countR).requires(material, countM).unlockedBy(getHasName(material), has(material)).save(output, recipeID(result, material));
     }
-    protected void shapeless(RecipeOutput output, RecipeCategory category, ItemLike result, int countR, TagKey<Item> material, int countM){
+    protected void shapeless(RecipeCategory category, ItemLike result, int countR, TagKey<Item> material, int countM){
         shapeless(category, result, countR).requires(tag(material), countM).unlockedBy(getHasName(material), has(material)).save(output, recipeID(result, material));
     }
-    protected void stonecutting(RecipeOutput output, RecipeCategory category, ItemLike result, int count, ItemLike material){
+    protected void stonecutting(RecipeCategory category, ItemLike result, int count, ItemLike material){
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(material), category, result, count).unlockedBy(getHasName(material), has(material)).save(output, stonecuttingRecipeID(result, material));
     }
-    protected void smelting(RecipeOutput output, RecipeCategory category, ItemLike result, ItemLike ingredient, float xp, int time) {
+    protected void smelting(RecipeCategory category, ItemLike result, ItemLike ingredient, float xp, int time) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(ingredient), category, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smeltingRecipeID(result, ingredient));
     }
-    protected void smelting(RecipeOutput output, RecipeCategory category, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
+    protected void smelting(RecipeCategory category, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
         SimpleCookingRecipeBuilder.smelting(tag(ingredient), category, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smeltingRecipeID(result, ingredient));
     }
-    protected void blasting(RecipeOutput output, RecipeCategory category, ItemLike result, ItemLike ingredient, float xp, int time) {
+    protected void blasting(RecipeCategory category, ItemLike result, ItemLike ingredient, float xp, int time) {
         SimpleCookingRecipeBuilder.blasting(Ingredient.of(ingredient), category, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, blastingRecipeID(result, ingredient));
     }
-    protected void blasting(RecipeOutput output, RecipeCategory category, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
+    protected void blasting(RecipeCategory category, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
         SimpleCookingRecipeBuilder.blasting(tag(ingredient), category, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, blastingRecipeID(result, ingredient));
     }
-    protected void smoking(RecipeOutput output, ItemLike result, ItemLike ingredient, float xp, int time) {
+    protected void smoking(ItemLike result, ItemLike ingredient, float xp, int time) {
         SimpleCookingRecipeBuilder.smoking(Ingredient.of(ingredient), RecipeCategory.FOOD, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smokingRecipeID(result, ingredient));
     }
-    protected void smoking(RecipeOutput output, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
+    protected void smoking(ItemLike result, TagKey<Item> ingredient, float xp, int time) {
         SimpleCookingRecipeBuilder.blasting(tag(ingredient), RecipeCategory.FOOD, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smokingRecipeID(result, ingredient));
     }
 
@@ -570,7 +570,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     public static abstract class Runner implements DataProvider {
         private final PackOutput packOutput;
         private final CompletableFuture<HolderLookup.Provider> registries;
-        private final static Set<ResourceKey<Recipe<?>>> recipes = Sets.newHashSet();
+        private final static Set<ResourceLocation> recipes = Sets.newHashSet();
 
         protected Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
             this.packOutput = packOutput;
@@ -588,7 +588,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                                 RecipeOutput recipeoutput = new RecipeOutput() {
                                     @Override @ParametersAreNonnullByDefault
                                     public void accept(ResourceKey<Recipe<?>> id, Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, net.neoforged.neoforge.common.conditions.ICondition... conditions) {
-                                        if (!recipes.add(id)) {
+                                        if (!recipes.add(id.location())) {
                                             throw new IllegalStateException("Duplicate recipe " + id.location());
                                         } else {
                                             this.saveRecipe(id, recipe, conditions);
@@ -638,6 +638,6 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         }
 
 
-        protected abstract ExtendedRecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<ResourceKey<Recipe<?>>> recipeSet);
+        protected abstract ExtendedRecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<ResourceLocation> recipeSet);
     }
 }
