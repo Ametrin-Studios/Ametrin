@@ -8,8 +8,11 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 
 import java.util.function.BiConsumer;
 
-public record TreePlaceContext(BlockPos pos, WorldGenLevel level, RandomSource random, BiConsumer<BlockPos, BlockState> changedLogs, BiConsumer<BlockPos, BlockState> changedLeaves, FoliagePlacer.FoliageSetter foliageSetter) {
-    public TreePlaceContext at(BlockPos pos){
+public record TreePlaceContext(BlockPos pos, WorldGenLevel level, RandomSource random,
+                               BiConsumer<BlockPos, BlockState> changedLogs,
+                               BiConsumer<BlockPos, BlockState> changedLeaves,
+                               FoliagePlacer.FoliageSetter foliageSetter) {
+    public TreePlaceContext at(BlockPos pos) {
         return new TreePlaceContext(pos, level(), random(), changedLogs(), changedLeaves(), foliageSetter());
     }
 }

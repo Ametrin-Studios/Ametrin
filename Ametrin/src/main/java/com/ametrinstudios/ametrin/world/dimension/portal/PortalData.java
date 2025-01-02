@@ -18,7 +18,10 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public record PortalData(ResourceKey<Level> dimensionA, ResourceKey<Level> dimensionB, ResourceKey<PoiType> portalPoi, Supplier<BlockState> portalBlock, Supplier<BlockState> frameBlock, TagKey<Block> validFrames, Optional<SoundEvent> soundEvent, Portal.Transition transition, Optional<ParticleOptions> particles) {
+public record PortalData(ResourceKey<Level> dimensionA, ResourceKey<Level> dimensionB, ResourceKey<PoiType> portalPoi,
+                         Supplier<BlockState> portalBlock, Supplier<BlockState> frameBlock, TagKey<Block> validFrames,
+                         Optional<SoundEvent> soundEvent, Portal.Transition transition,
+                         Optional<ParticleOptions> particles) {
     public Optional<CustomPortalShape> findPortalShape(LevelAccessor level, BlockPos bottomLeft, Direction.Axis axis) {
         return CustomPortalShape.findEmptyPortalShape(this, level, bottomLeft, axis);
     }
@@ -26,6 +29,7 @@ public record PortalData(ResourceKey<Level> dimensionA, ResourceKey<Level> dimen
     public boolean isValidDimension(Level level) {
         return isValidDimension(level.dimension());
     }
+
     public boolean isValidDimension(ResourceKey<Level> dimension) {
         return dimension == dimensionA() || dimension == dimensionB();
     }
@@ -57,22 +61,25 @@ public record PortalData(ResourceKey<Level> dimensionA, ResourceKey<Level> dimen
         public Builder poi(DeferredHolder<PoiType, PoiType> portalPoi) {
             return poi(portalPoi.getKey());
         }
+
         public Builder poi(ResourceKey<PoiType> portalPoi) {
             this.portalPoi = portalPoi;
             return this;
         }
 
         public Builder portal(DeferredBlock<? extends Block> portal) {
-            return portal(()-> portal.get().defaultBlockState());
+            return portal(() -> portal.get().defaultBlockState());
         }
+
         public Builder portal(Supplier<BlockState> portal) {
             this.portalBlock = portal;
             return this;
         }
 
         public Builder defaultFrame(DeferredBlock<? extends Block> frame) {
-            return defaultFrame(()-> frame.get().defaultBlockState());
+            return defaultFrame(() -> frame.get().defaultBlockState());
         }
+
         public Builder defaultFrame(Supplier<BlockState> frame) {
             this.frameBlock = frame;
             return this;
@@ -108,7 +115,7 @@ public record PortalData(ResourceKey<Level> dimensionA, ResourceKey<Level> dimen
         }
 
         private void assertNotNull(Object value, String message) {
-            if(value == null) {
+            if (value == null) {
                 throw new NullPointerException(message);
             }
         }

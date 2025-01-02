@@ -184,12 +184,12 @@ public final class CustomPortalShape {
     }
 
     public static Vec3 getRelativePosition(BlockUtil.FoundRectangle foundRectangle, Direction.Axis axis, Vec3 pos, EntityDimensions entityDimensions) {
-        double d0 = (double)foundRectangle.axis1Size - (double)entityDimensions.width();
-        double d1 = (double)foundRectangle.axis2Size - (double)entityDimensions.height();
+        double d0 = (double) foundRectangle.axis1Size - (double) entityDimensions.width();
+        double d1 = (double) foundRectangle.axis2Size - (double) entityDimensions.height();
         BlockPos blockpos = foundRectangle.minCorner;
         double d2;
         if (d0 > 0.0) {
-            double d3 = (double)blockpos.get(axis) + (double)entityDimensions.width() / 2.0;
+            double d3 = (double) blockpos.get(axis) + (double) entityDimensions.width() / 2.0;
             d2 = Mth.clamp(Mth.inverseLerp(pos.get(axis) - d3, 0.0, d0), 0.0, SAFE_TRAVEL_MAX_VERTICAL_DELTA);
         } else {
             d2 = 0.5;
@@ -198,19 +198,19 @@ public final class CustomPortalShape {
         double d5;
         if (d1 > 0.0) {
             Direction.Axis direction$axis = Direction.Axis.Y;
-            d5 = Mth.clamp(Mth.inverseLerp(pos.get(direction$axis) - (double)blockpos.get(direction$axis), 0.0, d1), 0.0, SAFE_TRAVEL_MAX_VERTICAL_DELTA);
+            d5 = Mth.clamp(Mth.inverseLerp(pos.get(direction$axis) - (double) blockpos.get(direction$axis), 0.0, d1), 0.0, SAFE_TRAVEL_MAX_VERTICAL_DELTA);
         } else {
             d5 = 0.0;
         }
 
         Direction.Axis direction$axis1 = axis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
-        double d4 = pos.get(direction$axis1) - ((double)blockpos.get(direction$axis1) + 0.5);
+        double d4 = pos.get(direction$axis1) - ((double) blockpos.get(direction$axis1) + 0.5);
         return new Vec3(d2, d5, d4);
     }
 
     public static Vec3 findCollisionFreePosition(Vec3 pos, ServerLevel level, Entity entity, EntityDimensions dimensions) {
         if (!(dimensions.width() > SAFE_TRAVEL_MAX_ENTITY_XY) && !(dimensions.height() > SAFE_TRAVEL_MAX_ENTITY_XY)) {
-            double d0 = (double)dimensions.height() / 2.0;
+            double d0 = (double) dimensions.height() / 2.0;
             Vec3 vec3 = pos.add(0.0, d0, 0.0);
             VoxelShape voxelshape = Shapes.create(
                     AABB.ofSize(vec3, dimensions.width(), 0.0, dimensions.width()).expandTowards(0.0, 1.0, 0.0).inflate(1.0E-6)

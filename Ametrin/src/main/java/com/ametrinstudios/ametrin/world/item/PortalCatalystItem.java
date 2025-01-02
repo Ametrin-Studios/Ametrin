@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class PortalCatalystItem extends Item {
     protected final PortalData portalData;
+
     public PortalCatalystItem(PortalData portalData, Properties properties) {
         super(properties);
         this.portalData = portalData;
@@ -36,7 +37,7 @@ public class PortalCatalystItem extends Item {
         portalShape.get().createPortalBlocks();
         level.playSound(context.getPlayer(), context.getClickedPos(), SoundEvents.PORTAL_TRIGGER, SoundSource.BLOCKS, 0.9f, 1);
 
-        if(player instanceof ServerPlayer serverPlayer) {
+        if (player instanceof ServerPlayer serverPlayer) {
             var itemStack = context.getItemInHand();
             CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, context.getClickedPos(), itemStack);
             itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));

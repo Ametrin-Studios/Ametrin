@@ -8,6 +8,6 @@ public final class ColorHelper {
     }
 
     public static int colorToIntWithAlpha(Color color) {
-        return (color.getAlpha()) + (color.getBlue()*256) + (color.getGreen() * 65536) + (color.getRed() * 16777216);
+        return (color.getAlpha()) + (color.getBlue() * 256) + (color.getGreen() * 65536) + (color.getRed() * 16777216);
     }
 }

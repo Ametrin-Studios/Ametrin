@@ -18,7 +18,7 @@ public final class CustomLootTableProvider extends LootTableProvider {
         super(packOutput, Set.of(), subProviders, registries);
     }
 
-    public static Builder builder(){
+    public static Builder builder() {
         return new Builder();
     }
 
@@ -26,24 +26,29 @@ public final class CustomLootTableProvider extends LootTableProvider {
         private final List<SubProviderEntry> _subProviders;
 
         public Builder() {
-             _subProviders = new ArrayList<>();
+            _subProviders = new ArrayList<>();
         }
 
         public Builder addBlockProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
             return addProvider(subProviderSupplier, LootContextParamSets.BLOCK);
         }
+
         public Builder addChestProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
             return addProvider(subProviderSupplier, LootContextParamSets.CHEST);
         }
+
         public Builder addEntityProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
             return addProvider(subProviderSupplier, LootContextParamSets.ENTITY);
         }
+
         public Builder addArcheologyProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
             return addProvider(subProviderSupplier, LootContextParamSets.ARCHAEOLOGY);
         }
+
         public Builder addFishingProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
             return addProvider(subProviderSupplier, LootContextParamSets.FISHING);
         }
+
         public Builder addProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier, ContextKeySet paramSet) {
             return addProvider(new SubProviderEntry(subProviderSupplier, paramSet));
         }
@@ -53,8 +58,8 @@ public final class CustomLootTableProvider extends LootTableProvider {
             return this;
         }
 
-        public CustomLootTableProvider build(PackOutput output, CompletableFuture<HolderLookup.Provider> registries){
-            if(_subProviders.isEmpty()) throw new IllegalStateException("Cannot create an empty LootTableProvider");
+        public CustomLootTableProvider build(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+            if (_subProviders.isEmpty()) throw new IllegalStateException("Cannot create an empty LootTableProvider");
             return new CustomLootTableProvider(output, _subProviders, registries);
         }
     }

@@ -13,11 +13,10 @@ import java.util.function.Supplier;
 public final class AmArgumentTypes {
     public static final DeferredRegister<ArgumentTypeInfo<?, ?>> REGISTER = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, Ametrin.MOD_ID);
 
-    public static final Supplier<ArgumentTypeInfo<?, ?>> TAG_KEY = REGISTER.register("tag_key", ()-> ArgumentTypeInfos.registerByClass(fixClassType(TagKeyArgument.class), new TagKeyArgument.Info<>()));
+    public static final Supplier<ArgumentTypeInfo<?, ?>> TAG_KEY = REGISTER.register("tag_key", () -> ArgumentTypeInfos.registerByClass(fixClassType(TagKeyArgument.class), new TagKeyArgument.Info<>()));
 
 
     private static <T extends ArgumentType<?>> Class<T> fixClassType(Class<? super T> type) {
-        return (Class<T>)type;
+        return (Class<T>) type;
     }
-
 }

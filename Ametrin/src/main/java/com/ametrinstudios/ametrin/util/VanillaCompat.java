@@ -23,10 +23,11 @@ public final class VanillaCompat {
     /**
      * Registers FlowerPots
      */
-    public static void addFlowerPot(ResourceLocation plant, Supplier<? extends FlowerPotBlock> fullPot){
+    public static void addFlowerPot(ResourceLocation plant, Supplier<? extends FlowerPotBlock> fullPot) {
         ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant, fullPot);
     }
-    public static void addFlowerPot(DeferredBlock<? extends Block> plant, Supplier<? extends FlowerPotBlock> fullPot){
+
+    public static void addFlowerPot(DeferredBlock<? extends Block> plant, Supplier<? extends FlowerPotBlock> fullPot) {
         addFlowerPot(plant.getId(), fullPot);
     }
 
@@ -35,8 +36,8 @@ public final class VanillaCompat {
      * both blocks need to have the {@link RotatedPillarBlock#AXIS} state (stupid minecraft...)
      * call during {@link FMLCommonSetupEvent}
      */
-    public static void addStrippable(Block log, Block strippedLog){
-        if(_merged){
+    public static void addStrippable(Block log, Block strippedLog) {
+        if (_merged) {
             throw new UnsupportedOperationException("Strippables must be registered during FMLCommonSetupEvent");
         }
         _strippableRequests.put(log, strippedLog);
@@ -59,20 +60,38 @@ public final class VanillaCompat {
 
     public interface Flammable {
         static void add(Block block, int encouragement, int flammability) {
-            ((FireBlock)Blocks.FIRE).setFlammable(block, encouragement, flammability);
+            ((FireBlock) Blocks.FIRE).setFlammable(block, encouragement, flammability);
         }
-        static void addLog(Block log) { add(log, 5, 5); }
-        static void addPlank(Block plank) { add(plank, 5, 20); }
-        static void addLeave(Block leave) { add(leave, 30, 60); }
-        static void addPlant(Block plant) { add(plant, 60, 100); }
-        static void addWool(Block wool) { add(wool, 30, 60); }
-        static void addCarpet(Block carpet) { add(carpet, 60, 20); }
+
+        static void addLog(Block log) {
+            add(log, 5, 5);
+        }
+
+        static void addPlank(Block plank) {
+            add(plank, 5, 20);
+        }
+
+        static void addLeave(Block leave) {
+            add(leave, 30, 60);
+        }
+
+        static void addPlant(Block plant) {
+            add(plant, 60, 100);
+        }
+
+        static void addWool(Block wool) {
+            add(wool, 30, 60);
+        }
+
+        static void addCarpet(Block carpet) {
+            add(carpet, 60, 20);
+        }
     }
 
 
     @ApiStatus.Internal
     public static void mergeRequests() {
-        if(_merged) {
+        if (_merged) {
             LOGGER.error("Vanilla compatibility requests have already been merged!");
             return;
         }

@@ -84,20 +84,20 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
         if(dynamicShape) { properties.dynamicShape(); }
 
         var mixinProperties = ((IMixinBlockBehaviorProperties) properties);
-        mixinProperties.SetFeatureFlagSet(requiredFeatures);
-        mixinProperties.SetOffsetFunction(offsetFunction);
+        mixinProperties.setFeatureFlagSet(requiredFeatures);
+        mixinProperties.setOffsetFunction(offsetFunction);
         mixinProperties.overrideDrops(drops);
 
         return properties;
     }
 
     @Override
-    public void SetOffsetFunction(BlockBehaviour.OffsetFunction func) {
+    public void setOffsetFunction(BlockBehaviour.OffsetFunction func) {
         offsetFunction = func;
     }
 
     @Override
-    public void SetFeatureFlagSet(FeatureFlagSet featureFlags) {
+    public void setFeatureFlagSet(FeatureFlagSet featureFlags) {
         requiredFeatures = featureFlags;
     }
 

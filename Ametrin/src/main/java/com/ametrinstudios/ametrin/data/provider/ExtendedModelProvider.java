@@ -43,6 +43,7 @@ public class ExtendedModelProvider extends ModelProvider {
     public void createCustomHead(BlockModelGenerators blockModels, Block head, Block wallHead) {
         createCustomHeadImpl(blockModels, head, wallHead, WALL_HEAD, HEAD_0, HEAD_1, HEAD_2, HEAD_3);
     }
+
     public void createCustomHeadCutout(BlockModelGenerators blockModels, Block head, Block wallHead) {
         createCustomHeadImpl(blockModels, head, wallHead, WALL_HEAD_CUTOUT, HEAD_0_CUTOUT, HEAD_1_CUTOUT, HEAD_2_CUTOUT, HEAD_3_CUTOUT);
     }

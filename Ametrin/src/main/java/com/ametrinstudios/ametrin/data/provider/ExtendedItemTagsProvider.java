@@ -26,28 +26,29 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     public ExtendedItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, String modId) {
         super(packOutput, lookupProvider, blockTagProvider, modId);
     }
+
     public ExtendedItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Item>> itemTagProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, String modId) {
         super(packOutput, lookupProvider, itemTagProvider, blockTagProvider, modId);
     }
 
     {
-        registerRule((item, name)-> {
-            if(item instanceof AxeItem){
+        registerRule((item, name) -> {
+            if (item instanceof AxeItem) {
                 tag(ItemTags.AXES).add(item);
-            }else if(item instanceof PickaxeItem){
+            } else if (item instanceof PickaxeItem) {
                 tag(ItemTags.PICKAXES).add(item);
-            } else if(item instanceof SwordItem){
+            } else if (item instanceof SwordItem) {
                 tag(ItemTags.SWORDS).add(item);
-            } else if(item instanceof ShovelItem){
+            } else if (item instanceof ShovelItem) {
                 tag(ItemTags.SHOVELS).add(item);
-            } else if(item instanceof HoeItem){
+            } else if (item instanceof HoeItem) {
                 tag(ItemTags.HOES).add(item);
             }
         });
 
-        registerRule((item, name)-> {
-            if(item instanceof BoatItem boat){
-                if(boat.getDescriptionId().contains("chest")) {
+        registerRule((item, name) -> {
+            if (item instanceof BoatItem boat) {
+                if (boat.getDescriptionId().contains("chest")) {
                     tag(ItemTags.CHEST_BOATS).add(item);
                 } else {
                     tag(ItemTags.BOATS).add(item);
@@ -55,20 +56,21 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
             }
         });
 
-        registerRule((item, name)-> {
-            if(item instanceof SignItem){
+        registerRule((item, name) -> {
+            if (item instanceof SignItem) {
                 tag(ItemTags.SIGNS).add(item);
             }
         });
 
         registerRule((item, name) -> {
-            if(item instanceof ArmorItem armorItem) {
+            if (item instanceof ArmorItem armorItem) {
                 switch (armorItem.getEquipmentSlot(armorItem.getDefaultInstance())) {
                     case HEAD -> tag(ItemTags.HEAD_ARMOR).add(armorItem);
                     case CHEST -> tag(ItemTags.CHEST_ARMOR).add(armorItem);
                     case LEGS -> tag(ItemTags.LEG_ARMOR).add(armorItem);
                     case FEET -> tag(ItemTags.FOOT_ARMOR).add(armorItem);
-                    case null, default -> { }
+                    case null, default -> {
+                    }
                 }
             }
         });
@@ -77,7 +79,7 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     @Override
     protected abstract void addTags(@NotNull HolderLookup.Provider provider);
 
-    protected void runRules(DeferredRegister.Items register){
+    protected void runRules(DeferredRegister.Items register) {
         runRules(register.getEntries().stream().map(Supplier::get).iterator());
     }
 
@@ -89,12 +91,12 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
         itemTagProviderRules.add(rule);
     }
 
-    protected void runRules(Iterator<? extends Item> items){
+    protected void runRules(Iterator<? extends Item> items) {
         items.forEachRemaining(item -> {
-            if(excludedItems.contains(item)) return;
+            if (excludedItems.contains(item)) return;
             final var name = getItemName(item);
 
-            for(var rule : itemTagProviderRules) {
+            for (var rule : itemTagProviderRules) {
                 rule.run(item, name);
             }
         });

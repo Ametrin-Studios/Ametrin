@@ -115,11 +115,11 @@ public final class PortalHelper {
         var entitydimensions = entity.getDimensions(entity.getPose());
         var rotationIncrease = portalAxis == frameDirection ? 0f : 90f;
         var newEntitySpeed = portalAxis == frameDirection ? entitySpeed : new Vec3(entitySpeed.z, entitySpeed.y, -entitySpeed.x);
-        var d2 = (double)entitydimensions.width() / 2.0 + (portalRect.axis1Size - (double)entitydimensions.width()) * relativeOffset.x();
-        var d3 = (portalRect.axis2Size - (double)entitydimensions.height()) * relativeOffset.y();
+        var d2 = (double) entitydimensions.width() / 2.0 + (portalRect.axis1Size - (double) entitydimensions.width()) * relativeOffset.x();
+        var d3 = (portalRect.axis2Size - (double) entitydimensions.height()) * relativeOffset.y();
         var d4 = 0.5 + relativeOffset.z();
         var isXAxis = frameDirection == Direction.Axis.X;
-        var rawPos = new Vec3((double)cornerPos.getX() + (isXAxis ? d2 : d4), (double)cornerPos.getY() + d3, (double)cornerPos.getZ() + (isXAxis ? d4 : d2));
+        var rawPos = new Vec3((double) cornerPos.getX() + (isXAxis ? d2 : d4), (double) cornerPos.getY() + d3, (double) cornerPos.getZ() + (isXAxis ? d4 : d2));
         var newEntityPos = PortalShape.findCollisionFreePosition(rawPos, level, entity, entitydimensions);
         return new TeleportTransition(level, newEntityPos, newEntitySpeed, entityYRot + rotationIncrease, entityXRot, postTransition);
     }

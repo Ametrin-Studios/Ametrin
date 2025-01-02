@@ -10,6 +10,9 @@ public class LockedSlot extends SlotItemHandler {
     public LockedSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
     }
+
     @Override
-    public boolean mayPlace(@NotNull ItemStack stack) { return false; }
+    public boolean mayPlace(@NotNull ItemStack stack) {
+        return false;
+    }
 }

@@ -11,7 +11,10 @@ import java.util.Optional;
 
 public interface IMixinBlockBehaviorProperties {
     BlockBehaviour.Properties copy();
-    void SetOffsetFunction(BlockBehaviour.OffsetFunction func);
-    void SetFeatureFlagSet(FeatureFlagSet featureFlags);
+
+    void setOffsetFunction(BlockBehaviour.OffsetFunction func);
+
+    void setFeatureFlagSet(FeatureFlagSet featureFlags);
+
     void overrideDrops(DependantName<Block, Optional<ResourceKey<LootTable>>> drops);
 }

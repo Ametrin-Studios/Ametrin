@@ -9,7 +9,7 @@ public abstract class ExtendedLanguageProvider extends LanguageProvider {
         super(output, mod_id, locale);
     }
 
-    protected void add(ItemLike itemLike, String name){
+    protected void add(ItemLike itemLike, String name) {
         add(itemLike.asItem(), name);
     }
 }

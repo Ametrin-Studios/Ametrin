@@ -16,20 +16,21 @@ public class CustomHeadBlockItem extends BlockItem {
     protected final Supplier<CustomHeadBlock> block;
     protected final Supplier<CustomWallHeadBlock> wallBlock;
 
-    public CustomHeadBlockItem(Supplier<CustomHeadBlock> block, Supplier<CustomWallHeadBlock> wallBlock, Properties pProperties) {
-        super(block.get(), pProperties);
+    public CustomHeadBlockItem(Supplier<CustomHeadBlock> block, Supplier<CustomWallHeadBlock> wallBlock, Properties properties) {
+        super(block.get(), properties);
         this.block = block;
         this.wallBlock = wallBlock;
     }
 
-    @Override @Nullable
+    @Override
+    @Nullable
     protected BlockState getPlacementState(@NotNull BlockPlaceContext context) {
         BlockState blockState;
-        if(context.getClickedFace() == Direction.DOWN){
+        if (context.getClickedFace() == Direction.DOWN) {
             return null;
-        }else if(context.getClickedFace() == Direction.UP){
+        } else if (context.getClickedFace() == Direction.UP) {
             blockState = getBlock().getStateForPlacement(context);
-        }else{
+        } else {
             blockState = getWallBlock().getStateForPlacement(context);
         }
 
@@ -37,9 +38,16 @@ public class CustomHeadBlockItem extends BlockItem {
     }
 
     @Override
-    public @NotNull Block getBlock() { return block.get(); }
-    public @NotNull Block getWallBlock() { return wallBlock.get(); }
+    public @NotNull Block getBlock() {
+        return block.get();
+    }
+
+    public @NotNull Block getWallBlock() {
+        return wallBlock.get();
+    }
 
     @Override
-    public boolean canFitInsideContainerItems() { return true; }
+    public boolean canFitInsideContainerItems() {
+        return true;
+    }
 }

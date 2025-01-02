@@ -27,7 +27,7 @@ public final class ArmorMaterialBuilder {
         _modelID = modelID;
     }
 
-    public ArmorMaterialBuilder durability(int value){
+    public ArmorMaterialBuilder durability(int value) {
         _durability = value;
         return this;
     }

@@ -31,6 +31,7 @@ public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider 
     protected ExtendedBlockLootSubProvider(HolderLookup.Provider registries) {
         this(Set.of(), registries);
     }
+
     protected ExtendedBlockLootSubProvider(Set<Item> explosionResistant, HolderLookup.Provider registries) {
         super(explosionResistant, FeatureFlags.REGISTRY.allFlags(), registries);
     }
@@ -38,15 +39,19 @@ public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider 
     protected void dropOther(DeferredBlock<? extends Block> block, ItemLike other) {
         dropOther(block.get(), other);
     }
+
     protected void dropLeaveLoot(Block block, SaplingBlock sapling) {
         add(block, createLeavesDrops(block, sapling, NORMAL_LEAVES_SAPLING_CHANCES));
     }
+
     protected void dropDoor(Block door) {
         add(door, createDoorTable(door));
     }
+
     protected void dropOre(Block block, ItemLike drop) {
         add(block, createOreDrop(block, drop.asItem()));
     }
+
     protected void dropDoublePlant(Block plant) {
         add(plant, createSinglePropConditionTable(plant, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
     }
@@ -75,13 +80,14 @@ public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider 
         dropSelf(Arrays.stream(blocks).map(DeferredHolder::get).iterator());
     }
 
-    protected  void dropSelf(Iterator<? extends Block> blocks) {
+    protected void dropSelf(Iterator<? extends Block> blocks) {
         blocks.forEachRemaining(this::dropSelf);
     }
 
     protected void dropSelf(final DeferredBlock<? extends Block> block) {
         dropSelf(block.get());
     }
+
     @Override
     protected abstract @NotNull Iterable<Block> getKnownBlocks();
 }

@@ -12,7 +12,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
 public final class AmListTagElementsCommand {
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("ametrin")
                 .then(Commands.literal("list")
                         .then(Commands.literal("biomes")
@@ -36,9 +36,9 @@ public final class AmListTagElementsCommand {
             output.append('\n');
         }
 
-        output.deleteCharAt(output.length()-1);
+        output.deleteCharAt(output.length() - 1);
 
-        context.sendSuccess(()-> Component.literal(output.toString()), false);
+        context.sendSuccess(() -> Component.literal(output.toString()), false);
         return 1;
     }
 }

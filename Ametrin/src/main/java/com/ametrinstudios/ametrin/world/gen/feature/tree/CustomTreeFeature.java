@@ -22,7 +22,9 @@ public abstract class CustomTreeFeature extends TreeFeature {
         super(codec);
     }
 
-    @Override @ApiStatus.Internal @ParametersAreNonnullByDefault
+    @Override
+    @ApiStatus.Internal
+    @ParametersAreNonnullByDefault
     protected boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> changedLogs, BiConsumer<BlockPos, BlockState> changedLeaves, FoliagePlacer.FoliageSetter foliageSetter, TreeConfiguration configuration) {
         return place(new TreePlaceContext(pos, level, random, changedLogs, changedLeaves, foliageSetter));
     }
