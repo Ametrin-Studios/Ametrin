@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.common.CommonHooks;
 import org.jetbrains.annotations.NotNull;
 
@@ -116,7 +115,7 @@ public class AgeableDoublePlantBlock extends SimpleDoublePlantBlock implements B
     }
 
     @Override @ParametersAreNonnullByDefault
-    public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) { return new ItemStack(item.get()); }
+    public @NotNull ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) { return new ItemStack(item.get()); }
 
     @Override @ParametersAreNonnullByDefault
     public boolean isRandomlyTicking(BlockState blockState) { return isSparse(blockState); }

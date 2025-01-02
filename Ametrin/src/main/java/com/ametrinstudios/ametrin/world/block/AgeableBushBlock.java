@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.CommonHooks;
@@ -42,10 +41,12 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
         BonusDrop = bonusDrop;
         registerDefaultState(stateDefinition.any().setValue(AGE, 0));
     }
+
     @Override @ParametersAreNonnullByDefault
-    public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+    public @NotNull ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
         return new ItemStack(asItem());
     }
+
     @Override @ParametersAreNonnullByDefault
     public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos pos, CollisionContext context) {
         if (blockState.getValue(AGE) == 0) {

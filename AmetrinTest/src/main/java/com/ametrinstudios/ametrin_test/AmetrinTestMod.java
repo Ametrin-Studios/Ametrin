@@ -1,7 +1,10 @@
 package com.ametrinstudios.ametrin_test;
 
-import com.ametrinstudios.ametrin.data.DataProviderHelper;
-import com.ametrinstudios.ametrin_test.data.provider.*;
+import com.ametrinstudios.ametrin.data.provider.CustomLootTableProvider;
+import com.ametrinstudios.ametrin_test.data.provider.TestBlockTagsProvider;
+import com.ametrinstudios.ametrin_test.data.provider.TestItemTagsProvider;
+import com.ametrinstudios.ametrin_test.data.provider.TestLanguageProvider;
+import com.ametrinstudios.ametrin_test.data.provider.TestRecipeProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootProvider;
 import com.ametrinstudios.ametrin_test.data.provider.loot.TestLootTableProvider;
 import com.ametrinstudios.ametrin_test.registry.TestBlocks;
@@ -37,18 +40,17 @@ public final class AmetrinTestMod {
 //        VanillaCompat.addFlattenable(TestBlocks.TEST_BLOCK.get(), Blocks.DIAMOND_BLOCK);
     }
 
-    public static void gatherData(GatherDataEvent event){
-        var helper = new DataProviderHelper(event);
+    public static void gatherData(GatherDataEvent.Server event){
 
-        helper.add(TestBlockStateProvider::new);
-        helper.add(TestItemModelProvider::new);
-        helper.add(TestRecipeProvider.Runner::new);
-        helper.add(TestLanguageProvider::new);
-        helper.addLootTables(builder -> builder
+//        event.createProvider(TestBlockStateProvider::new);
+//        event.createProvider(TestItemModelProvider::new);
+        event.createProvider(TestRecipeProvider.Runner::new);
+        event.createProvider(TestLanguageProvider::new);
+        event.createProvider(CustomLootTableProvider.builder()
                 .addBlockProvider(TestBlockLootProvider::new)
-                .addChestProvider(TestLootTableProvider::new));
+                .addChestProvider(TestLootTableProvider::new)::build);
 
-        helper.addBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
+        event.createBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
     }
 
     public static ResourceLocation locate(String key){

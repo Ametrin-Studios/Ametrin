@@ -1,13 +1,14 @@
 package com.ametrinstudios.ametrin.world.item.helper;
 
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.EquipmentAsset;
 
 import java.util.EnumMap;
 import java.util.function.Consumer;
@@ -20,12 +21,9 @@ public final class ArmorMaterialBuilder {
     private TagKey<Item> _repairIngredient;
     private float _toughness = 0;
     private float _knockbackResistance = 0;
-    private final ResourceLocation _modelID;
+    private final ResourceKey<EquipmentAsset> _modelID;
 
-    public ArmorMaterialBuilder(String modelId) {
-        this(ResourceLocation.withDefaultNamespace(modelId));
-    }
-    public ArmorMaterialBuilder(ResourceLocation modelID) {
+    public ArmorMaterialBuilder(ResourceKey<EquipmentAsset> modelID) {
         _modelID = modelID;
     }
 

@@ -9,9 +9,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,8 +23,8 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
     public ArrayList<Block> excludedBlocks = new ArrayList<>();
     public ArrayList<BlockTagProviderRule> blockTagProviderRules = new ArrayList<>();
 
-    public ExtendedBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String modID, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, registries, modID, existingFileHelper);
+    public ExtendedBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String modID) {
+        super(output, registries, modID);
     }
 
     protected void runRules(DeferredRegister.Blocks blockRegistry){

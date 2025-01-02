@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.moddev' version "$moddev_version"
+    id 'idea'
 }
 
 version = mod_version
@@ -40,8 +41,8 @@ neoForge {
         }
 
         data {
-            data()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath(), '--existing-mod', 'ametrin'
+            clientData()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
 
         configureEach {
@@ -90,7 +91,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             neo_version            : neo_version,
             neo_version_range      : neo_version_range,
             loader_version_range   : loader_version_range,
-            
+
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,

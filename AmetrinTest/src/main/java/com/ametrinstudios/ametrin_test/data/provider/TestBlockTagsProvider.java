@@ -7,15 +7,13 @@ import com.ametrinstudios.ametrin_test.registry.TestTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public final class TestBlockTagsProvider extends ExtendedBlockTagsProvider {
-    public TestBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, registries, AmetrinTestMod.MOD_ID, existingFileHelper);
+    public TestBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, AmetrinTestMod.MOD_ID);
     }
 
     @Override

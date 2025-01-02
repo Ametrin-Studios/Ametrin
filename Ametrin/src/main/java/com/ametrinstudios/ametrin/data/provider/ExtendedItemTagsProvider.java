@@ -8,11 +8,9 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,11 +23,11 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     private final List<Item> excludedItems = new ArrayList<>();
     private final List<ItemTagProviderRule> itemTagProviderRules = new ArrayList<>();
 
-    public ExtendedItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
-        super(packOutput, lookupProvider, blockTagProvider, modId, existingFileHelper);
+    public ExtendedItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, String modId) {
+        super(packOutput, lookupProvider, blockTagProvider, modId);
     }
-    public ExtendedItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Item>> itemTagProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
-        super(packOutput, lookupProvider, itemTagProvider, blockTagProvider, modId, existingFileHelper);
+    public ExtendedItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Item>> itemTagProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, String modId) {
+        super(packOutput, lookupProvider, itemTagProvider, blockTagProvider, modId);
     }
 
     {
