@@ -1,52 +1,68 @@
 {
   "variants": {
     "rotation=0": {
-      "model": "ametrin_test:block/test_skull/0"
+      "model": "ametrin_test:block/test_skull/0",
+      "y": 0
     },
     "rotation=1": {
-      "model": "ametrin_test:block/test_skull/1"
+      "model": "ametrin_test:block/test_skull/1",
+      "y": 0
     },
     "rotation=10": {
-      "model": "ametrin_test:block/test_skull/10"
+      "model": "ametrin_test:block/test_skull/2",
+      "y": 180
     },
     "rotation=11": {
-      "model": "ametrin_test:block/test_skull/11"
+      "model": "ametrin_test:block/test_skull/3",
+      "y": 180
     },
     "rotation=12": {
-      "model": "ametrin_test:block/test_skull/12"
+      "model": "ametrin_test:block/test_skull/0",
+      "y": 270
     },
     "rotation=13": {
-      "model": "ametrin_test:block/test_skull/13"
+      "model": "ametrin_test:block/test_skull/1",
+      "y": 270
     },
     "rotation=14": {
-      "model": "ametrin_test:block/test_skull/14"
+      "model": "ametrin_test:block/test_skull/2",
+      "y": 270
     },
     "rotation=15": {
-      "model": "ametrin_test:block/test_skull/15"
+      "model": "ametrin_test:block/test_skull/3",
+      "y": 270
     },
     "rotation=2": {
-      "model": "ametrin_test:block/test_skull/2"
+      "model": "ametrin_test:block/test_skull/2",
+      "y": 0
     },
     "rotation=3": {
-      "model": "ametrin_test:block/test_skull/3"
+      "model": "ametrin_test:block/test_skull/3",
+      "y": 0
     },
     "rotation=4": {
-      "model": "ametrin_test:block/test_skull/4"
+      "model": "ametrin_test:block/test_skull/0",
+      "y": 90
     },
     "rotation=5": {
-      "model": "ametrin_test:block/test_skull/5"
+      "model": "ametrin_test:block/test_skull/1",
+      "y": 90
     },
     "rotation=6": {
-      "model": "ametrin_test:block/test_skull/6"
+      "model": "ametrin_test:block/test_skull/2",
+      "y": 90
     },
     "rotation=7": {
-      "model": "ametrin_test:block/test_skull/7"
+      "model": "ametrin_test:block/test_skull/3",
+      "y": 90
     },
     "rotation=8": {
-      "model": "ametrin_test:block/test_skull/8"
+      "model": "ametrin_test:block/test_skull/0",
+      "y": 180
     },
     "rotation=9": {
-      "model": "ametrin_test:block/test_skull/9"
+      "model": "ametrin_test:block/test_skull/1",
+      "y": 180
     }
   }
 }

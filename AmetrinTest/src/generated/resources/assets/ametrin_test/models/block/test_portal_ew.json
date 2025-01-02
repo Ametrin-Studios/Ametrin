@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/nether_portal_ew",
-  "render_type": "minecraft:translucent",
+  "parent": "minecraft:nether_portal_ew",
   "textures": {
     "particle": "ametrin_test:block/test_portal",
     "portal": "ametrin_test:block/test_portal"

@@ -1,7 +1,0 @@
-{
-  "parent": "ametrin:block/head/cutout/11",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "texture": "ametrin_test:block/test_skull"
-  }
-}
