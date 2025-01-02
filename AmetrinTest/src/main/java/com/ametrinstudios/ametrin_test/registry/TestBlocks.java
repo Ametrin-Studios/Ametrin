@@ -23,7 +23,7 @@ public final class TestBlocks {
     private static final BlockBehaviour.Properties DEFAULT_PROPERTIES = copyProperties(Blocks.STONE);
 
     public static final DeferredBlock<Block> TEST_BLOCK = REGISTER.registerSimpleBlock("test_block", copyProperties(DEFAULT_PROPERTIES).friction(0.9f));
-    public static final DeferredBlock<Block> TEST_LOG = registerWithItem("test_log", RotatedPillarBlock::new, copyProperties(Blocks.OAK_LOG));
+    public static final DeferredBlock<RotatedPillarBlock> TEST_LOG = registerWithItem("test_log", RotatedPillarBlock::new, copyProperties(Blocks.OAK_LOG));
     public static final DeferredBlock<CustomHeadBlock> TEST_SKULL = REGISTER.registerBlock("test_skull", CustomHeadBlock::new, copyProperties(Blocks.SKELETON_SKULL));
     public static final DeferredBlock<CustomWallHeadBlock> TEST_SKULL_WALL = REGISTER.registerBlock("test_skull_wall", properties-> new CustomWallHeadBlock(TestItems.TEST_SKULL, properties), copyProperties(Blocks.SKELETON_WALL_SKULL));
 
