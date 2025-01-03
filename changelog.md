@@ -1,3 +1,9 @@
+## 0.2.8 (BETA)
+* 1.21.4 port
+* added `ExtendedModelProvider`
+* no auto gen for block / item models for now
+* still missing some features from `ExtendedItemModelProvider` and `ExtendedBlockStateProvider`
+
 ## 0.2.4 (BETA)
 * rewrote Portal API
 * enabled update checker

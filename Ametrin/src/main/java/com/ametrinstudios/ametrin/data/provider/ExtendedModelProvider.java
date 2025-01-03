@@ -4,6 +4,7 @@ import com.ametrinstudios.ametrin.Ametrin;
 import com.ametrinstudios.ametrin.world.block.CustomHeadBlock;
 import com.ametrinstudios.ametrin.world.block.CustomWallHeadBlock;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
@@ -18,11 +19,11 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class ExtendedModelProvider extends ModelProvider {
-    public static final TextureSlot TEXTURE_SLOT_PORTAL = TextureSlot.create("portal", TextureSlot.TEXTURE);
+public abstract class ExtendedModelProvider extends ModelProvider {
     public static final ModelTemplate WALL_HEAD = new ModelTemplate(Optional.of(Ametrin.locate("block/head_wall")), Optional.empty(), TextureSlot.TEXTURE);
     public static final ModelTemplate HEAD_0 = new ModelTemplate(Optional.of(Ametrin.locate("block/head/0")), Optional.empty(), TextureSlot.TEXTURE);
     public static final ModelTemplate HEAD_1 = new ModelTemplate(Optional.of(Ametrin.locate("block/head/1")), Optional.empty(), TextureSlot.TEXTURE);
@@ -33,6 +34,8 @@ public class ExtendedModelProvider extends ModelProvider {
     public static final ModelTemplate HEAD_1_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/1")), Optional.empty(), TextureSlot.TEXTURE).extend().renderType("cutout").build();
     public static final ModelTemplate HEAD_2_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/2")), Optional.empty(), TextureSlot.TEXTURE).extend().renderType("cutout").build();
     public static final ModelTemplate HEAD_3_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/3")), Optional.empty(), TextureSlot.TEXTURE).extend().renderType("cutout").build();
+
+    public static final TextureSlot TEXTURE_SLOT_PORTAL = TextureSlot.create("portal", TextureSlot.TEXTURE);
     public static final ModelTemplate PORTAL_NS = new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("nether_portal_ns")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
     public static final ModelTemplate PORTAL_EW = new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("nether_portal_ew")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
 
@@ -40,11 +43,14 @@ public class ExtendedModelProvider extends ModelProvider {
         super(output, modId);
     }
 
-    public void createCustomHead(BlockModelGenerators blockModels, Block head, Block wallHead) {
+    @Override
+    protected abstract void registerModels(@NotNull BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels);
+
+    public final void createCustomHead(BlockModelGenerators blockModels, Block head, Block wallHead) {
         createCustomHeadImpl(blockModels, head, wallHead, WALL_HEAD, HEAD_0, HEAD_1, HEAD_2, HEAD_3);
     }
 
-    public void createCustomHeadCutout(BlockModelGenerators blockModels, Block head, Block wallHead) {
+    public final void createCustomHeadCutout(BlockModelGenerators blockModels, Block head, Block wallHead) {
         createCustomHeadImpl(blockModels, head, wallHead, WALL_HEAD_CUTOUT, HEAD_0_CUTOUT, HEAD_1_CUTOUT, HEAD_2_CUTOUT, HEAD_3_CUTOUT);
     }
 
@@ -87,7 +93,7 @@ public class ExtendedModelProvider extends ModelProvider {
         blockModels.registerSimpleItemModel(head.asItem(), model0);
     }
 
-    public void createPlanePortalBlock(BlockModelGenerators blockModels, Block portal) {
+    public final void createPlanePortalBlock(BlockModelGenerators blockModels, Block portal) {
         var texture = ModelLocationUtils.getModelLocation(portal);
         var mapping = new TextureMapping().put(TextureSlot.PARTICLE, texture).put(TEXTURE_SLOT_PORTAL, texture);
         var ns = PORTAL_NS.create(texture.withSuffix("_ns"), mapping, blockModels.modelOutput);

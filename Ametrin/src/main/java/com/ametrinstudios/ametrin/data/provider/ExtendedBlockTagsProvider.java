@@ -36,7 +36,7 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
             if (excludedBlocks.contains(block)) {
                 return;
             }
-            final String name = getBlockName(block);
+            final var name = getBlockName(block);
 
             for (BlockTagProviderRule provider : blockTagProviderRules) {
                 provider.generate(block, name);

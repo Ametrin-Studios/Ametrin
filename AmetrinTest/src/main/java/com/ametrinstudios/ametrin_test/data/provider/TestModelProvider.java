@@ -16,7 +16,7 @@ public final class TestModelProvider extends ExtendedModelProvider {
     }
 
     @Override
-    protected void registerModels(BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels) {
+    protected void registerModels(@NotNull BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels) {
         blockModels.createTrivialCube(TestBlocks.TEST_BLOCK.get());
         blockModels.woodProvider(TestBlocks.TEST_LOG.get()).log(TestBlocks.TEST_LOG.get());
 
