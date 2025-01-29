@@ -30,7 +30,6 @@ public final class AmetrinTestMod {
         modBus.addListener(AmetrinTestMod::setup);
         modBus.addListener(AmetrinTestMod::gatherServerData);
         modBus.addListener(AmetrinTestMod::gatherClientData);
-
     }
 
     private static void setup(final FMLCommonSetupEvent event) {
@@ -38,12 +37,14 @@ public final class AmetrinTestMod {
 //        VanillaCompat.addFlattenable(TestBlocks.TEST_BLOCK.get(), Blocks.DIAMOND_BLOCK);
     }
 
+    // Server data uses Client event because I don't need to run them separately
     public static void gatherServerData(GatherDataEvent.Client event) {
         event.createProvider(CustomLootTableProvider.builder()
                 .addBlockProvider(TestBlockLootProvider::new)
                 .addChestProvider(TestLootTableProvider::new)::build);
 
         event.createProvider(TestRecipeProvider.Runner::new);
+        event.createProvider(TestBiomeTagsProvider::new);
         event.createBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
     }
 

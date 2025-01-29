@@ -3,7 +3,6 @@ package com.ametrinstudios.ametrin.world.block.helper;
 import com.ametrinstudios.ametrin.world.block.AgeableBushBlock;
 import com.ametrinstudios.ametrin.world.block.PortalBlock;
 import com.ametrinstudios.ametrin.world.dimension.portal.PortalData;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.grower.TreeGrower;
@@ -12,7 +11,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
@@ -92,22 +90,6 @@ public final class BlockRegisterHelper {
 
     public static ButtonBlock button(BlockSetType type, int ticksStayPressed, boolean arrowsCanPress) {
         return new ButtonBlock(type, ticksStayPressed, BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY));
-    }
-
-    public static FenceGateBlock fenceGate(WoodType type, BlockBehaviour.Properties properties) {
-        return new FenceGateBlock(type, properties);
-    }
-
-    public static FenceGateBlock fenceGate(BlockBehaviour.Properties properties, SoundEvent openSound, SoundEvent closeSound) {
-        return new FenceGateBlock(properties, openSound, closeSound);
-    }
-
-    public static DoorBlock door(BlockBehaviour.Properties properties, BlockSetType type) {
-        return new DoorBlock(type, properties);
-    }
-
-    public static TrapDoorBlock trapDoor(BlockBehaviour.Properties properties, BlockSetType type) {
-        return new TrapDoorBlock(type, properties);
     }
 
     public static PressurePlateBlock woodenPressurePlate(MapColor mapColor, BlockSetType type) {

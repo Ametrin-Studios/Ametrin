@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,8 @@ public final class TestItemTagsProvider extends ExtendedItemTagsProvider {
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         runRules(TestItems.REGISTER);
+
+        tag(ItemTags.BEACON_PAYMENT_ITEMS).remove(Items.IRON_INGOT);
 
         copy(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN);
     }
