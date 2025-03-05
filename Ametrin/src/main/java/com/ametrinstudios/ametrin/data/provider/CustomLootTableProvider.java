@@ -30,26 +30,26 @@ public final class CustomLootTableProvider extends LootTableProvider {
         }
 
         public Builder addBlockProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
-            return addProvider(subProviderSupplier, LootContextParamSets.BLOCK);
+            return addProvider(LootContextParamSets.BLOCK, subProviderSupplier);
         }
 
         public Builder addChestProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
-            return addProvider(subProviderSupplier, LootContextParamSets.CHEST);
+            return addProvider(LootContextParamSets.CHEST, subProviderSupplier);
         }
 
         public Builder addEntityProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
-            return addProvider(subProviderSupplier, LootContextParamSets.ENTITY);
+            return addProvider(LootContextParamSets.ENTITY, subProviderSupplier);
         }
 
         public Builder addArcheologyProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
-            return addProvider(subProviderSupplier, LootContextParamSets.ARCHAEOLOGY);
+            return addProvider(LootContextParamSets.ARCHAEOLOGY, subProviderSupplier);
         }
 
         public Builder addFishingProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
-            return addProvider(subProviderSupplier, LootContextParamSets.FISHING);
+            return addProvider(LootContextParamSets.FISHING, subProviderSupplier);
         }
 
-        public Builder addProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier, ContextKeySet paramSet) {
+        public Builder addProvider(ContextKeySet paramSet, Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
             return addProvider(new SubProviderEntry(subProviderSupplier, paramSet));
         }
 

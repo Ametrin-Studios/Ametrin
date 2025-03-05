@@ -10,14 +10,12 @@ import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.blockstates.Variant;
 import net.minecraft.client.data.models.blockstates.VariantProperties;
-import net.minecraft.client.data.models.model.ModelLocationUtils;
-import net.minecraft.client.data.models.model.ModelTemplate;
-import net.minecraft.client.data.models.model.TextureMapping;
-import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,8 +34,8 @@ public abstract class ExtendedModelProvider extends ModelProvider {
     public static final ModelTemplate HEAD_3_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/3")), Optional.empty(), TextureSlot.TEXTURE).extend().renderType("cutout").build();
 
     public static final TextureSlot TEXTURE_SLOT_PORTAL = TextureSlot.create("portal", TextureSlot.TEXTURE);
-    public static final ModelTemplate PORTAL_NS = new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("nether_portal_ns")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
-    public static final ModelTemplate PORTAL_EW = new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("nether_portal_ew")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
+    public static final ModelTemplate PORTAL_NS = new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("block/nether_portal_ns")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
+    public static final ModelTemplate PORTAL_EW = new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("block/nether_portal_ew")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
 
     public ExtendedModelProvider(PackOutput output, String modId) {
         super(output, modId);
@@ -104,6 +102,21 @@ public abstract class ExtendedModelProvider extends ModelProvider {
                                 .select(Direction.Axis.X, Variant.variant().with(VariantProperties.MODEL, ns))
                                 .select(Direction.Axis.Z, Variant.variant().with(VariantProperties.MODEL, ew))
                         )
+        );
+    }
+
+    public void createAgeableBushBlockWithEarlySweetBerryStages(BlockModelGenerators blockModels, Block block) {
+        var model = ModelTemplates.CROSS.extend().renderType("cutout").build();
+
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+                .with(PropertyDispatch.property(BlockStateProperties.AGE_3)
+                        .generate(value -> Variant.variant()
+                                .with(VariantProperties.MODEL, value > 2
+                                        ? blockModels.createSuffixedVariant(block, "/stage" + value, model, TextureMapping::cross)
+                                        : model.createWithSuffix(block, "/stage" + value, TextureMapping.cross(TextureMapping.getBlockTexture(Blocks.SWEET_BERRY_BUSH, "_stage"+value)), blockModels.modelOutput)
+                                )
+                        )
+                )
         );
     }
 }

@@ -67,10 +67,6 @@ public record PortalData(ResourceKey<Level> dimensionA, ResourceKey<Level> dimen
             return this;
         }
 
-        public Builder portal(DeferredBlock<? extends Block> portal) {
-            return portal(() -> portal.get().defaultBlockState());
-        }
-
         public Builder portal(Supplier<BlockState> portal) {
             this.portalBlock = portal;
             return this;

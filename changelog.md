@@ -1,3 +1,8 @@
+## 0.2.9 (RELEASE)
+* removed some `BlockRegisterHelper` methods
+  * added replacements to be compatible with new registry behavior
+* various improvements & fixes
+
 ## 0.2.8 (BETA)
 * 1.21.4 port
 * added `ExtendedModelProvider`

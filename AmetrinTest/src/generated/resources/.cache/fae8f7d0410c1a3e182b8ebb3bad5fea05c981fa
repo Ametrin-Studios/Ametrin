@@ -1,4 +1,4 @@
-// 1.21.4	2025-01-29T13:42:34.3728132	Model Definitions - ametrin_test
+// 1.21.4	2025-03-05T10:27:27.7551836	Model Definitions - ametrin_test
 a5786bde68489a8c64c39dde67d1d86e86545b93 assets/ametrin_test/blockstates/test_block.json
 a2bf3ff632372b0438f57f1d010afd917f0e8d25 assets/ametrin_test/blockstates/test_log.json
 b3cdd30140df39adf374ad8f138122541e23e63b assets/ametrin_test/blockstates/test_portal.json
@@ -10,8 +10,8 @@ d01eafe6238a94453a95be1981f23e660633540d assets/ametrin_test/items/test_log.json
 11b36d4a5067d65b6b2bebf28593b2f471129924 assets/ametrin_test/items/test_skull.json
 0b6bfc171aac4408a66612de0fda1ae339298760 assets/ametrin_test/models/block/test_block.json
 0b4be9b76a53dae8bb5ddf42e3d6cc8132ff68fe assets/ametrin_test/models/block/test_log.json
-9df0f99fa096a0f55f3c851bf330ac248bb7959b assets/ametrin_test/models/block/test_portal_ew.json
-95175b6e4099e38ac857812ba16a987ddfd48f34 assets/ametrin_test/models/block/test_portal_ns.json
+7a712406c79ce024c75cd25d13bf0483ba31515e assets/ametrin_test/models/block/test_portal_ew.json
+a121c58fd0303ae82e52aa1d56e41614906a7b1f assets/ametrin_test/models/block/test_portal_ns.json
 f214f661018e4beb02f10bbe95788bed33b74911 assets/ametrin_test/models/block/test_skull/0.json
 bb6aafc598d7539a939c51f55bc2ba89debdfb38 assets/ametrin_test/models/block/test_skull/1.json
 fd99fcf0596ba40f55a99a68ad6cec89335a8f31 assets/ametrin_test/models/block/test_skull/2.json

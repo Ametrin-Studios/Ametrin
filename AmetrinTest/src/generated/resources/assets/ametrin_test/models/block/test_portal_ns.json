@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:nether_portal_ns",
+  "parent": "minecraft:block/nether_portal_ns",
   "textures": {
     "particle": "ametrin_test:block/test_portal",
     "portal": "ametrin_test:block/test_portal"

@@ -7,7 +7,7 @@ public final class TestPortals {
     public static final PortalData TEST_PORTAL =
             PortalData.builder(Level.NETHER, Level.END)
             .poi(TestPoiTypes.TEST_PORTAL)
-            .portal(TestBlocks.TEST_PORTAL)
+            .portal(()-> TestBlocks.TEST_PORTAL.get().defaultBlockState())
             .defaultFrame(TestBlocks.TEST_BLOCK)
             .validFrames(TestTags.Blocks.TEST_PORTAL_FRAMES)
             .build();
