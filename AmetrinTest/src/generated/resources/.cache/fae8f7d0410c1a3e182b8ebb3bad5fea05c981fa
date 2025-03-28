@@ -1,8 +1,8 @@
-// 1.21.4	2025-03-05T10:27:27.7551836	Model Definitions - ametrin_test
+// 1.21.5	2025-03-28T12:59:23.6137021	Model Definitions - ametrin_test
 a5786bde68489a8c64c39dde67d1d86e86545b93 assets/ametrin_test/blockstates/test_block.json
 a2bf3ff632372b0438f57f1d010afd917f0e8d25 assets/ametrin_test/blockstates/test_log.json
 b3cdd30140df39adf374ad8f138122541e23e63b assets/ametrin_test/blockstates/test_portal.json
-c196622ae09b6f345e8221592abe15fa919d3464 assets/ametrin_test/blockstates/test_skull.json
+796da39d8ba74d47b0c657405ac5416751bbef9d assets/ametrin_test/blockstates/test_skull.json
 540925ff318ca344f241513ac51ddaab970a51db assets/ametrin_test/blockstates/test_skull_wall.json
 a57e29c6f6f3d2c904171e3ef8c696bdac778330 assets/ametrin_test/items/test_block.json
 74c5283443c54b1b8ec5defcf1b05d4a346ccda3 assets/ametrin_test/items/test_catalyst.json

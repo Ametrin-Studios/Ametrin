@@ -3,14 +3,14 @@ package com.ametrinstudios.ametrin.data.provider;
 import com.ametrinstudios.ametrin.Ametrin;
 import com.ametrinstudios.ametrin.world.block.CustomHeadBlock;
 import com.ametrinstudios.ametrin.world.block.CustomWallHeadBlock;
+import com.mojang.math.Quadrant;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
-import net.minecraft.client.data.models.blockstates.Variant;
-import net.minecraft.client.data.models.blockstates.VariantProperties;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -56,15 +56,15 @@ public abstract class ExtendedModelProvider extends ModelProvider {
         var mapping = TextureMapping.defaultTexture(head);
 
         var wallModel = wall.create(wallHead, mapping, blockModels.modelOutput);
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(wallHead)
-                .with(PropertyDispatch.property(CustomWallHeadBlock.FACING)
-                        .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, wallModel))
-                        .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, wallModel).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-                        .select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, wallModel).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-                        .select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, wallModel).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(wallHead)
+                .with(PropertyDispatch.initial(CustomWallHeadBlock.FACING)
+                        .select(Direction.NORTH, BlockModelGenerators.plainVariant(wallModel))
+                        .select(Direction.EAST, BlockModelGenerators.plainVariant(wallModel).with(VariantMutator.Y_ROT.withValue(Quadrant.R90)))
+                        .select(Direction.SOUTH, BlockModelGenerators.plainVariant(wallModel).with(VariantMutator.Y_ROT.withValue(Quadrant.R180)))
+                        .select(Direction.WEST, BlockModelGenerators.plainVariant(wallModel).with(VariantMutator.Y_ROT.withValue(Quadrant.R270)))
                 ));
 
-        var groundState = PropertyDispatch.property(CustomHeadBlock.ROTATION);
+        var groundState = PropertyDispatch.initial(CustomHeadBlock.ROTATION);
 
         var model0 = m0.createWithSuffix(head, "/0", mapping, blockModels.modelOutput);
         var model1 = m1.createWithSuffix(head, "/1", mapping, blockModels.modelOutput);
@@ -73,20 +73,20 @@ public abstract class ExtendedModelProvider extends ModelProvider {
 
         for (var i = 0; i < 4; i++) {
             var rotation = switch (i) {
-                case 1 -> VariantProperties.Rotation.R90;
-                case 2 -> VariantProperties.Rotation.R180;
-                case 3 -> VariantProperties.Rotation.R270;
-                default -> VariantProperties.Rotation.R0;
+                case 1 -> Quadrant.R90;
+                case 2 -> Quadrant.R180;
+                case 3 -> Quadrant.R270;
+                default -> Quadrant.R0;
             };
 
             groundState
-                    .select(i * 4, Variant.variant().with(VariantProperties.MODEL, model0).with(VariantProperties.Y_ROT, rotation))
-                    .select(i * 4 + 1, Variant.variant().with(VariantProperties.MODEL, model1).with(VariantProperties.Y_ROT, rotation))
-                    .select(i * 4 + 2, Variant.variant().with(VariantProperties.MODEL, model2).with(VariantProperties.Y_ROT, rotation))
-                    .select(i * 4 + 3, Variant.variant().with(VariantProperties.MODEL, model3).with(VariantProperties.Y_ROT, rotation));
+                    .select(i * 4, BlockModelGenerators.plainVariant(model0).with(VariantMutator.Y_ROT.withValue(rotation)))
+                    .select(i * 4 + 1, BlockModelGenerators.plainVariant(model1).with(VariantMutator.Y_ROT.withValue(rotation)))
+                    .select(i * 4 + 2, BlockModelGenerators.plainVariant(model2).with(VariantMutator.Y_ROT.withValue(rotation)))
+                    .select(i * 4 + 3, BlockModelGenerators.plainVariant(model3).with(VariantMutator.Y_ROT.withValue(rotation)));
         }
 
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(head).with(groundState));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(head).with(groundState));
 
         blockModels.registerSimpleItemModel(head.asItem(), model0);
     }
@@ -97,10 +97,10 @@ public abstract class ExtendedModelProvider extends ModelProvider {
         var ns = PORTAL_NS.create(texture.withSuffix("_ns"), mapping, blockModels.modelOutput);
         var ew = PORTAL_EW.create(texture.withSuffix("_ew"), mapping, blockModels.modelOutput);
         blockModels.blockStateOutput.accept(
-                MultiVariantGenerator.multiVariant(portal)
-                        .with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_AXIS)
-                                .select(Direction.Axis.X, Variant.variant().with(VariantProperties.MODEL, ns))
-                                .select(Direction.Axis.Z, Variant.variant().with(VariantProperties.MODEL, ew))
+                MultiVariantGenerator.dispatch(portal)
+                        .with(PropertyDispatch.initial(BlockStateProperties.HORIZONTAL_AXIS)
+                                .select(Direction.Axis.X, BlockModelGenerators.plainVariant(ns))
+                                .select(Direction.Axis.Z, BlockModelGenerators.plainVariant(ew))
                         )
         );
     }
@@ -108,10 +108,9 @@ public abstract class ExtendedModelProvider extends ModelProvider {
     public void createAgeableBushBlockWithEarlySweetBerryStages(BlockModelGenerators blockModels, Block block) {
         var model = ModelTemplates.CROSS.extend().renderType("cutout").build();
 
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-                .with(PropertyDispatch.property(BlockStateProperties.AGE_3)
-                        .generate(value -> Variant.variant()
-                                .with(VariantProperties.MODEL, value > 2
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+                .with(PropertyDispatch.initial(BlockStateProperties.AGE_3)
+                        .generate(value -> BlockModelGenerators.plainVariant(value > 2
                                         ? blockModels.createSuffixedVariant(block, "/stage" + value, model, TextureMapping::cross)
                                         : model.createWithSuffix(block, "/stage" + value, TextureMapping.cross(TextureMapping.getBlockTexture(Blocks.SWEET_BERRY_BUSH, "_stage"+value)), blockModels.modelOutput)
                                 )

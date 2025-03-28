@@ -5,7 +5,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BoatItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -32,19 +34,6 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     }
 
     {
-        registerRule((item, name) -> {
-            if (item instanceof AxeItem) {
-                tag(ItemTags.AXES).add(item);
-            } else if (item instanceof PickaxeItem) {
-                tag(ItemTags.PICKAXES).add(item);
-            } else if (item instanceof SwordItem) {
-                tag(ItemTags.SWORDS).add(item);
-            } else if (item instanceof ShovelItem) {
-                tag(ItemTags.SHOVELS).add(item);
-            } else if (item instanceof HoeItem) {
-                tag(ItemTags.HOES).add(item);
-            }
-        });
 
         registerRule((item, name) -> {
             if (item instanceof BoatItem boat) {
@@ -59,19 +48,6 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
         registerRule((item, name) -> {
             if (item instanceof SignItem) {
                 tag(ItemTags.SIGNS).add(item);
-            }
-        });
-
-        registerRule((item, name) -> {
-            if (item instanceof ArmorItem armorItem) {
-                switch (armorItem.getEquipmentSlot(armorItem.getDefaultInstance())) {
-                    case HEAD -> tag(ItemTags.HEAD_ARMOR).add(armorItem);
-                    case CHEST -> tag(ItemTags.CHEST_ARMOR).add(armorItem);
-                    case LEGS -> tag(ItemTags.LEG_ARMOR).add(armorItem);
-                    case FEET -> tag(ItemTags.FOOT_ARMOR).add(armorItem);
-                    case null, default -> {
-                    }
-                }
             }
         });
     }

@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
@@ -52,7 +53,7 @@ public class PortalBlock extends Block implements Portal {
     }
 
     @Override @ParametersAreNonnullByDefault
-    protected void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entity) {
+    protected void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier) {
         if (entity.canUsePortal(true)) {
             entity.setAsInsidePortal(this, pos);
         }

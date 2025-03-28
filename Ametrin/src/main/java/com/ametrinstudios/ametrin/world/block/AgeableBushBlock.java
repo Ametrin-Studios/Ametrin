@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
-    public static final MapCodec<AgeableBushBlock> CODEC = simpleCodec((properties)-> new AgeableBushBlock(0, 0, properties));
+    public static final MapCodec<BushBlock> CODEC = simpleCodec((properties)-> new AgeableBushBlock(0, 0, properties));
     public final int GrowRarity;
     public final int BonusDrop;
     private static final VoxelShape SaplingShape = Block.box(3, 0, 3, 13, 8, 13);
@@ -115,7 +115,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 100;}
 
     @Override @NotNull
-    protected MapCodec<? extends BushBlock> codec() {
+    public MapCodec<BushBlock> codec() {
         return CODEC;
     }
 }

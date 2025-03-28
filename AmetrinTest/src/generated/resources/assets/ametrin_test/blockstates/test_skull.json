@@ -1,12 +1,10 @@
 {
   "variants": {
     "rotation=0": {
-      "model": "ametrin_test:block/test_skull/0",
-      "y": 0
+      "model": "ametrin_test:block/test_skull/0"
     },
     "rotation=1": {
-      "model": "ametrin_test:block/test_skull/1",
-      "y": 0
+      "model": "ametrin_test:block/test_skull/1"
     },
     "rotation=10": {
       "model": "ametrin_test:block/test_skull/2",
@@ -33,12 +31,10 @@
       "y": 270
     },
     "rotation=2": {
-      "model": "ametrin_test:block/test_skull/2",
-      "y": 0
+      "model": "ametrin_test:block/test_skull/2"
     },
     "rotation=3": {
-      "model": "ametrin_test:block/test_skull/3",
-      "y": 0
+      "model": "ametrin_test:block/test_skull/3"
     },
     "rotation=4": {
       "model": "ametrin_test:block/test_skull/0",
