@@ -1,3 +1,8 @@
+## 0.3.0
+* 1.21.5 port
+* disabled some tag rules
+  * they are now longer as simple as they were
+
 ## 0.2.9 (RELEASE)
 * removed some `BlockRegisterHelper` methods
   * added replacements to be compatible with new registry behavior
