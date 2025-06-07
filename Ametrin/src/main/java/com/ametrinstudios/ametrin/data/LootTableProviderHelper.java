@@ -22,8 +22,12 @@ public final class LootTableProviderHelper {
         return LootItem.lootTableItem(item);
     }
 
+    public static LootPoolSingletonContainer.Builder<?> item(ItemLike item, int weight) {
+        return LootItem.lootTableItem(item).setWeight(weight);
+    }
+
     public static LootPoolSingletonContainer.Builder<?> item(ItemLike item, int weight, NumberProvider amount) {
-        return item(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
+        return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
     }
 
     public static LootPoolSingletonContainer.Builder<?> tag(TagKey<Item> tagKey, int weight, NumberProvider amount) {

@@ -41,6 +41,10 @@ public final class CustomLootTableProvider extends LootTableProvider {
             return addProvider(LootContextParamSets.ENTITY, subProviderSupplier);
         }
 
+        public Builder addEquipmentProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
+            return addProvider(LootContextParamSets.EQUIPMENT, subProviderSupplier);
+        }
+
         public Builder addArcheologyProvider(Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
             return addProvider(LootContextParamSets.ARCHAEOLOGY, subProviderSupplier);
         }
