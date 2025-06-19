@@ -23,8 +23,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider {
@@ -72,16 +72,16 @@ public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider 
     }
 
     protected final void dropSelf(final Block... blocks) {
-        dropSelf(Arrays.stream(blocks).iterator());
+        dropSelf(Arrays.stream(blocks));
     }
 
     @SafeVarargs
     protected final void dropSelf(final DeferredBlock<? extends Block>... blocks) {
-        dropSelf(Arrays.stream(blocks).map(DeferredHolder::get).iterator());
+        dropSelf(Arrays.stream(blocks).map(DeferredHolder::get));
     }
 
-    protected void dropSelf(Iterator<? extends Block> blocks) {
-        blocks.forEachRemaining(this::dropSelf);
+    protected void dropSelf(Stream<? extends Block> blocks) {
+        blocks.forEach(this::dropSelf);
     }
 
     protected void dropSelf(final DeferredBlock<? extends Block> block) {
