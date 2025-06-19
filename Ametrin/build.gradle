@@ -69,6 +69,33 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
+tasks.register('sourcesJar', Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+//publishing {
+//    publications {
+//        register('mavenJava', MavenPublication) {
+//            from components.java
+//            artifact sourcesJar
+//
+//            pom {
+//                url = 'https://github.com/Ametrin-Studios/Ametrin'
+//            }
+//        }
+//    }
+//    repositories {
+//        maven {
+//            url = "file://${project.projectDir}/repo"
+//        }
+//    }
+//}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
