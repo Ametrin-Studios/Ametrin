@@ -10,19 +10,18 @@ Feel free to join our [Discord Server](https://discord.com/invite/hwA9dd5bVh) in
 #### Registering
 ``DataProviderHelper`` cuts down boilerplate
 ```java
-public static void gatherData(GatherDataEvent event){
-    var helper = new DataProviderHelper(event);
-    
-    helper.add(TestBlockStateProvider::new);
-    helper.add(TestItemModelProvider::new);
-    helper.add(TestRecipeProvider::new);
+public static void gatherData(GatherDataEvent event) {
+    event.createProvider(TestBlockStateProvider::new);
+    event.createProvider(TestItemModelProvider::new);
+    event.add(TestRecipeProvider::new);
 
-    helper.addBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
+    event.createBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
 
-    helper.addLootTables(builder -> builder
-        .AddBlockProvider(TestBlockLootSubProvider::new)
-        //...
-        .AddChestProvider(TestLootTableSubProvider::new));
+    event.createProvider(CustomLootTableProvider.builder()
+            .addBlockProvider(TestBlockLootProvider::new)
+            //...
+            .addChestProvider(TestLootTableProvider::new)::build);
+
 }
 ```
 
