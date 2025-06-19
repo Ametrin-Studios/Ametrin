@@ -47,15 +47,18 @@ to create a nether-like portal you need:
 ```java
 public static final PortalData TEST_PORTAL = 
         PortalData.builder(Level.NETHER, Level.END)
-        .poi(TestPoiTypes.TEST_PORTAL) //a deferred handler or a resource key
-        .portal(TestBlocks.TEST_PORTAL) //or ()-> TestBlocks.TEST_PORTAL.get().defaultBlockState()
-        .defaultFrame(TestBlocks.TEST_BLOCK) //or ()-> TestBlocks.TEST_BLOCK.get().defaultBlockState()
+        .poi(TestPoiTypes.TEST_PORTAL) // a deferred handler or a resource key
+        .portal(TestBlocks.TEST_PORTAL) // or ()-> TestBlocks.TEST_PORTAL.get().defaultBlockState()
+        .defaultFrame(TestBlocks.TEST_BLOCK) // or ()-> TestBlocks.TEST_BLOCK.get().defaultBlockState()
         .validFrames(TestTags.Blocks.TEST_PORTAL_FRAMES)
-        //.transition(...) //NONE by default
-        //.particles(...) //optional
-        //.sounds(...) //optional
+        //.transition(...) // NONE by default
+        //.particles(...) // optional
+        //.sounds(...) // optional
         .build();
 ```
 You'll probably also want a Catalyst item to open the portal -> `PortalCatalystItem`
 
 Note: I'll still have to get rid of the nether spiral when teleporting
+
+### Custom Boats
+each boat type is now a separate entity

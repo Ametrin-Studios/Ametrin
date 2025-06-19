@@ -2,22 +2,22 @@ package com.ametrinstudios.ametrin.data.provider;
 
 import com.ametrinstudios.ametrin.data.ItemTagProviderRule;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getItemName;
 
@@ -25,12 +25,8 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     private final List<Item> excludedItems = new ArrayList<>();
     private final List<ItemTagProviderRule> itemTagProviderRules = new ArrayList<>();
 
-    public ExtendedItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, String modId) {
-        super(packOutput, lookupProvider, blockTagProvider, modId);
-    }
-
-    public ExtendedItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Item>> itemTagProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, String modId) {
-        super(packOutput, lookupProvider, itemTagProvider, blockTagProvider, modId);
+    public ExtendedItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId) {
+        super(output, lookupProvider, modId);
     }
 
     {
@@ -56,7 +52,7 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     protected abstract void addTags(@NotNull HolderLookup.Provider provider);
 
     protected void runRules(DeferredRegister.Items register) {
-        runRules(register.getEntries().stream().map(Supplier::get).iterator());
+        runRules(register.getEntries().stream().map(Supplier::get));
     }
 
     protected void excludeItem(ItemLike item) {
@@ -67,13 +63,20 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
         itemTagProviderRules.add(rule);
     }
 
-    protected void runRules(Iterator<? extends Item> items) {
-        items.forEachRemaining(item -> {
+    protected void runRules(Stream<? extends Item> items) {
+        items.forEach(item -> {
             if (excludedItems.contains(item)) return;
             final var name = getItemName(item);
+            var stack = item.getDefaultInstance();
 
             for (var rule : itemTagProviderRules) {
                 rule.run(item, name);
+            }
+
+
+
+            if(stack.has(DataComponents.TOOL)){
+                var tool = stack.get(DataComponents.TOOL);
             }
         });
     }
