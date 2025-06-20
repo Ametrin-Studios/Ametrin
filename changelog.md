@@ -1,3 +1,8 @@
+## 0.4.0
+- 1.21.6 port
+- added `ExtendedBlockItemTagsProvider`
+- moved all BlockItemTag rules to `ExtendedBlockItemTagsProvider`
+
 ## 0.3.0
 * 1.21.5 port
 * disabled some tag rules
