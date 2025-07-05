@@ -68,16 +68,20 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
             }
             if (block instanceof FenceBlock) {
                 if (isWooden(name)) {
-                    tag(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES).add(block);
+                    tag(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES).add(block); // c:fences/wooden includes this
                 } else {
-                    tag(BlockTags.FENCES, ItemTags.FENCES).add(block);
+                    tag(BlockTags.FENCES, ItemTags.FENCES).add(block); // c:fences does not include this
+                    tag(Tags.Blocks.FENCES, Tags.Items.FENCES).add(block);
                 }
             }
             if (block instanceof FenceGateBlock) {
                 if (isWooden(name)) {
+                    // those tags don't pull from each other
+                    // minecraft:fence_gates are only wooden fence gates and is contained in furnace fuels
                     tag(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN).add(block);
-                } else {
                     tag(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES).add(block);
+                } else {
+                    tag(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES).add(block);
                 }
             }
             if (block instanceof ButtonBlock) {
