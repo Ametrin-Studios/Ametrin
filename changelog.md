@@ -1,3 +1,6 @@
+## 0.4.1
+- 1.21.7 port
+
 ## 0.4.0
 - 1.21.6 port
 - added `ExtendedBlockItemTagsProvider`
