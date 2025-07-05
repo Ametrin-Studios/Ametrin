@@ -8,7 +8,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.server.command.ConfigCommand;
 
 @SuppressWarnings("unused")
-@EventBusSubscriber(modid = AmetrinTestMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = AmetrinTestMod.MOD_ID)
 public final class TestGameEvents {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event){

@@ -9,7 +9,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 @SuppressWarnings("unused")
-@EventBusSubscriber(modid = AmetrinTestMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = AmetrinTestMod.MOD_ID)
 public final class TestModEvents {
     @SubscribeEvent
     public static void buildCreativeModeTabs(final BuildCreativeModeTabContentsEvent event) {
