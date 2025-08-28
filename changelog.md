@@ -1,3 +1,7 @@
+## 0.4.2
+- remove `VanillaCompat.addStrippable` in favor of `NeoForgeDataMaps.STRIPPABLES`
+- 1.21.8 port
+
 ## 0.4.1
 - 1.21.7 port
 

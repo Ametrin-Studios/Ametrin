@@ -1,25 +1,16 @@
 package com.ametrinstudios.ametrin.util;
 
-import com.google.common.collect.ImmutableMap;
-import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.level.block.*;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import org.jetbrains.annotations.ApiStatus;
-import org.slf4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public final class VanillaCompat {
-    private static final Logger LOGGER = LogUtils.getLogger();
-    private static final Map<Block, Block> _strippableRequests = new HashMap<>();
-    private static boolean _merged = false;
-
     /**
      * Registers FlowerPots
      */
@@ -30,33 +21,6 @@ public final class VanillaCompat {
     public static void addFlowerPot(DeferredBlock<? extends Block> plant, Supplier<? extends FlowerPotBlock> fullPot) {
         addFlowerPot(plant.getId(), fullPot);
     }
-
-    /**
-     * Allows blocks to be converted by an axe (e.g. oak log to stripped oak log)
-     * both blocks need to have the {@link RotatedPillarBlock#AXIS} state (stupid minecraft...)
-     * call during {@link FMLCommonSetupEvent}
-     */
-    public static void addStrippable(Block log, Block strippedLog) {
-        if (_merged) {
-            throw new UnsupportedOperationException("Strippables must be registered during FMLCommonSetupEvent");
-        }
-        _strippableRequests.put(log, strippedLog);
-    }
-
-//    /**
-//     * Allows blocks to be converted by a shovel (e.g. grass block to path block)
-//     */
-//
-//    @Deprecated(forRemoval = true)
-//    private static void addFlattenable(Block block, BlockState flattenedBlockState){
-//    }
-//
-//    /**
-//     * Allows blocks to be converted by a shovel (e.g. grass block to path block)
-//     */
-//    @Deprecated(forRemoval = true)
-//    private static void addFlattenable(Block block, Block flattenedBlock) {
-//    }
 
     public interface Flammable {
         static void add(Block block, int encouragement, int flammability) {
@@ -86,17 +50,5 @@ public final class VanillaCompat {
         static void addCarpet(Block carpet) {
             add(carpet, 60, 20);
         }
-    }
-
-
-    @ApiStatus.Internal
-    public static void mergeRequests() {
-        if (_merged) {
-            LOGGER.error("Vanilla compatibility requests have already been merged!");
-            return;
-        }
-
-        _merged = true;
-        AxeItem.STRIPPABLES = (new ImmutableMap.Builder<Block, Block>()).putAll(AxeItem.STRIPPABLES).putAll(_strippableRequests).build();
     }
 }
