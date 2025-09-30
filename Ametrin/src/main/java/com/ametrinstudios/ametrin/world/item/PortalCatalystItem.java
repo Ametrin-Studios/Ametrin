@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +39,7 @@ public class PortalCatalystItem extends Item {
         if (player instanceof ServerPlayer serverPlayer) {
             var itemStack = context.getItemInHand();
             CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, context.getClickedPos(), itemStack);
-            itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
+            itemStack.hurtAndBreak(1, player, context.getHand());
         }
 
         return InteractionResult.SUCCESS;

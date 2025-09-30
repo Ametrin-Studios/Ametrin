@@ -70,7 +70,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
                 .hasPostProcess(hasPostProcess)
                 .emissiveRendering(emissiveRendering);
 
-        if(!hasCollision) { properties.noCollission(); }
+        if(!hasCollision) { properties.noCollision(); }
         if(requiresCorrectToolForDrops) { properties.requiresCorrectToolForDrops(); }
         if(isRandomlyTicking) { properties.randomTicks(); }
         if(!canOcclude) { properties.noOcclusion(); }
