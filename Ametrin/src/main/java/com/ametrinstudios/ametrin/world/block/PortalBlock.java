@@ -53,7 +53,7 @@ public class PortalBlock extends Block implements Portal {
     }
 
     @Override @ParametersAreNonnullByDefault
-    protected void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier) {
+    protected void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean flag) {
         if (entity.canUsePortal(true)) {
             entity.setAsInsidePortal(this, pos);
         }
