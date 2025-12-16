@@ -5,7 +5,7 @@
 //import com.ametrinstudios.ametrin.world.item.CustomHeadBlockItem;
 //import net.minecraft.core.component.DataComponents;
 //import net.minecraft.data.PackOutput;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.world.item.*;
 //import net.minecraft.world.level.block.*;
 //import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
@@ -198,8 +198,8 @@
 //    protected void block(String name) { block(name, name); }
 //    protected void block(String name, String parent) { withExistingParent(itemLoc(name), modBlockLoc(parent)); }
 //
-//    protected ResourceLocation modBlockLoc(String key) { return modLoc(blockLoc(key)); }
-//    protected ResourceLocation modItemLoc(String key) { return modLoc(itemLoc(key)); }
+//    protected Identifier modBlockLoc(String key) { return modLoc(blockLoc(key)); }
+//    protected Identifier modItemLoc(String key) { return modLoc(itemLoc(key)); }
 //    protected String itemLoc(String key) { return ITEM_FOLDER + "/" + key; }
 //    protected String blockLoc(String key) { return BLOCK_FOLDER + "/" + key; }
 //

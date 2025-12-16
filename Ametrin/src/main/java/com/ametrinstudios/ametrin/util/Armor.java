@@ -13,11 +13,11 @@ public class Armor{
 //
 //    public static Armor of(String modID, ArmorMaterial.Layer material, boolean singleTexture){
 //        if(singleTexture){
-//            String texture = new ResourceLocation(modID, "textures/model/armor/" + material.getName() + ".png").toString();
+//            String texture = new Identifier(modID, "textures/model/armor/" + material.getName() + ".png").toString();
 //            return new Armor(material, texture, texture);
 //        }
 //
-//        return new Armor(material, new ResourceLocation(modID, "textures/model/armor/" + material.getName() + "_layer_1.png").toString(), new ResourceLocation(modID, "textures/model/armor/" + material.getName() + "_layer_2.png").toString());
+//        return new Armor(material, new Identifier(modID, "textures/model/armor/" + material.getName() + "_layer_1.png").toString(), new Identifier(modID, "textures/model/armor/" + material.getName() + "_layer_2.png").toString());
 //    }
 //
 //    public ArmorMaterial.Layer getMaterial() {return material;}

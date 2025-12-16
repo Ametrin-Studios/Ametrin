@@ -5,7 +5,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -13,10 +12,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Random;
 
 public class KeepStateRandomBlockSwapProcessor extends StructureProcessor {
     public static final MapCodec<KeepStateRandomBlockSwapProcessor> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
@@ -35,9 +33,9 @@ public class KeepStateRandomBlockSwapProcessor extends StructureProcessor {
         this.changeTo = changeTo;
     }
 
-    @Override @Nullable @ParametersAreNonnullByDefault
+    @Override @ParametersAreNonnullByDefault
     public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos pos, BlockPos pos2, StructureTemplate.StructureBlockInfo existing, StructureTemplate.StructureBlockInfo placed, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-        if(placed.state().is(condition) && (chance == 1 || new Random(Mth.getSeed(placed.pos())).nextFloat() < chance)){
+        if(placed.state().is(condition) && (chance == 1 || settings.getRandom(placed.pos()).nextFloat() < chance)){
             return new StructureTemplate.StructureBlockInfo(placed.pos(), changeTo.withPropertiesOf(placed.state()), placed.nbt());
         }
         return placed;

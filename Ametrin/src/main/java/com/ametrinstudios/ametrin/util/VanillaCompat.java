@@ -1,6 +1,6 @@
 package com.ametrinstudios.ametrin.util;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
@@ -14,7 +14,7 @@ public final class VanillaCompat {
     /**
      * Registers FlowerPots
      */
-    public static void addFlowerPot(ResourceLocation plant, Supplier<? extends FlowerPotBlock> fullPot) {
+    public static void addFlowerPot(Identifier plant, Supplier<? extends FlowerPotBlock> fullPot) {
         ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant, fullPot);
     }
 

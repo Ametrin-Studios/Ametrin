@@ -11,11 +11,11 @@ public class CustomModelArmor extends Armor {
 //
 //    public static CustomModelArmor of(@Nullable HumanoidModel<? extends LivingEntity> armor, @Nullable HumanoidModel<? extends LivingEntity> legs, String modID, ArmorMaterial material, boolean singleTexture){
 //        if(singleTexture){
-//            String texture = new ResourceLocation(modID, "textures/model/armor/" + material.getName() + ".png").toString();
+//            String texture = new Identifier(modID, "textures/model/armor/" + material.getName() + ".png").toString();
 //            return new CustomModelArmor(armor, legs, material, texture, texture);
 //        }
 //
-//        return new CustomModelArmor(armor, legs, material, new ResourceLocation(modID, "textures/model/armor/" + material.getName() + "_layer_1.png").toString(), new ResourceLocation(modID, "textures/model/armor/" + material.getName() + "_layer_2.png").toString());
+//        return new CustomModelArmor(armor, legs, material, new Identifier(modID, "textures/model/armor/" + material.getName() + "_layer_1.png").toString(), new Identifier(modID, "textures/model/armor/" + material.getName() + "_layer_2.png").toString());
 //    }
 //
 //    public HumanoidModel<? extends LivingEntity> getModel(EquipmentSlot slot){

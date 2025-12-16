@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
-import org.jetbrains.annotations.NotNull;
 
 public class PortalCatalystItem extends Item {
     protected final PortalData portalData;
@@ -20,7 +19,7 @@ public class PortalCatalystItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext context) {
+    public InteractionResult useOn(UseOnContext context) {
         var player = context.getPlayer();
         var level = context.getLevel();
 

@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.StandardOpenOption
+
 plugins {
     id 'java-library'
     id 'maven-publish'
@@ -67,6 +70,25 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 }
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
+
+var generateNullMarkedPackages = tasks.register("generateNullMarkedPackages"){
+    doLast {
+        def srcRoot = file("src/main/java").toPath()
+        def basePath = srcRoot.resolve(group.replace('.', '/'))
+
+        Files.walk(basePath)
+        .filter {Files.isDirectory(it) }
+        .forEach {dir ->
+            def pkgInfo = dir.resolve("package-info.java")
+            if(Files.exists(pkgInfo)) return
+
+            def rel = srcRoot.relativize(dir).toString().replace(File.separator, '.')
+            def content = "@org.jspecify.annotations.NullMarked\npackage ${rel};\n"
+            Files.writeString(pkgInfo, content, StandardOpenOption.CREATE_NEW)
+        }
+    }
+}
+// neoForge.ideSyncTask generateNullMarkedPackages
 
 tasks.register('sourcesJar', Jar) {
     archiveClassifier = 'sources'

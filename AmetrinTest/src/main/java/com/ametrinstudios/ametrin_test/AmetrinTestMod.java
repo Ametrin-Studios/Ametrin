@@ -8,7 +8,7 @@ import com.ametrinstudios.ametrin_test.registry.TestBlocks;
 import com.ametrinstudios.ametrin_test.registry.TestItems;
 import com.ametrinstudios.ametrin_test.registry.TestPoiTypes;
 import com.mojang.logging.LogUtils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -53,7 +53,7 @@ public final class AmetrinTestMod {
         event.createProvider(TestLanguageProvider::new);
     }
 
-    public static ResourceLocation locate(String key) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, key);
+    public static Identifier locate(String key) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, key);
     }
 }

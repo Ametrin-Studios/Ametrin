@@ -5,7 +5,6 @@ import net.neoforged.neoforge.transfer.IndexModifier;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
-import org.jetbrains.annotations.NotNull;
 
 public class LockedSlot extends ResourceHandlerSlot {
 
@@ -14,7 +13,7 @@ public class LockedSlot extends ResourceHandlerSlot {
     }
 
     @Override
-    public boolean mayPlace(@NotNull ItemStack stack) {
+    public boolean mayPlace(ItemStack stack) {
         return false;
     }
 }

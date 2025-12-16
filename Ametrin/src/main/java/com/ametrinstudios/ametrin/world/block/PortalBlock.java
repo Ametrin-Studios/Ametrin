@@ -10,7 +10,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Portal;
@@ -20,6 +23,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.portal.PortalShape;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -65,10 +69,10 @@ public class PortalBlock extends Block implements Portal {
                 ? Math.max(
                 1,
                 level.getGameRules()
-                        .getInt(
+                        .get(
                                 player.getAbilities().invulnerable
-                                        ? GameRules.RULE_PLAYERS_NETHER_PORTAL_CREATIVE_DELAY
-                                        : GameRules.RULE_PLAYERS_NETHER_PORTAL_DEFAULT_DELAY
+                                        ? GameRules.PLAYERS_NETHER_PORTAL_CREATIVE_DELAY
+                                        : GameRules.PLAYERS_NETHER_PORTAL_DEFAULT_DELAY
                         )
         )
                 : 0;

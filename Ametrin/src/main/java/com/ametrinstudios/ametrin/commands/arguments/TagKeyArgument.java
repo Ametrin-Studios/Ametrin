@@ -12,8 +12,8 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,8 +32,8 @@ public final class TagKeyArgument<T> implements ArgumentType<TagKey<T>> {
 
         try {
             reader.skip();
-            var resourceLocation = ResourceLocation.read(reader);
-            return TagKey.create(registryKey, resourceLocation);
+            var identifier = Identifier.read(reader);
+            return TagKey.create(registryKey, identifier);
         } catch (CommandSyntaxException commandsyntaxexception) {
             reader.setCursor(i);
             throw commandsyntaxexception;
@@ -57,7 +57,7 @@ public final class TagKeyArgument<T> implements ArgumentType<TagKey<T>> {
         }
 
         public void serializeToJson(Template template, JsonObject json) {
-            json.addProperty("registry", template.registryKey.location().toString());
+            json.addProperty("registry", template.registryKey.identifier().toString());
         }
 
         public @NotNull Template unpack(TagKeyArgument<T> argument) {

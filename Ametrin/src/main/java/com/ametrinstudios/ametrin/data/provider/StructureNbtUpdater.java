@@ -10,7 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
@@ -58,7 +58,7 @@ public final class StructureNbtUpdater implements DataProvider {
         }
     }
 
-    private void process(ResourceLocation loc, Resource resource, CachedOutput cache) throws IOException {
+    private void process(Identifier loc, Resource resource, CachedOutput cache) throws IOException {
         var inputNBT = NbtIo.readCompressed(resource.open(), NbtAccounter.unlimitedHeap());
         var converted = updateNBT(inputNBT);
         if (!converted.equals(inputNBT)) {
@@ -71,7 +71,7 @@ public final class StructureNbtUpdater implements DataProvider {
         }
     }
 
-    private void writeNBTTo(ResourceLocation loc, CompoundTag data, CachedOutput cache) throws IOException {
+    private void writeNBTTo(Identifier loc, CompoundTag data, CachedOutput cache) throws IOException {
         var bytearrayoutputstream = new ByteArrayOutputStream();
         NbtIo.writeCompressed(data, bytearrayoutputstream);
         var bytes = bytearrayoutputstream.toByteArray();

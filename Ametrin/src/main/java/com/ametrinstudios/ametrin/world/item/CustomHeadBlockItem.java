@@ -7,8 +7,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -24,7 +23,7 @@ public class CustomHeadBlockItem extends BlockItem {
 
     @Override
     @Nullable
-    protected BlockState getPlacementState(@NotNull BlockPlaceContext context) {
+    protected BlockState getPlacementState(BlockPlaceContext context) {
         BlockState blockState;
         if (context.getClickedFace() == Direction.DOWN) {
             return null;
@@ -38,11 +37,11 @@ public class CustomHeadBlockItem extends BlockItem {
     }
 
     @Override
-    public @NotNull Block getBlock() {
+    public Block getBlock() {
         return block.get();
     }
 
-    public @NotNull Block getWallBlock() {
+    public Block getWallBlock() {
         return wallBlock.get();
     }
 

@@ -8,7 +8,7 @@
 //import net.minecraft.client.renderer.RenderType;
 //import net.minecraft.core.Direction;
 //import net.minecraft.data.PackOutput;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.world.level.block.*;
 //import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 //import net.neoforged.neoforge.registries.DeferredRegister;
@@ -190,7 +190,7 @@
 //    }
 //
 //    protected void portalBlock(PortalBlock portal, String name, String texture) {
-//        ResourceLocation textureLoc = modBlockLoc(texture);
+//        Identifier textureLoc = modBlockLoc(texture);
 //        var ew = models().withExistingParent(name + "_ew", "nether_portal_ew").texture("portal", textureLoc).texture("particle", textureLoc).renderType(RenderType.TRANSLUCENT.name);
 //        var ns = models().withExistingParent(name + "_ns", "nether_portal_ns").texture("portal", textureLoc).texture("particle", textureLoc).renderType(RenderType.TRANSLUCENT.name);
 //        getVariantBuilder(portal).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(PortalBlock.AXIS) == Direction.Axis.X ? ns : ew).build());
@@ -203,7 +203,7 @@
 //    }
 //    protected void campfireBlock(CampfireBlock campfire, String name, String texture) {
 //        var model = models().withExistingParent(name, "block/template_campfire").texture("fire", modBlockLoc(texture + "_fire")).texture("lit_log", modBlockLoc(texture + "_log_lit")).renderType(RenderType.CUTOUT.name);
-//        var modelOff = models().getExistingFile(ResourceLocation.withDefaultNamespace("block/campfire_off"));
+//        var modelOff = models().getExistingFile(Identifier.withDefaultNamespace("block/campfire_off"));
 //        getVariantBuilder(campfire).forAllStatesExcept(blockState -> ConfiguredModel.builder().modelFile(blockState.getValue(CampfireBlock.LIT) ? model : modelOff).rotationY(horizontalDirectionToYAngleForCampfire(blockState.getValue(CampfireBlock.FACING))).build(), CampfireBlock.WATERLOGGED, CampfireBlock.SIGNAL_FIRE);
 //    }
 //    protected void wallTorchBlock(WallTorchBlock wallTorch, String name, String texture) {
@@ -281,6 +281,6 @@
 //        return direction == Direction.NORTH ? 270 : direction == Direction.EAST ? 0 : direction == Direction.SOUTH ? 90 : 180;
 //    }
 //
-//    protected ResourceLocation modBlockLoc(String key) { return modLoc("block/" + key); }
-//    protected ResourceLocation mcBlockLoc(String key) { return mcLoc("block/" + key); }
+//    protected Identifier modBlockLoc(String key) { return modLoc("block/" + key); }
+//    protected Identifier mcBlockLoc(String key) { return mcLoc("block/" + key); }
 //}

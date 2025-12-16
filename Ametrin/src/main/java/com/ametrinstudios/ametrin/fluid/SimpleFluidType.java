@@ -6,8 +6,8 @@ import net.neoforged.neoforge.fluids.FluidType;
  * Basic implementation of {@link FluidType} that defaults to water texture.
  */
 //public class SimpleFluidType extends FluidType {
-//    public static final ResourceLocation stillTexture = ResourceLocation.withDefaultNamespace("block/water_still");
-//    public static final ResourceLocation flowingTexture = ResourceLocation.withDefaultNamespace("block/water_flow");
+//    public static final Identifier stillTexture = Identifier.withDefaultNamespace("block/water_still");
+//    public static final Identifier flowingTexture = Identifier.withDefaultNamespace("block/water_flow");
 //    private final int tintColor;
 //    private final Vector3f fogColor;
 //
@@ -25,10 +25,10 @@ import net.neoforged.neoforge.fluids.FluidType;
 //    public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
 //        consumer.accept(new IClientFluidTypeExtensions() {
 //            @Override
-//            public @NotNull ResourceLocation getStillTexture() { return stillTexture; }
+//            public @NotNull Identifier getStillTexture() { return stillTexture; }
 //
 //            @Override
-//            public @NotNull ResourceLocation getFlowingTexture() { return flowingTexture; }
+//            public @NotNull Identifier getFlowingTexture() { return flowingTexture; }
 //
 //            @Override
 //            public int getTintColor() {return tintColor;}

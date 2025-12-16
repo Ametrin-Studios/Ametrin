@@ -1,7 +1,7 @@
 package com.ametrinstudios.ametrin;
 
 import com.ametrinstudios.ametrin.commands.AmArgumentTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import org.jetbrains.annotations.ApiStatus;
@@ -16,7 +16,7 @@ public final class Ametrin {
     }
 
     @ApiStatus.Internal
-    public static ResourceLocation locate(String key) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, key);
+    public static Identifier locate(String key) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, key);
     }
 }

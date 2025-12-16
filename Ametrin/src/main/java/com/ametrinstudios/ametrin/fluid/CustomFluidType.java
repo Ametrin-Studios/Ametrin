@@ -15,17 +15,17 @@ import java.awt.*;
  * made overlayTexture optional
  */
 //public class CustomFluidType extends FluidType {
-//    private final ResourceLocation stillTexture;
-//    private final ResourceLocation flowingTexture;
-//    @Nullable private final ResourceLocation overlayTexture;
+//    private final Identifier stillTexture;
+//    private final Identifier flowingTexture;
+//    @Nullable private final Identifier overlayTexture;
 //    private final int tintColor;
 //    private final Vector3f fogColor;
 //
-//    public CustomFluidType(final ResourceLocation stillTexture, final ResourceLocation flowingTexture, @Nullable final ResourceLocation overlayTexture, final Color tintColor, final Color fogColor, final Properties properties){
+//    public CustomFluidType(final Identifier stillTexture, final Identifier flowingTexture, @Nullable final Identifier overlayTexture, final Color tintColor, final Color fogColor, final Properties properties){
 //        this(stillTexture, flowingTexture, overlayTexture, ColorHelper.colorToIntWithAlpha(tintColor), new Vector3f(fogColor.getRed()/255f, fogColor.getGreen()/255f, fogColor.getBlue()/255f), properties);
 //    }
 //
-//    public CustomFluidType(final ResourceLocation stillTexture, final ResourceLocation flowingTexture, @Nullable final ResourceLocation overlayTexture, final int tintColor, final Vector3f fogColor, final Properties properties) {
+//    public CustomFluidType(final Identifier stillTexture, final Identifier flowingTexture, @Nullable final Identifier overlayTexture, final int tintColor, final Vector3f fogColor, final Properties properties) {
 //        super(properties);
 //        this.stillTexture = stillTexture;
 //        this.flowingTexture = flowingTexture;
@@ -38,13 +38,13 @@ import java.awt.*;
 //    public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
 //        consumer.accept(new IClientFluidTypeExtensions() {
 //            @Override
-//            public @NotNull ResourceLocation getStillTexture() { return stillTexture; }
+//            public @NotNull Identifier getStillTexture() { return stillTexture; }
 //
 //            @Override
-//            public @NotNull ResourceLocation getFlowingTexture() { return flowingTexture; }
+//            public @NotNull Identifier getFlowingTexture() { return flowingTexture; }
 //
 //            @Override
-//            public @Nullable ResourceLocation getOverlayTexture() { return overlayTexture; }
+//            public @Nullable Identifier getOverlayTexture() { return overlayTexture; }
 //
 //            @Override
 //            public int getTintColor() {return tintColor;}
@@ -62,13 +62,13 @@ import java.awt.*;
 //        });
 //    }
 //
-//    public ResourceLocation getStillTexture() { return stillTexture; }
+//    public Identifier getStillTexture() { return stillTexture; }
 //
-//    public ResourceLocation getFlowingTexture() { return flowingTexture; }
+//    public Identifier getFlowingTexture() { return flowingTexture; }
 //
 //    public int getTintColor() { return tintColor; }
 //
-//    public @Nullable ResourceLocation getOverlayTexture() { return overlayTexture; }
+//    public @Nullable Identifier getOverlayTexture() { return overlayTexture; }
 //
 //    public Vector3f getFogColor() { return fogColor; }
 //}

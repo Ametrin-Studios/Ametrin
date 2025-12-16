@@ -13,7 +13,7 @@ import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -34,8 +34,8 @@ public abstract class ExtendedModelProvider extends ModelProvider {
     public static final ModelTemplate HEAD_3_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/3")), Optional.empty(), TextureSlot.TEXTURE).extend().renderType("cutout").build();
 
     public static final TextureSlot TEXTURE_SLOT_PORTAL = TextureSlot.create("portal", TextureSlot.TEXTURE);
-    public static final ModelTemplate PORTAL_NS = new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("block/nether_portal_ns")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
-    public static final ModelTemplate PORTAL_EW = new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("block/nether_portal_ew")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
+    public static final ModelTemplate PORTAL_NS = new ModelTemplate(Optional.of(Identifier.withDefaultNamespace("block/nether_portal_ns")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
+    public static final ModelTemplate PORTAL_EW = new ModelTemplate(Optional.of(Identifier.withDefaultNamespace("block/nether_portal_ew")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
 
     public ExtendedModelProvider(PackOutput output, String modId) {
         super(output, modId);

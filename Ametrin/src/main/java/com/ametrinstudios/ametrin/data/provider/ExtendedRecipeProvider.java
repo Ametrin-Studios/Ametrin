@@ -5,7 +5,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.advancements.critereon.ImpossibleTrigger;
+import net.minecraft.advancements.criterion.ImpossibleTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -13,8 +13,8 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -23,8 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -37,11 +36,11 @@ import java.util.concurrent.CompletableFuture;
 @SuppressWarnings("unused")
 public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static final Logger LOGGER = LogUtils.getLogger();
-    protected Set<ResourceLocation> recipes;
+    protected Set<Identifier> recipes;
 
     protected String modID;
 
-    public ExtendedRecipeProvider(String modID, HolderLookup.Provider registries, RecipeOutput output, Set<ResourceLocation> recipeSet) {
+    public ExtendedRecipeProvider(String modID, HolderLookup.Provider registries, RecipeOutput output, Set<Identifier> recipeSet) {
         super(registries, output);
         this.modID = modID;
         this.recipes = recipeSet;
@@ -479,7 +478,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected void dying(TagKey<Item> dyedItems, String idPattern, String group) {
         for (var dye : DyeColor.values()) {
             var resultID = locate(idPattern.replace("{color}", dye.getName()));
-            var dyeID = ResourceLocation.withDefaultNamespace(dye.getName() + "_dye");
+            var dyeID = Identifier.withDefaultNamespace(dye.getName() + "_dye");
             var result = BuiltInRegistries.ITEM.get(resultID).orElseThrow().value();
             var dyeItem = BuiltInRegistries.ITEM.get(dyeID).orElseThrow().value();
             shapeless(RecipeCategory.BUILDING_BLOCKS, result).requires(dyedItems)
@@ -545,7 +544,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
     protected ResourceKey<Recipe<?>> recipeID(ItemLike result, ItemLike material) {
         String itemID = getItemName(result);
-        ResourceLocation recipeID = locate(itemID);
+        Identifier recipeID = locate(itemID);
         if (recipes.contains(recipeID)) {
             return ResourceKey.create(Registries.RECIPE, locate(getConversionRecipeName(itemID, material)));
         }
@@ -554,33 +553,33 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
     protected ResourceKey<Recipe<?>> recipeID(ItemLike result, TagKey<Item> material) {
         String itemID = getItemName(result);
-        ResourceLocation recipeID = locate(itemID);
+        Identifier recipeID = locate(itemID);
         if (recipes.contains(recipeID)) {
             return ResourceKey.create(Registries.RECIPE, locate(getConversionRecipeName(itemID, material)));
         }
         return ResourceKey.create(Registries.RECIPE, recipeID);
     }
 
-    protected ResourceLocation stonecuttingRecipeID(String key) {
+    protected Identifier stonecuttingRecipeID(String key) {
         return locate("stonecutting/" + key);
     }
 
     protected ResourceKey<Recipe<?>> stonecuttingRecipeID(ItemLike result, ItemLike ingredient) {
         String itemID = getItemName(result);
-        ResourceLocation recipeID = stonecuttingRecipeID(itemID);
+        Identifier recipeID = stonecuttingRecipeID(itemID);
         if (recipes.contains(recipeID)) {
             return ResourceKey.create(Registries.RECIPE, locate("stonecutting/" + getConversionRecipeName(itemID, ingredient)));
         }
         return ResourceKey.create(Registries.RECIPE, recipeID);
     }
 
-    protected ResourceLocation smeltingRecipeID(String key) {
+    protected Identifier smeltingRecipeID(String key) {
         return locate("smelting/" + key);
     }
 
     protected ResourceKey<Recipe<?>> smeltingRecipeID(ItemLike result, ItemLike ingredient) {
         String itemID = getItemName(result);
-        ResourceLocation recipeID = smeltingRecipeID(itemID);
+        Identifier recipeID = smeltingRecipeID(itemID);
         if (recipes.contains(recipeID)) {
             return ResourceKey.create(Registries.RECIPE, locate("smelting/" + getConversionRecipeName(itemID, ingredient)));
         }
@@ -589,20 +588,20 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
     protected ResourceKey<Recipe<?>> smeltingRecipeID(ItemLike result, TagKey<Item> ingredient) {
         String itemID = getItemName(result);
-        ResourceLocation recipeID = smeltingRecipeID(itemID);
+        Identifier recipeID = smeltingRecipeID(itemID);
         if (recipes.contains(recipeID)) {
             return ResourceKey.create(Registries.RECIPE, locate("smelting/" + getConversionRecipeName(itemID, ingredient)));
         }
         return ResourceKey.create(Registries.RECIPE, recipeID);
     }
 
-    protected ResourceLocation blastingRecipeID(String key) {
+    protected Identifier blastingRecipeID(String key) {
         return locate("blasting/" + key);
     }
 
     protected ResourceKey<Recipe<?>> blastingRecipeID(ItemLike result, ItemLike ingredient) {
         String itemID = getItemName(result);
-        ResourceLocation recipeID = blastingRecipeID(itemID);
+        Identifier recipeID = blastingRecipeID(itemID);
         if (recipes.contains(recipeID)) {
             return ResourceKey.create(Registries.RECIPE, locate("blasting/" + getConversionRecipeName(itemID, ingredient)));
         }
@@ -611,20 +610,20 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
     protected ResourceKey<Recipe<?>> blastingRecipeID(ItemLike result, TagKey<Item> ingredient) {
         String itemID = getItemName(result);
-        ResourceLocation recipeID = blastingRecipeID(itemID);
+        Identifier recipeID = blastingRecipeID(itemID);
         if (recipes.contains(recipeID)) {
             return ResourceKey.create(Registries.RECIPE, locate("blasting/" + getConversionRecipeName(itemID, ingredient)));
         }
         return ResourceKey.create(Registries.RECIPE, recipeID);
     }
 
-    protected ResourceLocation smokingRecipeID(String key) {
+    protected Identifier smokingRecipeID(String key) {
         return locate("smoking/" + key);
     }
 
     protected ResourceKey<Recipe<?>> smokingRecipeID(ItemLike result, ItemLike ingredient) {
         String itemID = getItemName(result);
-        ResourceLocation recipeID = smokingRecipeID(itemID);
+        Identifier recipeID = smokingRecipeID(itemID);
         if (recipes.contains(recipeID)) {
             return ResourceKey.create(Registries.RECIPE, locate("smoking/" + getConversionRecipeName(itemID, ingredient)));
         }
@@ -633,7 +632,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
     protected ResourceKey<Recipe<?>> smokingRecipeID(ItemLike result, TagKey<Item> ingredient) {
         String itemID = getItemName(result);
-        ResourceLocation recipeID = smokingRecipeID(itemID);
+        Identifier recipeID = smokingRecipeID(itemID);
         if (recipes.contains(recipeID)) {
             return ResourceKey.create(Registries.RECIPE, locate("smoking/" + getConversionRecipeName(itemID, ingredient)));
         }
@@ -656,17 +655,17 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         return tag.location().getPath().replace('/', '_');
     }
 
-    protected ResourceLocation locate(String key) {
+    protected Identifier locate(String key) {
         if (key.contains(":")) {
-            return ResourceLocation.bySeparator(key, ':');
+            return Identifier.bySeparator(key, ':');
         }
-        return ResourceLocation.fromNamespaceAndPath(modID, key);
+        return Identifier.fromNamespaceAndPath(modID, key);
     }
 
     public static abstract class Runner implements DataProvider {
         private final PackOutput packOutput;
         private final CompletableFuture<HolderLookup.Provider> registries;
-        private final static Set<ResourceLocation> recipes = Sets.newHashSet();
+        private final static Set<Identifier> recipes = Sets.newHashSet();
 
         protected Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
             this.packOutput = packOutput;
@@ -674,7 +673,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         }
 
         @Override
-        public final @NotNull CompletableFuture<?> run(@NotNull CachedOutput output) {
+        public final CompletableFuture<?> run(CachedOutput output) {
             return this.registries
                     .thenCompose(
                             provider -> {
@@ -685,8 +684,8 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                                     @Override
                                     @ParametersAreNonnullByDefault
                                     public void accept(ResourceKey<Recipe<?>> id, Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, net.neoforged.neoforge.common.conditions.ICondition... conditions) {
-                                        if (!recipes.add(id.location())) {
-                                            throw new IllegalStateException("Duplicate recipe " + id.location());
+                                        if (!recipes.add(id.identifier())) {
+                                            throw new IllegalStateException("Duplicate recipe " + id.identifier());
                                         } else {
                                             this.saveRecipe(id, recipe, conditions);
                                             if (advancementHolder != null) {
@@ -696,7 +695,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                                     }
 
                                     @Override
-                                    public @NotNull Advancement.Builder advancement() {
+                                    public Advancement.Builder advancement() {
                                         return Advancement.Builder.recipeAdvancement().parent(RecipeBuilder.ROOT_RECIPE_ADVANCEMENT);
                                     }
 
@@ -714,7 +713,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
                                     private void saveRecipe(ResourceKey<Recipe<?>> key, Recipe<?> recipe, net.neoforged.neoforge.common.conditions.ICondition... conditions) {
                                         list.add(
-                                                DataProvider.saveStable(output, provider, Recipe.CONDITIONAL_CODEC, Optional.of(new net.neoforged.neoforge.common.conditions.WithConditions<>(recipe, conditions)), recipeProvider.json(key.location()))
+                                                DataProvider.saveStable(output, provider, Recipe.CONDITIONAL_CODEC, Optional.of(new net.neoforged.neoforge.common.conditions.WithConditions<>(recipe, conditions)), recipeProvider.json(key.identifier()))
                                         );
                                     }
 
@@ -737,6 +736,6 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         }
 
 
-        protected abstract ExtendedRecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<ResourceLocation> recipeSet);
+        protected abstract ExtendedRecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<Identifier> recipeSet);
     }
 }

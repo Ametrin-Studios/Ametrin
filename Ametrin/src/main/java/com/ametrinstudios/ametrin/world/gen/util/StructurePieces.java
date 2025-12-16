@@ -1,7 +1,7 @@
 package com.ametrinstudios.ametrin.world.gen.util;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedList;
 
@@ -19,9 +19,9 @@ public class StructurePieces {
     public Piece getRandomPiece(RandomSource random) { return pieces.getRandom(random).get(); }
 
     public static class Piece{
-        public final ResourceLocation Resource;
+        public final Identifier Resource;
         public final BlockPos Offset;
-        public Piece(final ResourceLocation resource, final BlockPos offset) {
+        public Piece(final Identifier resource, final BlockPos offset) {
             Resource = resource;
             Offset = offset;
         }
@@ -50,7 +50,7 @@ public class StructurePieces {
         public Builder offset(int x, int y, int z) { return offset(new BlockPos(x, y, z)); }
         public Builder offsetY(int y) { return offset(0, y, 0); }
 
-        public Builder add(ResourceLocation resource){
+        public Builder add(Identifier resource){
             pieces.add(new Piece(resource, offset), weight);
             return this;
         }
