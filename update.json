@@ -1,6 +1,8 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/ametrin",
   "promos": {
+    "1.21.11-latest": "0.4.2",
+    "1.21.11-recommended": "0.4.2",
     "1.21.10-latest": "0.4.2",
     "1.21.10-recommended": "0.4.2",
     "1.21.9-latest": "0.4.2",
@@ -36,6 +38,9 @@
     "1.19.2-latest": "0.0.26",
     "1.19.2-recommended": "0.0.26"
   },
+  "1.21.11": {
+    "0.4.2": "1.21.11 port"
+  },
   "1.21.10": {
     "0.4.2": "1.21.10 port, remove VanillaCompat.addStrippable"
   },
@@ -62,10 +67,10 @@
     "0.2.7": "1.21.3 port"
   },
   "1.21.1": {
-    "0.2.4": "1.21(.1) port"
+    "0.2.4": "1.21.1 port"
   },
   "1.21": {
-    "0.2.4": "1.21(.1) port"
+    "0.2.4": "1.21 port"
   },
   "1.20.4": {
     "0.1.8": "final",
