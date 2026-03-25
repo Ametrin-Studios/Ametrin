@@ -2,7 +2,6 @@ package com.ametrinstudios.ametrin.data.provider;
 
 import com.ametrinstudios.ametrin.data.ItemTagProviderRule;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BoatItem;
@@ -67,16 +66,9 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
         items.forEach(item -> {
             if (excludedItems.contains(item)) return;
             final var name = getItemName(item);
-            var stack = item.getDefaultInstance();
 
             for (var rule : itemTagProviderRules) {
                 rule.run(item, name);
-            }
-
-
-
-            if(stack.has(DataComponents.TOOL)){
-                var tool = stack.get(DataComponents.TOOL);
             }
         });
     }

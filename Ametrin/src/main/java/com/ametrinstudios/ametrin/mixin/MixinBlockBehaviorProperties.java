@@ -47,7 +47,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow BlockBehaviour.StatePredicate isRedstoneConductor;
     @Shadow BlockBehaviour.StatePredicate isSuffocating;
     @Shadow BlockBehaviour.StatePredicate isViewBlocking;
-    @Shadow BlockBehaviour.StatePredicate hasPostProcess;
+    @Shadow BlockBehaviour.PostProcess postProcess;
     @Shadow BlockBehaviour.StatePredicate emissiveRendering;
     @Shadow boolean dynamicShape;
     @Shadow FeatureFlagSet requiredFeatures;
@@ -67,7 +67,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
                 .isValidSpawn(isValidSpawn)
                 .isRedstoneConductor(isRedstoneConductor)
                 .isSuffocating(isSuffocating)
-                .hasPostProcess(hasPostProcess)
+                .postProcess(postProcess)
                 .emissiveRendering(emissiveRendering);
 
         if(!hasCollision) { properties.noCollision(); }

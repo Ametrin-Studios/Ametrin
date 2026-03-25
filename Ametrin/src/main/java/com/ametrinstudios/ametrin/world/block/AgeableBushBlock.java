@@ -72,10 +72,10 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     public void onHarvest(BlockState blockState, Level level, BlockPos pos, Player player) {
         int dropAmount = 1;
         if(BonusDrop > 0){
-            dropAmount += level.random.nextInt(BonusDrop);
+            dropAmount += level.getRandom().nextInt(BonusDrop);
         }
         popResource(level, pos, new ItemStack(asItem(), dropAmount));
-        level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1, 0.8f + level.random.nextFloat() * 0.4f);
+        level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1, 0.8f + level.getRandom().nextFloat() * 0.4f);
         var newState = blockState.setValue(AGE, 1);
         level.setBlock(pos, newState, 2);
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));

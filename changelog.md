@@ -1,3 +1,8 @@
+## 1.0.0
+- adjust wall head model locations
+- marked as stable
+- 26.1 port
+
 ## 0.4.2
 - remove `VanillaCompat.addStrippable` in favor of `NeoForgeDataMaps.STRIPPABLES`
 - 1.21.9-11 port

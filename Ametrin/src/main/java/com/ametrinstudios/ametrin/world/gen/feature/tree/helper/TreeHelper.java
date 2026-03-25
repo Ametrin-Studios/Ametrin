@@ -12,8 +12,6 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 
-import static net.minecraft.world.level.levelgen.feature.Feature.isDirt;
-
 public final class TreeHelper {
     public static boolean setBlockChecked(BlockState blockState, BlockPos pos, WorldGenLevel level, @Nullable BiConsumer<BlockPos, BlockState> changedBlocks) {
         var block = blockState.getBlock();
@@ -96,7 +94,7 @@ public final class TreeHelper {
     }
 
     public static boolean isValidGround(BlockState state) {
-        return isDirt(state);
+        return state.is(BlockTags.DIRT);
     }
 
     public static boolean isReplaceableByLeaves(BlockPos pos, WorldGenLevel level) {

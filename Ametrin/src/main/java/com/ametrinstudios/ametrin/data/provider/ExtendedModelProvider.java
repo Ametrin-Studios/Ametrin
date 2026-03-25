@@ -10,7 +10,8 @@ import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.*;
-import net.minecraft.client.renderer.block.model.VariantMutator;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
@@ -22,16 +23,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public abstract class ExtendedModelProvider extends ModelProvider {
-    public static final ModelTemplate WALL_HEAD = new ModelTemplate(Optional.of(Ametrin.locate("block/head_wall")), Optional.empty(), TextureSlot.TEXTURE);
+    public static final ModelTemplate WALL_HEAD = new ModelTemplate(Optional.of(Ametrin.locate("block/head/wall")), Optional.empty(), TextureSlot.TEXTURE);
     public static final ModelTemplate HEAD_0 = new ModelTemplate(Optional.of(Ametrin.locate("block/head/0")), Optional.empty(), TextureSlot.TEXTURE);
     public static final ModelTemplate HEAD_1 = new ModelTemplate(Optional.of(Ametrin.locate("block/head/1")), Optional.empty(), TextureSlot.TEXTURE);
     public static final ModelTemplate HEAD_2 = new ModelTemplate(Optional.of(Ametrin.locate("block/head/2")), Optional.empty(), TextureSlot.TEXTURE);
     public static final ModelTemplate HEAD_3 = new ModelTemplate(Optional.of(Ametrin.locate("block/head/3")), Optional.empty(), TextureSlot.TEXTURE);
-    public static final ModelTemplate WALL_HEAD_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head_wall_cutout")), Optional.empty(), TextureSlot.TEXTURE).extend().renderType("cutout").build();
-    public static final ModelTemplate HEAD_0_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/0")), Optional.empty(), TextureSlot.TEXTURE).extend().renderType("cutout").build();
-    public static final ModelTemplate HEAD_1_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/1")), Optional.empty(), TextureSlot.TEXTURE).extend().renderType("cutout").build();
-    public static final ModelTemplate HEAD_2_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/2")), Optional.empty(), TextureSlot.TEXTURE).extend().renderType("cutout").build();
-    public static final ModelTemplate HEAD_3_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/3")), Optional.empty(), TextureSlot.TEXTURE).extend().renderType("cutout").build();
+    public static final ModelTemplate WALL_HEAD_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/wall")), Optional.empty(), TextureSlot.TEXTURE);
+    public static final ModelTemplate HEAD_0_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/0")), Optional.empty(), TextureSlot.TEXTURE);
+    public static final ModelTemplate HEAD_1_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/1")), Optional.empty(), TextureSlot.TEXTURE);
+    public static final ModelTemplate HEAD_2_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/2")), Optional.empty(), TextureSlot.TEXTURE);
+    public static final ModelTemplate HEAD_3_CUTOUT = new ModelTemplate(Optional.of(Ametrin.locate("block/head/cutout/3")), Optional.empty(), TextureSlot.TEXTURE);
 
     public static final TextureSlot TEXTURE_SLOT_PORTAL = TextureSlot.create("portal", TextureSlot.TEXTURE);
     public static final ModelTemplate PORTAL_NS = new ModelTemplate(Optional.of(Identifier.withDefaultNamespace("block/nether_portal_ns")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
@@ -44,10 +45,17 @@ public abstract class ExtendedModelProvider extends ModelProvider {
     @Override
     protected abstract void registerModels(@NotNull BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels);
 
+
+    /** create a custom head model<br>
+     * assumes all textures are opaque, there are no texture on the inside of the head
+     */
     public final void createCustomHead(BlockModelGenerators blockModels, Block head, Block wallHead) {
         createCustomHeadImpl(blockModels, head, wallHead, WALL_HEAD, HEAD_0, HEAD_1, HEAD_2, HEAD_3);
     }
 
+    /** create a custom head model<br>
+     * mirrors outside textures to the inside so the player can look inside
+     */
     public final void createCustomHeadCutout(BlockModelGenerators blockModels, Block head, Block wallHead) {
         createCustomHeadImpl(blockModels, head, wallHead, WALL_HEAD_CUTOUT, HEAD_0_CUTOUT, HEAD_1_CUTOUT, HEAD_2_CUTOUT, HEAD_3_CUTOUT);
     }
@@ -92,10 +100,10 @@ public abstract class ExtendedModelProvider extends ModelProvider {
     }
 
     public final void createPlanePortalBlock(BlockModelGenerators blockModels, Block portal) {
-        var texture = ModelLocationUtils.getModelLocation(portal);
+        var texture = new Material(ModelLocationUtils.getModelLocation(portal));
         var mapping = new TextureMapping().put(TextureSlot.PARTICLE, texture).put(TEXTURE_SLOT_PORTAL, texture);
-        var ns = PORTAL_NS.create(texture.withSuffix("_ns"), mapping, blockModels.modelOutput);
-        var ew = PORTAL_EW.create(texture.withSuffix("_ew"), mapping, blockModels.modelOutput);
+        var ns = PORTAL_NS.create(texture.sprite().withSuffix("_ns"), mapping, blockModels.modelOutput);
+        var ew = PORTAL_EW.create(texture.sprite().withSuffix("_ew"), mapping, blockModels.modelOutput);
         blockModels.blockStateOutput.accept(
                 MultiVariantGenerator.dispatch(portal)
                         .with(PropertyDispatch.initial(BlockStateProperties.HORIZONTAL_AXIS)
@@ -106,7 +114,7 @@ public abstract class ExtendedModelProvider extends ModelProvider {
     }
 
     public void createAgeableBushBlockWithEarlySweetBerryStages(BlockModelGenerators blockModels, Block block) {
-        var model = ModelTemplates.CROSS.extend().renderType("cutout").build();
+        final var model = ModelTemplates.CROSS;
 
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
                 .with(PropertyDispatch.initial(BlockStateProperties.AGE_3)

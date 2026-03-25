@@ -1,6 +1,5 @@
 {
-  "parent": "ametrin:block/head_wall_cutout",
-  "render_type": "minecraft:cutout",
+  "parent": "ametrin:block/head/cutout/wall",
   "textures": {
     "texture": "ametrin_test:block/test_skull"
   }

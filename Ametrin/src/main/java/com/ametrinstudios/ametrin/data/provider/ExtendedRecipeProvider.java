@@ -20,6 +20,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
@@ -519,19 +520,19 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     protected void smelting(RecipeCategory category, ItemLike result, ItemLike ingredient, float xp, int time) {
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(ingredient), category, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smeltingRecipeID(result, ingredient));
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(ingredient), category, CookingBookCategory.BLOCKS, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smeltingRecipeID(result, ingredient));
     }
 
     protected void smelting(RecipeCategory category, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
-        SimpleCookingRecipeBuilder.smelting(tag(ingredient), category, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smeltingRecipeID(result, ingredient));
+        SimpleCookingRecipeBuilder.smelting(tag(ingredient), category, CookingBookCategory.BLOCKS, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smeltingRecipeID(result, ingredient));
     }
 
     protected void blasting(RecipeCategory category, ItemLike result, ItemLike ingredient, float xp, int time) {
-        SimpleCookingRecipeBuilder.blasting(Ingredient.of(ingredient), category, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, blastingRecipeID(result, ingredient));
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(ingredient), category, CookingBookCategory.BLOCKS, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, blastingRecipeID(result, ingredient));
     }
 
     protected void blasting(RecipeCategory category, ItemLike result, TagKey<Item> ingredient, float xp, int time) {
-        SimpleCookingRecipeBuilder.blasting(tag(ingredient), category, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, blastingRecipeID(result, ingredient));
+        SimpleCookingRecipeBuilder.blasting(tag(ingredient), category, CookingBookCategory.BLOCKS, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, blastingRecipeID(result, ingredient));
     }
 
     protected void smoking(ItemLike result, ItemLike ingredient, float xp, int time) {
@@ -539,7 +540,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     protected void smoking(ItemLike result, TagKey<Item> ingredient, float xp, int time) {
-        SimpleCookingRecipeBuilder.blasting(tag(ingredient), RecipeCategory.FOOD, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smokingRecipeID(result, ingredient));
+        SimpleCookingRecipeBuilder.blasting(tag(ingredient), RecipeCategory.FOOD, CookingBookCategory.FOOD, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smokingRecipeID(result, ingredient));
     }
 
     protected ResourceKey<Recipe<?>> recipeID(ItemLike result, ItemLike material) {
