@@ -1,3 +1,6 @@
+## 1.0.1
+- mark compatible with 26.1.x
+
 ## 1.0.0
 - adjust wall head model locations
 - marked as stable
