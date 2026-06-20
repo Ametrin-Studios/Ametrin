@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
 @Mixin(BlockBehaviour.Properties.class)
@@ -48,7 +49,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow BlockBehaviour.StatePredicate isSuffocating;
     @Shadow BlockBehaviour.StatePredicate isViewBlocking;
     @Shadow BlockBehaviour.PostProcess postProcess;
-    @Shadow BlockBehaviour.StatePredicate emissiveRendering;
+    @Shadow Predicate<BlockState> emissiveRendering;
     @Shadow boolean dynamicShape;
     @Shadow FeatureFlagSet requiredFeatures;
     @Shadow BlockBehaviour.OffsetFunction offsetFunction;

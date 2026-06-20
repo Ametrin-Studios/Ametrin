@@ -9,14 +9,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class KeepStateRandomBlockSwapProcessor extends StructureProcessor {
+public class KeepStateRandomBlockSwapProcessor implements StructureProcessor {
     public static final MapCodec<KeepStateRandomBlockSwapProcessor> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
                     BuiltInRegistries.BLOCK.byNameCodec().fieldOf("condition").forGetter(processor -> (processor).condition),
                     Codec.FLOAT.fieldOf("chance").forGetter(processor -> processor.chance),
@@ -42,5 +40,7 @@ public class KeepStateRandomBlockSwapProcessor extends StructureProcessor {
     }
 
     @Override
-    protected @NotNull StructureProcessorType<?> getType() {return AmProcessorTypes.KEEP_STATE_RANDOM_BLOCK_SWAP;}
+    public MapCodec<? extends StructureProcessor> codec() {
+        return CODEC;
+    }
 }

@@ -1,7 +1,7 @@
 package com.ametrinstudios.ametrin.world.item;
 
 import com.ametrinstudios.ametrin.world.dimension.portal.PortalData;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;

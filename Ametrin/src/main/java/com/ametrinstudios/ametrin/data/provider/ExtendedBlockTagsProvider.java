@@ -3,20 +3,19 @@ package com.ametrinstudios.ametrin.data.provider;
 import com.ametrinstudios.ametrin.data.BlockTagProviderRule;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getBlockName;
-
 public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
-    public ArrayList<Block> excludedBlocks = new ArrayList<>();
+    public ArrayList<ResourceKey<Block>> excludedBlocks = new ArrayList<>();
     public ArrayList<BlockTagProviderRule> blockTagProviderRules = new ArrayList<>();
 
     public ExtendedBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String modID) {
@@ -24,46 +23,50 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
     }
 
     protected void runRules(DeferredRegister.Blocks blockRegistry) {
-        runRules(blockRegistry.getEntries().stream().map(Supplier::get));
+        runRules(blockRegistry.getEntries().stream());
     }
 
-    protected void runRules(Stream<? extends Block> blocks) {
-        blocks.forEach(block -> {
-            if (excludedBlocks.contains(block)) {
+    protected void runRules(Stream<DeferredHolder<Block, ? extends Block>> blocks) {
+        blocks.forEach(holder -> {
+            final var key = holder.getKey();
+
+            if (excludedBlocks.contains(holder.getKey())) {
                 return;
             }
-            final var name = getBlockName(block);
+
+            final var name = key.identifier().getPath();
+            final var block = holder.get();
 
             for (BlockTagProviderRule provider : blockTagProviderRules) {
-                provider.generate(block, name);
+                provider.generate(holder, name);
             }
 
             if (block instanceof FlowerPotBlock) {
-                tag(BlockTags.FLOWER_POTS).add(block);
+                tag(BlockTags.FLOWER_POTS).add(key);
             }
             if (block instanceof FireBlock) {
-                tag(BlockTags.FIRE).add(block);
+                tag(BlockTags.FIRE).add(key);
             }
             if (block instanceof CampfireBlock) {
-                tag(BlockTags.CAMPFIRES).add(block);
+                tag(BlockTags.CAMPFIRES).add(key);
             }
             if (block instanceof StandingSignBlock) {
-                tag(BlockTags.STANDING_SIGNS).add(block);
+                tag(BlockTags.STANDING_SIGNS).add(key);
             }
             if (block instanceof WallSignBlock) {
-                tag(BlockTags.WALL_SIGNS).add(block);
+                tag(BlockTags.WALL_SIGNS).add(key);
             }
             if (block instanceof CeilingHangingSignBlock) {
-                tag(BlockTags.CEILING_HANGING_SIGNS).add(block);
+                tag(BlockTags.CEILING_HANGING_SIGNS).add(key);
             }
             if (block instanceof WallHangingSignBlock) {
-                tag(BlockTags.WALL_HANGING_SIGNS).add(block);
+                tag(BlockTags.WALL_HANGING_SIGNS).add(key);
             }
             if (block instanceof CauldronBlock) {
-                tag(BlockTags.CAULDRONS).add(block);
+                tag(BlockTags.CAULDRONS).add(key);
             }
             if (block.defaultBlockState().canBeReplaced()) {
-                tag(BlockTags.REPLACEABLE).add(block);
+                tag(BlockTags.REPLACEABLE).add(key);
             }
         });
     }

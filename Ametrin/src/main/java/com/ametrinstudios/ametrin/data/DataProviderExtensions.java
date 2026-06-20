@@ -1,11 +1,11 @@
 package com.ametrinstudios.ametrin.data;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 import java.util.HashSet;
-import java.util.Objects;
 
 public final class DataProviderExtensions {
     /**
@@ -42,10 +42,18 @@ public final class DataProviderExtensions {
     }
 
     public static String getItemName(Item item) {
-        return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)).getPath();
+        return getItemKey(item).getPath();
     }
 
     public static String getBlockName(Block block) {
-        return Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block)).getPath();
+        return getBlockKey(block).getPath();
+    }
+
+    public static Identifier getItemKey(Item item) {
+        return BuiltInRegistries.ITEM.getKey(item);
+    }
+
+    public static Identifier getBlockKey(Block block) {
+        return BuiltInRegistries.BLOCK.getKey(block);
     }
 }
