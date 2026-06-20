@@ -1,3 +1,6 @@
+## 1.1.0
+- data gen changes for vanilla compatibility
+
 ## 1.0.1
 - mark compatible with 26.1.x
 

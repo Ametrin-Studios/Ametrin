@@ -1,6 +1,5 @@
 package com.ametrinstudios.ametrin.data.provider;
 
-import com.ametrinstudios.ametrin.data.BlockTagProviderRule;
 import net.minecraft.data.tags.BlockItemTagsProvider;
 import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.ResourceKey;
@@ -15,11 +14,12 @@ import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getItemKey;
 import static com.ametrinstudios.ametrin.data.DataProviderExtensions.isWooden;
 
 public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvider {
     public ArrayList<ResourceKey<Block>> excludedBlocks = new ArrayList<>();
-    public ArrayList<BlockTagProviderRule> blockItemTagProviderRules = new ArrayList<>();
+    public ArrayList<BlockItemTagProviderRule> blockItemTagProviderRules = new ArrayList<>();
 
     protected ExtendedBlockItemTagsProvider(Function<BlockItemTagId, CombinedAppender> tagSupplier) {
         super(tagSupplier);
@@ -43,10 +43,10 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
 
             final var name = key.identifier().getPath();
             final var block = holder.get();
-            final var blockItemId = BlockItemId.create(key.identifier(), key.identifier());
+            final var blockItemId = BlockItemId.create(key.identifier(), getItemKey(holder.get().asItem()));
 
             for (var provider : blockItemTagProviderRules) {
-                provider.generate(holder, name);
+                provider.generate(holder, blockItemId);
             }
 
             if (block instanceof StairBlock) {
