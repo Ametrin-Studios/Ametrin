@@ -3,7 +3,9 @@ package com.ametrinstudios.ametrin.data;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.HashSet;
 
@@ -50,10 +52,15 @@ public final class DataProviderExtensions {
     }
 
     public static Identifier getItemKey(Item item) {
-        return BuiltInRegistries.ITEM.getKey(item);
+        var key = BuiltInRegistries.ITEM.getKey(item);
+        if(key.getPath().equals("air") && key.getNamespace().equals("minecraft") && item != Items.AIR) throw new IllegalArgumentException("item " + item + "not found");
+        return key;
+
     }
 
     public static Identifier getBlockKey(Block block) {
-        return BuiltInRegistries.BLOCK.getKey(block);
+        var key = BuiltInRegistries.BLOCK.getKey(block);
+        if(key.getPath().equals("air") && key.getNamespace().equals("minecraft") && block != Blocks.AIR) throw new IllegalArgumentException("block " + block + "not found");
+        return key;
     }
 }

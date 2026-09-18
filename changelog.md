@@ -1,5 +1,6 @@
 ## 1.1.0
 - data gen changes for vanilla compatibility
+- 26.2 port
 
 ## 1.0.1
 - mark compatible with 26.1.x
