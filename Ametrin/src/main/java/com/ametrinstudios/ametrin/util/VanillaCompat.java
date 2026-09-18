@@ -1,26 +1,16 @@
 package com.ametrinstudios.ametrin.util;
 
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.neoforged.neoforge.registries.DeferredBlock;
-
-import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public final class VanillaCompat {
-    /**
-     * Registers FlowerPots
-     */
-    public static void addFlowerPot(Identifier plant, Supplier<? extends FlowerPotBlock> fullPot) {
-        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant, fullPot);
-    }
 
-    public static void addFlowerPot(DeferredBlock<? extends Block> plant, Supplier<? extends FlowerPotBlock> fullPot) {
-        addFlowerPot(plant.getId(), fullPot);
-    }
+    // covered by neo constructor ?
+//    public static void addFlowerPot(Identifier plant, Supplier<? extends FlowerPotBlock> fullPot) {
+//        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant, fullPot);
+//    }
 
     public interface Flammable {
         static void add(Block block, int encouragement, int flammability) {

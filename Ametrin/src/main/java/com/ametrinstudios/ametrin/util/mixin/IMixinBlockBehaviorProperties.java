@@ -17,4 +17,6 @@ public interface IMixinBlockBehaviorProperties {
     void setFeatureFlagSet(FeatureFlagSet featureFlags);
 
     void overrideDrops(DependantName<Block, Optional<ResourceKey<LootTable>>> drops);
+
+    void overrideDescriptionId(DependantName<Block, String> descriptionId);
 }

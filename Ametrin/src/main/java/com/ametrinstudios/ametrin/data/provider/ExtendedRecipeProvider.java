@@ -1,18 +1,14 @@
 package com.ametrinstudios.ametrin.data.provider;
 
-import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.triggers.CriteriaTriggers;
-import net.minecraft.advancements.triggers.ImpossibleTrigger;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
@@ -27,12 +23,7 @@ import net.minecraft.world.level.ItemLike;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
 public abstract class ExtendedRecipeProvider extends RecipeProvider {
@@ -41,8 +32,8 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
     protected String modID;
 
-    public ExtendedRecipeProvider(String modID, HolderLookup.Provider registries, RecipeOutput output, Set<Identifier> recipeSet) {
-        super(registries, output);
+    public ExtendedRecipeProvider(String modID, BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput, Set<Identifier> recipeSet) {
+        super(recipeOutput, advancementOutput);
         this.modID = modID;
         this.recipes = recipeSet;
     }
@@ -661,82 +652,5 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
             return Identifier.bySeparator(key, ':');
         }
         return Identifier.fromNamespaceAndPath(modID, key);
-    }
-
-    public static abstract class Runner implements DataProvider {
-        private final PackOutput packOutput;
-        private final CompletableFuture<HolderLookup.Provider> registries;
-        private final static Set<Identifier> recipes = Sets.newHashSet();
-
-        protected Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
-            this.packOutput = packOutput;
-            this.registries = registries;
-        }
-
-        @Override
-        public final CompletableFuture<?> run(CachedOutput output) {
-            return this.registries
-                    .thenCompose(
-                            provider -> {
-                                final var recipeProvider = this.packOutput.createRegistryElementsPathProvider(Registries.RECIPE);
-                                final var advancementsProvider = this.packOutput.createRegistryElementsPathProvider(Registries.ADVANCEMENT);
-                                final List<CompletableFuture<?>> list = new ArrayList<>();
-                                RecipeOutput recipeoutput = new RecipeOutput() {
-                                    @Override
-                                    @ParametersAreNonnullByDefault
-                                    public void accept(ResourceKey<Recipe<?>> id, Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, net.neoforged.neoforge.common.conditions.ICondition... conditions) {
-                                        if (!recipes.add(id.identifier())) {
-                                            throw new IllegalStateException("Duplicate recipe " + id.identifier());
-                                        } else {
-                                            this.saveRecipe(id, recipe, conditions);
-                                            if (advancementHolder != null) {
-                                                this.saveAdvancement(advancementHolder, conditions);
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public Advancement.Builder advancement() {
-                                        return Advancement.Builder.recipeAdvancement().parent(RecipeBuilder.ROOT_RECIPE_ADVANCEMENT);
-                                    }
-
-                                    @Override
-                                    public void includeRootAdvancement() {
-                                        AdvancementHolder advancementholder = Advancement.Builder.recipeAdvancement()
-                                                .addCriterion("impossible", CriteriaTriggers.IMPOSSIBLE.createCriterion(new ImpossibleTrigger.TriggerInstance()))
-                                                .build(RecipeBuilder.ROOT_RECIPE_ADVANCEMENT);
-                                        this.saveAdvancement(advancementholder);
-                                    }
-
-                                    private void saveRecipe(ResourceKey<Recipe<?>> key, Recipe<?> recipe) {
-                                        saveRecipe(key, recipe, new net.neoforged.neoforge.common.conditions.ICondition[0]);
-                                    }
-
-                                    private void saveRecipe(ResourceKey<Recipe<?>> key, Recipe<?> recipe, net.neoforged.neoforge.common.conditions.ICondition... conditions) {
-                                        list.add(
-                                                DataProvider.saveStable(output, provider, Recipe.CONDITIONAL_CODEC, Optional.of(new net.neoforged.neoforge.common.conditions.WithConditions<>(recipe, conditions)), recipeProvider.json(key.identifier()))
-                                        );
-                                    }
-
-                                    private void saveAdvancement(AdvancementHolder advancementHolder) {
-                                        saveAdvancement(advancementHolder, new net.neoforged.neoforge.common.conditions.ICondition[0]);
-                                    }
-
-                                    private void saveAdvancement(AdvancementHolder p_363148_, net.neoforged.neoforge.common.conditions.ICondition... conditions) {
-                                        list.add(
-                                                DataProvider.saveStable(
-                                                        output, provider, Advancement.CONDITIONAL_CODEC, Optional.of(new net.neoforged.neoforge.common.conditions.WithConditions<>(p_363148_.value(), conditions)), advancementsProvider.json(p_363148_.id())
-                                                )
-                                        );
-                                    }
-                                };
-                                this.createRecipeProvider(provider, recipeoutput, recipes).buildRecipes();
-                                return CompletableFuture.allOf(list.toArray(CompletableFuture[]::new));
-                            }
-                    );
-        }
-
-
-        protected abstract ExtendedRecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<Identifier> recipeSet);
     }
 }

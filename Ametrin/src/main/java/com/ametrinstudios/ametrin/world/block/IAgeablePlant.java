@@ -5,22 +5,21 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 
 public interface IAgeablePlant extends BonemealableBlock{
     int MAX_AGE = 3;
     IntegerProperty AGE = BlockStateProperties.AGE_3;
 
     void onHarvest(BlockState blockState, Level level, BlockPos blockPos, Player player);
-    @Override @ParametersAreNonnullByDefault
-    default boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState) { return isSparse(blockState); }
-    @Override @ParametersAreNonnullByDefault
-    default boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState) { return true; }
+    @Override
+    default boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState, BonemealSource source) { return isSparse(blockState); }
+    @Override
+    default boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState, BonemealSource source) { return true; }
 
     default boolean isSparse(BlockState blockState) { return isSparse(blockState.getValue(AGE)); }
     default boolean isSparse(int age) { return age < MAX_AGE; }

@@ -7,7 +7,6 @@ import com.ametrinstudios.ametrin_test.registry.TestTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BlockItemTagsProvider;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -17,7 +16,7 @@ public final class TestBlockTagsProvider extends ExtendedBlockTagsProvider {
     }
 
     @Override
-    protected void addTags(@NotNull HolderLookup.Provider provider) {
+    protected void addTags(HolderLookup.Provider provider) {
         new TestBlockItemTagsProvider(tags -> BlockItemTagsProvider.wrapForBlocks(tag(tags.block()))).run();
 
         runRules(TestBlocks.REGISTER);

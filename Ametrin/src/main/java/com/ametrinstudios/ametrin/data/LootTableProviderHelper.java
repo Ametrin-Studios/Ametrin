@@ -1,72 +1,74 @@
 package com.ametrinstudios.ametrin.data;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.tags.TagKey;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.entries.TagEntry;
+import net.minecraft.world.level.storage.loot.entries.UniformContainerBase;
 import net.minecraft.world.level.storage.loot.functions.*;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 public final class LootTableProviderHelper {
-    public static LootPoolSingletonContainer.Builder<?> item(ItemLike item) {
+    public static UniformContainerBase.Builder<?> item(ItemLike item) {
         return LootItem.lootTableItem(item);
     }
 
-    public static LootPoolSingletonContainer.Builder<?> item(ItemLike item, int weight, NumberProvider amount) {
+    public static UniformContainerBase.Builder<?> item(ItemLike item, int weight, Holder<ContextIntProvider> amount) {
         return item(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
     }
 
-    public static LootPoolSingletonContainer.Builder<?> tag(TagKey<Item> tagKey, int weight, NumberProvider amount) {
+    public static UniformContainerBase.Builder<?> tag(HolderSet<Item> tagKey, int weight, Holder<ContextIntProvider> amount) {
         return TagEntry.expandTag(tagKey).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
     }
 
-    public static LootPoolSingletonContainer.Builder<?> enchantedItem(ItemLike item, int weight, NumberProvider enchant, NumberProvider amount, HolderLookup.Provider provider) {
+    public static UniformContainerBase.Builder<?> enchantedItem(ItemLike item, int weight, Holder<ContextIntProvider> enchant, Holder<ContextIntProvider> amount, HolderGetter<Enchantment> provider) {
         return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(EnchantWithLevelsFunction.enchantWithLevels(provider, enchant));
     }
 
-    public static LootPoolSingletonContainer.Builder<?> enchantedItem(ItemLike item, int weight, NumberProvider amount, HolderLookup.Provider provider) {
+    public static UniformContainerBase.Builder<?> enchantedItem(ItemLike item, int weight, Holder<ContextIntProvider> amount, HolderGetter<Enchantment> provider) {
         return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(EnchantRandomlyFunction.randomApplicableEnchantment(provider));
     }
 
-    public static LootPoolSingletonContainer.Builder<?> suspiciousStew(int weight, NumberProvider amount) {
+    public static UniformContainerBase.Builder<?> suspiciousStew(int weight, Holder<ContextIntProvider> amount) {
         return LootItem.lootTableItem(Items.SUSPICIOUS_STEW).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(SetStewEffectFunction.stewEffect().withEffect(MobEffects.NIGHT_VISION, number(7, 10)).withEffect(MobEffects.JUMP_BOOST, number(7, 10)).withEffect(MobEffects.WEAKNESS, number(6, 8)).withEffect(MobEffects.BLINDNESS, number(5, 7)).withEffect(MobEffects.POISON, number(10, 20)).withEffect(MobEffects.SATURATION, number(7, 10)));
     }
 
-    public static LootPoolSingletonContainer.Builder<?> potion(int weight, Holder<Potion> potion, NumberProvider amount) {
+    public static UniformContainerBase.Builder<?> potion(int weight, Holder<Potion> potion, Holder<ContextIntProvider> amount) {
         return LootItem.lootTableItem(Items.POTION).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(SetPotionFunction.setPotion(potion));
     }
 
-    public static LootPoolSingletonContainer.Builder<?> splashPotion(int weight, Holder<Potion> potion, NumberProvider amount) {
+    public static UniformContainerBase.Builder<?> splashPotion(int weight, Holder<Potion> potion, Holder<ContextIntProvider> amount) {
         return LootItem.lootTableItem(Items.SPLASH_POTION).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(SetPotionFunction.setPotion(potion));
     }
 
-    public static LootPoolSingletonContainer.Builder<?> lingeringPotion(int weight, Holder<Potion> potion, NumberProvider amount) {
+    public static UniformContainerBase.Builder<?> lingeringPotion(int weight, Holder<Potion> potion, Holder<ContextIntProvider> amount) {
         return LootItem.lootTableItem(Items.LINGERING_POTION).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(SetPotionFunction.setPotion(potion));
     }
 
-    public static NumberProvider one() {
+    public static Holder<ContextIntProvider> one() {
         return number(1);
     }
 
-    public static NumberProvider number(int amount) {
-        return ConstantValue.exactly(amount);
+    @Deprecated // use the one in ContextIntProviders directly
+    public static Holder<ContextIntProvider> number(int amount) {
+        return ContextIntProviders.exactly(amount);
     }
 
-    public static NumberProvider number(int min, int max) {
-        return UniformGenerator.between(min, max);
+    @Deprecated // use the one in ContextIntProviders directly
+    public static Holder<ContextIntProvider> number(int min, int max) {
+        return ContextIntProviders.between(min, max);
     }
 
-    public static LootPool.Builder pool(NumberProvider rolls) {
+    public static LootPool.Builder pool(Holder<ContextIntProvider> rolls) {
         return LootPool.lootPool().setRolls(rolls);
     }
 }

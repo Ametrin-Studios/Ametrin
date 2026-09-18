@@ -7,11 +7,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SignItem;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,7 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
 
         registerRule((item, name) -> {
             if (item.get() instanceof BoatItem boat) {
-                if (boat.getDescriptionId().contains("chest")) {
+                if (name.contains("chest")) {
                     tag(ItemTags.CHEST_BOATS).add(item.getKey());
                 } else {
                     tag(ItemTags.BOATS).add(item.getKey());
@@ -39,14 +37,14 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
         });
 
         registerRule((item, name) -> {
-            if (item.get() instanceof SignItem) {
+            if (name.endsWith("_sign")) {
                 tag(ItemTags.SIGNS).add(item.getKey());
             }
         });
     }
 
     @Override
-    protected abstract void addTags(@NotNull HolderLookup.Provider provider);
+    protected abstract void addTags(HolderLookup.Provider provider);
 
     protected void runRules(DeferredRegister.Items register) {
         runRules(register.getEntries().stream());

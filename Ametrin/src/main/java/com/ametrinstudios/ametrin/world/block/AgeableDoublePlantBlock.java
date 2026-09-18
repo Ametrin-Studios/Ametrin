@@ -14,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.CommonHooks;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Supplier;
@@ -49,7 +49,7 @@ public class AgeableDoublePlantBlock extends SimpleDoublePlantBlock implements B
         setAgeInLevel(1, blockState, level, pos, player);
     }
 
-    @Override @NotNull @ParametersAreNonnullByDefault
+    @Override @ParametersAreNonnullByDefault
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(itemStack.is(Items.BONE_MEAL) && isSparse(blockState)){
             return InteractionResult.PASS;
@@ -102,21 +102,21 @@ public class AgeableDoublePlantBlock extends SimpleDoublePlantBlock implements B
         }
     }
 
-    @ParametersAreNonnullByDefault
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState) {
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState, BonemealSource source) {
         if(isFullyAged(blockState)) {return;}
         setAgeInLevel(blockState.getValue(AGE) + 1, blockState, level, pos, false);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> stateBuilder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
         super.createBlockStateDefinition(stateBuilder);
         stateBuilder.add(AGE);
     }
 
-    @Override @ParametersAreNonnullByDefault
-    public @NotNull ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) { return new ItemStack(item.get()); }
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) { return new ItemStack(item.get()); }
 
-    @Override @ParametersAreNonnullByDefault
+    @Override
     public boolean isRandomlyTicking(BlockState blockState) { return isSparse(blockState); }
 }

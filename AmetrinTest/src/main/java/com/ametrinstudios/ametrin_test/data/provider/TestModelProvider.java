@@ -8,7 +8,6 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.data.PackOutput;
-import org.jetbrains.annotations.NotNull;
 
 public final class TestModelProvider extends ExtendedModelProvider {
     public TestModelProvider(PackOutput output) {
@@ -16,7 +15,7 @@ public final class TestModelProvider extends ExtendedModelProvider {
     }
 
     @Override
-    protected void registerModels(@NotNull BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels) {
+    protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
         blockModels.createTrivialCube(TestBlocks.TEST_BLOCK.get());
         blockModels.woodProvider(TestBlocks.TEST_LOG.get()).log(TestBlocks.TEST_LOG.get());
 

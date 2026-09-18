@@ -2,17 +2,19 @@ package com.ametrinstudios.ametrin_test.data.provider;
 
 import com.ametrinstudios.ametrin.data.provider.ExtendedRecipeProvider;
 import com.ametrinstudios.ametrin_test.AmetrinTestMod;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.MultiRegistryBootstrap;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.crafting.Recipe;
 
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 public final class TestRecipeProvider extends ExtendedRecipeProvider {
-    public TestRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<Identifier> recipeSet) {
+    public TestRecipeProvider(BootstrapContext<Recipe<?>> provider, BootstrapContext<Advancement> output, Set<Identifier> recipeSet) {
         super(AmetrinTestMod.MOD_ID, provider, output, recipeSet);
     }
 
@@ -22,19 +24,17 @@ public final class TestRecipeProvider extends ExtendedRecipeProvider {
 
     }
 
-    public static class Runner extends ExtendedRecipeProvider.Runner {
-        public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> providerCompletableFuture) {
-            super(output, providerCompletableFuture);
-        }
+    public static MultiRegistryBootstrap create() {
+        return new MultiRegistryBootstrap() {
+            @Override
+            public Set<ResourceKey<? extends Registry<?>>> requestedRegistries() {
+                return Set.of(Registries.RECIPE, Registries.ADVANCEMENT);
+            }
 
-        @Override
-        protected ExtendedRecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput output, Set<Identifier> recipeSet) {
-            return new TestRecipeProvider(provider, output, recipeSet);
-        }
-
-        @Override
-        public @NotNull String getName() {
-            return "Ametrin Test Recipes";
-        }
+            @Override
+            public void run(MultiRegistryBootstrap.BootstrapGetter registries) {
+                new TestRecipeProvider(registries.get(Registries.RECIPE), registries.get(Registries.ADVANCEMENT), Set.of()).buildRecipes();
+            }
+        };
     }
 }
