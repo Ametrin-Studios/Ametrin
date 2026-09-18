@@ -7,23 +7,7 @@ Feel free to join our [Discord Server](https://discord.com/invite/hwA9dd5bVh) in
 
 ## Docs
 ### Data Providers
-#### Registering
-``DataProviderHelper`` cuts down boilerplate
-```java
-public static void gatherData(GatherDataEvent event) {
-    event.createProvider(TestBlockStateProvider::new);
-    event.createProvider(TestItemModelProvider::new);
-    event.add(TestRecipeProvider::new);
-
-    event.createBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
-
-    event.createProvider(CustomLootTableProvider.builder()
-            .addBlockProvider(TestBlockLootProvider::new)
-            //...
-            .addChestProvider(TestLootTableProvider::new)::build);
-
-}
-```
+- containing hundreds of small helper methods and some extra features
 
 #### ExtendedModelProvider
 provides various helper methods
@@ -35,14 +19,16 @@ programArguments.addAll '--mod', project.mod_id, ..., '--existing-mod', 'ametrin
 #### ExtendedBlockTagsProvider
 #### ExtendedItemTagsProvider
 #### ExtendedRecipeProvider
-#### LootTableProviders
+- automatically chooses a different recipe id when the generated one already exist
+#### LootTableSubProviders
 #### ExtendedLanguageProvider
+- `FamilyBuilder`
 
 ### Nether-like Portals
 to create a nether-like portal you need:
 - a custom portal block (use `PortalBlock`)
 - Point of Interest matching the portal block
-- a default frame block state (what ever you want)
+- a default frame block state (whatever you want)
 - a tag matching all valid frame blocks
 ```java
 public static final PortalData TEST_PORTAL = 

@@ -17,7 +17,8 @@ import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourProper
 
 @SuppressWarnings("unused")
 public final class BlockRegisterHelper {
-    private BlockRegisterHelper() { }
+    private BlockRegisterHelper() {
+    }
 
     public static final int STONE_BUTTON_TICKS_PRESSED = 20;
     public static final int WOOD_BUTTON_TICKS_PRESSED = 30;
@@ -31,16 +32,35 @@ public final class BlockRegisterHelper {
     }
 
     public static Function<BlockBehaviour.Properties, StairBlock> stair(Supplier<BlockState> parent) {
-        return properties -> new StairBlock(parent.get(), properties);
+        return properties -> new StairBlock(parent.get(), properties.isViewBlocking(Blocks.NEAR_PLANE_INTERSECTS_OUTLINE));
+    }
+
+    public static BlockBehaviour.Properties stairProperties(Block base) {
+        return BlockBehaviour.Properties.ofFullCopy(base).isViewBlocking(Blocks.NEAR_PLANE_INTERSECTS_OUTLINE);
+    }
+
+    public static BlockBehaviour.Properties slabProperties(Block base) {
+        return BlockBehaviour.Properties.ofFullCopy(base).isViewBlocking(Blocks.NEAR_PLANE_INTERSECTS_OUTLINE);
+    }
+
+    public static BlockBehaviour.Properties wallProperties(Block base) {
+        return BlockBehaviour.Properties.ofFullCopy(base);
+    }
+
+    public static BlockBehaviour.Properties fenceProperties(Block base) {
+        return BlockBehaviour.Properties.ofFullCopy(base);
+    }
+
+    public static BlockBehaviour.Properties fenceGateProperties(Block base) {
+        return BlockBehaviour.Properties.ofFullCopy(base).forceSolidOn();
     }
 
     private static final Supplier<FlowerPotBlock> EMPTY_POT_SUPPLIER = () -> (FlowerPotBlock) Blocks.FLOWER_POT;
+
     public static Function<BlockBehaviour.Properties, FlowerPotBlock> potted(Supplier<Block> main) {
-        return properties -> new FlowerPotBlock(
-                EMPTY_POT_SUPPLIER, main,
-                properties
-        );
+        return properties -> new FlowerPotBlock(EMPTY_POT_SUPPLIER, main, properties);
     }
+
     public static BlockBehaviour.Properties buttonProperties() {
         return BlockBehaviour.Properties.of().noCollision().strength(0.5f).pushReaction(PushReaction.POPPED);
     }
