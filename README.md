@@ -1,9 +1,17 @@
 ## QoL API by Ametrin Studios
 - [Visit CurseForge page](https://www.curseforge.com/minecraft/mc-mods/ametrin)
 - [Visit modrinth page](https://modrinth.com/mod/ametrin)
-- [How to add to your project](https://github.com/Ametrin-Studios/maven)
 
 Feel free to join our [Discord Server](https://discord.com/invite/hwA9dd5bVh) in case you got any questions. We're always there to help!
+
+## Install
+- add the [Ametrin maven](https://github.com/Ametrin-Studios/maven)
+```gradle
+dependencies {
+    implementation "com.ametrinstudios:ametrin:${minecraft_version}-${ametrin_version}"
+    interfaceInjectionData "com.ametrinstudios:ametrin:${minecraft_version}-${ametrin_version}"
+}
+```
 
 ## Docs
 ### Data Providers

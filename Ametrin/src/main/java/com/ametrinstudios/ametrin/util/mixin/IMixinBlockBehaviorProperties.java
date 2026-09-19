@@ -10,13 +10,23 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import java.util.Optional;
 
 public interface IMixinBlockBehaviorProperties {
-    BlockBehaviour.Properties copy();
+    default BlockBehaviour.Properties copy() {
+        throw new AssertionError("Implemented via Mixin");
+    }
 
-    void setOffsetFunction(BlockBehaviour.OffsetFunction func);
+    default void setOffsetFunction(BlockBehaviour.OffsetFunction func) {
+        throw new AssertionError("Implemented via Mixin");
+    }
 
-    void setFeatureFlagSet(FeatureFlagSet featureFlags);
+    default void setFeatureFlagSet(FeatureFlagSet featureFlags) {
+        throw new AssertionError("Implemented via Mixin");
+    }
 
-    void overrideDrops(DependantName<Block, Optional<ResourceKey<LootTable>>> drops);
+    default void overrideDrops(DependantName<Block, Optional<ResourceKey<LootTable>>> drops) {
+        throw new AssertionError("Implemented via Mixin");
+    }
 
-    void overrideDescriptionId(DependantName<Block, String> descriptionId);
+    default void overrideDescriptionId(DependantName<Block, String> descriptionId) {
+        throw new AssertionError("Implemented via Mixin");
+    }
 }

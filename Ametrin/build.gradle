@@ -33,7 +33,9 @@ neoForge {
     validateAccessTransformers = true
 
     interfaceInjectionData.from "interfaces.json"
-
+    interfaceInjectionData {
+        publish file("interfaces.json")
+    }
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)

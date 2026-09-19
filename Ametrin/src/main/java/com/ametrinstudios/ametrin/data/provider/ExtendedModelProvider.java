@@ -126,10 +126,4 @@ public abstract class ExtendedModelProvider extends ModelProvider {
                 )
         );
     }
-
-//    public BlockModelGenerators.BlockFamilyProvider familyWithExistingFullBlock(BlockModelGenerators blockModels, Block fullBlock, TextureMapping mapping) {
-//        var provider = blockModels.new BlockFamilyProvider(TextureMapping.cube(fullBlock));
-//        provider.fullBlock = BlockModelGenerators.plainModel(ModelLocationUtils.getModelLocation(fullBlock));
-//        return provider;
-//    }
 }
