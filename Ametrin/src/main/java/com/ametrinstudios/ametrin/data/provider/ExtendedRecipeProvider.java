@@ -105,38 +105,6 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     @Override
     protected abstract void buildRecipes();
 
-    @Deprecated
-    protected void stairSlabWallButton(@Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, boolean hasStonecutting) {
-        if (stair != null) {
-            stairs(stair, material, hasStonecutting);
-        }
-        if (slab != null) {
-            slab(slab, material, hasStonecutting);
-        }
-        if (wall != null) {
-            wall(wall, material, hasStonecutting);
-        }
-        if (button != null) {
-            button(button, material, hasStonecutting);
-        }
-    }
-
-    @Deprecated
-    protected void stairSlabWallButton(@Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, ItemLike... additionalStonecuttingMaterials) {
-        if (stair != null) {
-            stairs(stair, material, additionalStonecuttingMaterials);
-        }
-        if (slab != null) {
-            slab(slab, material, additionalStonecuttingMaterials);
-        }
-        if (wall != null) {
-            wall(wall, material, additionalStonecuttingMaterials);
-        }
-        if (button != null) {
-            button(button, material, additionalStonecuttingMaterials);
-        }
-    }
-
     protected void stairs(ItemLike stair, ItemLike material, boolean hasStonecutting) {
         stairBuilder(stair, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(stair, material));
         if (hasStonecutting) {
@@ -758,14 +726,15 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     protected Identifier locate(String key) {
-        if (key.contains(":")) {
-            return Identifier.bySeparator(key, ':');
-        }
-        return Identifier.fromNamespaceAndPath(modID, key);
+        return Identifier.parse(key);
     }
 
     protected FamilyBuilder family(BlockFamily family) {
         return new FamilyBuilder(family, DEFAULT_FEATURE_FLAG_SET);
+    }
+
+    protected FamilyBuilder family(BlockFamily family, FeatureFlagSet featureFlags) {
+        return new FamilyBuilder(family, featureFlags);
     }
 
     protected final class FamilyBuilder {

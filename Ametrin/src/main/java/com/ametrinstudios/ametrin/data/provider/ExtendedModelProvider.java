@@ -18,7 +18,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -43,7 +42,7 @@ public abstract class ExtendedModelProvider extends ModelProvider {
     }
 
     @Override
-    protected abstract void registerModels(@NotNull BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels);
+    protected abstract void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels);
 
 
     /** create a custom head model<br>

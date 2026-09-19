@@ -11,10 +11,9 @@ import java.util.function.Function;
 
 @Mixin(BlockModelGenerators.class)
 public abstract class MixinBlockModelGenerators implements IExtendedBlockModelGenerators {
-
     @Override
     public BlockModelGenerators.BlockFamilyProvider familyWithExistingFullBlock(Block fullBlock, TextureMapping mapping) {
-        var provider = ((BlockModelGenerators)(Object)this).new BlockFamilyProvider(mapping);
+        var provider = ((BlockModelGenerators) (Object) this).new BlockFamilyProvider(mapping);
         provider.fullBlock = BlockModelGenerators.plainModel(ModelLocationUtils.getModelLocation(fullBlock));
         return provider;
     }
