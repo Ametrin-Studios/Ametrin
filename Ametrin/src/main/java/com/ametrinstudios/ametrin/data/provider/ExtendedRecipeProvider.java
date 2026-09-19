@@ -43,16 +43,16 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static final FeatureFlagSet DEFAULT_FEATURE_FLAG_SET = FeatureFlagSet.of(FeatureFlags.VANILLA);
 
     private static final Map<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider> STONECUTTER_RECIPE_BUILDERS = ImmutableMap.<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider>builder()
-            .put(BlockFamily.Variant.SLAB, (context, result, material) -> ((ExtendedRecipeProvider)context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 2))
-            .put(BlockFamily.Variant.STAIRS, (context, result, material) -> ((ExtendedRecipeProvider)context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
-            .put(BlockFamily.Variant.BRICKS, (context, result, material) -> ((ExtendedRecipeProvider)context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
-            .put(BlockFamily.Variant.WALL, (context, result, material) -> ((ExtendedRecipeProvider)context).stonecutting(RecipeCategory.DECORATIONS, result, material, 1))
-            .put(BlockFamily.Variant.CHISELED, (context, result, material) -> ((ExtendedRecipeProvider)context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
-            .put(BlockFamily.Variant.POLISHED, (context, result, material) -> ((ExtendedRecipeProvider)context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
-            .put(BlockFamily.Variant.CUT, (context, result, material) -> ((ExtendedRecipeProvider)context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
-            .put(BlockFamily.Variant.TILES, (context, result, material) -> ((ExtendedRecipeProvider)context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
-            .put(BlockFamily.Variant.PILLAR, (context, result, material) -> ((ExtendedRecipeProvider)context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
-            .put(BlockFamily.Variant.COBBLED, (context, result, material) -> ((ExtendedRecipeProvider)context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.SLAB, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 2))
+            .put(BlockFamily.Variant.STAIRS, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.BRICKS, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.WALL, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.DECORATIONS, result, material, 1))
+            .put(BlockFamily.Variant.CHISELED, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.POLISHED, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.CUT, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.TILES, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.PILLAR, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.COBBLED, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
             .build();
 
     protected String modID;
@@ -61,6 +61,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     public ExtendedRecipeProvider(String modID, BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput, Stream<BlockFamily> knownBlockFamilies) {
         this(modID, recipeOutput, advancementOutput, knownBlockFamilies.collect(Collectors.toMap(BlockFamily::getBaseBlock, Function.identity())));
     }
+
     public ExtendedRecipeProvider(String modID, BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput, Map<Block, BlockFamily> knownBlockFamilies) {
         super(recipeOutput, advancementOutput);
         this.modID = modID;
@@ -564,6 +565,28 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         });
     }
 
+    protected void generateSmeltingConversionRecipes(BlockFamily resultFamily, BlockFamily baseFamily, FeatureFlagSet flagSet) {
+        resultFamily.getVariants().forEach((variant, result) -> {
+            if (result.requiredFeatures().isSubsetOf(flagSet)) {
+                var base = baseFamily.get(variant);
+                if (base != null && base.requiredFeatures().isSubsetOf(flagSet)) {
+                    smelting(variant == BlockFamily.Variant.WALL ? RecipeCategory.DECORATIONS : RecipeCategory.BUILDING_BLOCKS, result, base, 0.1F, 200);
+                }
+            }
+        });
+    }
+
+    protected void generateStonecuttingConversionRecipes(BlockFamily resultFamily, BlockFamily baseFamily, FeatureFlagSet flagSet) {
+        resultFamily.getVariants().forEach((variant, result) -> {
+            if (result.requiredFeatures().isSubsetOf(flagSet)) {
+                var base = baseFamily.get(variant);
+                if (base != null && base.requiredFeatures().isSubsetOf(flagSet)) {
+                    stonecutting(variant == BlockFamily.Variant.WALL ? RecipeCategory.DECORATIONS : RecipeCategory.BUILDING_BLOCKS, result, base, 1);
+                }
+            }
+        });
+    }
+
     private void generateCraftingRecipe(BlockFamily family, BlockFamily.Variant variant, Block result, ItemLike base) {
         var recipeFunction = SHAPE_BUILDERS.get(variant);
         if (recipeFunction != null) {
@@ -739,5 +762,38 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
             return Identifier.bySeparator(key, ':');
         }
         return Identifier.fromNamespaceAndPath(modID, key);
+    }
+
+    protected FamilyBuilder family(BlockFamily family) {
+        return new FamilyBuilder(family, DEFAULT_FEATURE_FLAG_SET);
+    }
+
+    protected final class FamilyBuilder {
+        private final BlockFamily family;
+        private final FeatureFlagSet featureFlags;
+
+        public FamilyBuilder(BlockFamily family, FeatureFlagSet featureFlags) {
+            this.family = family;
+            this.featureFlags = featureFlags;
+        }
+
+        public FamilyBuilder generate() {
+            generateRecipes(family, featureFlags);
+            return this;
+        }
+
+        public FamilyBuilder generateStonecuttingConversions(BlockFamily baseFamily) {
+            generateStonecuttingConversionRecipes(family, baseFamily, featureFlags);
+
+            family.getVariants().forEach((variant, block) -> {
+                generateStonecutterRecipe(family, variant, getBaseBlockForCrafting(baseFamily, variant));
+            });
+            return this;
+        }
+
+        public FamilyBuilder generateSmeltingConversions(BlockFamily baseFamily) {
+            generateSmeltingConversionRecipes(family, baseFamily, featureFlags);
+            return this;
+        }
     }
 }

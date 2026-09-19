@@ -1,5 +1,6 @@
 package com.ametrinstudios.ametrin.data.provider;
 
+import com.ametrinstudios.ametrin.data.DataProviderExtensions;
 import net.minecraft.data.tags.BlockItemTagsProvider;
 import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.ResourceKey;
@@ -125,61 +126,7 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
         });
     }
 
-//    public static class BlockToItemConverter implements TagAppender<Block, Block> {
-//        private final TagAppender<Item, Item> itemAppender;
-//
-//        public BlockToItemConverter(TagAppender<Item, Item> itemAppender) {
-//            this.itemAppender = itemAppender;
-//        }
-//
-//        public @NotNull TagAppender<Block, Block> add(Block block) {
-//            this.itemAppender.add(Objects.requireNonNull(block.asItem()));
-//            return this;
-//        }
-//
-//        public @NotNull TagAppender<Block, Block> addOptional(Block block) {
-//            this.itemAppender.addOptional(Objects.requireNonNull(block.asItem()));
-//            return this;
-//        }
-//
-//        private static TagKey<Item> blockTagToItemTag(TagKey<Block> tagKey) {
-//            return TagKey.create(Registries.ITEM, tagKey.location());
-//        }
-//
-//        @Override
-//        public @NotNull TagAppender<Block, Block> addTag(@NotNull TagKey<Block> tagKey) {
-//            this.itemAppender.addTag(blockTagToItemTag(tagKey));
-//            return this;
-//        }
-//
-//        @Override
-//        public @NotNull TagAppender<Block, Block> addOptionalTag(@NotNull TagKey<Block> tagKey) {
-//            this.itemAppender.addOptionalTag(blockTagToItemTag(tagKey));
-//            return this;
-//        }
-//
-//        @Override
-//        public @NotNull TagAppender<Block, Block> add(@NotNull TagEntry entry) {
-//            itemAppender.add(entry);
-//            return this;
-//        }
-//
-//        @Override
-//        public @NotNull TagAppender<Block, Block> replace(boolean value) {
-//            itemAppender.replace(value);
-//            return this;
-//        }
-//
-//        @Override
-//        public @NotNull TagAppender<Block, Block> remove(Block block) {
-//            itemAppender.remove(block.asItem());
-//            return this;
-//        }
-//
-//        @Override
-//        public @NotNull TagAppender<Block, Block> remove(@NotNull TagKey<Block> tag) {
-//            itemAppender.remove(blockTagToItemTag(tag));
-//            return this;
-//        }
-//    }
+    public void tagColorCollection(ColorCollection<BlockItemId> items) {
+        ColorCollection.zipApply(ColorCollection.VALUES, items, (color, item) -> tag(DataProviderExtensions.getColorBlockItemTag(color)).add(item));
+    }
 }
