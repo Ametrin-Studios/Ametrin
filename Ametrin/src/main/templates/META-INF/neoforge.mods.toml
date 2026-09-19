@@ -22,7 +22,7 @@ file="${mod_id}.base.cfg"
 [[dependencies.${mod_id}]] #optional
     modId="neoforge" #mandatory
     type="required"
-    versionRange="[${neo_version},)" #mandatory
+    versionRange="${neo_version_range}" #mandatory
     ordering="NONE"
     side="BOTH"
 

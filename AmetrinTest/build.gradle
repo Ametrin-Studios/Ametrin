@@ -73,7 +73,6 @@ repositories {
 dependencies {
     implementation project(":Ametrin")
     interfaceInjectionData project(":Ametrin")
-//    localRuntime "curse.maven:emi-580555:5793016"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
@@ -81,6 +80,8 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
             neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+
 
             mod_id                 : mod_id,
             mod_name               : mod_name,
