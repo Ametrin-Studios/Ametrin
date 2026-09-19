@@ -1,6 +1,7 @@
 ## 1.2.0
 - add `ExtendedLootSubProvider` (provides common `HolderGetter`s)
 - `ExtendedRecipeProvider` takes a `Map<Block, BlockFamily>` and patches vanilla methods to work with custom families 
+- `BlockModelGenerators.familyWithExistingFullBlock` overloads with texture mappings
 - remove `CustomLootTableProvider` (use vanilla `LootTableProvider` directly)
 - remove `VanillaCompat.addFlowerPot`
 - disabled tree API (Vanilla tree generation should not be able to do the same)
