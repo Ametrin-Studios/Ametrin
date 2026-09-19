@@ -1,6 +1,7 @@
 ## 1.2.0
 - add `ExtendedLootSubProvider` (provides common `HolderGetter`s)
 - add `ExtendedRecipeProvider.family` and helper for stonecutting/smelting conversion recipes between families
+- add `ExtendedLanguageProvider.addHumanized` APIs
 - `ExtendedRecipeProvider` takes a `Map<Block, BlockFamily>` and patches vanilla methods to work with custom families 
 - `BlockModelGenerators.familyWithExistingFullBlock` overloads with texture mappings
 - remove `CustomLootTableProvider` (use vanilla `LootTableProvider` directly)
