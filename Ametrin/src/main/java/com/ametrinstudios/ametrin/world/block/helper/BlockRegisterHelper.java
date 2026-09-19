@@ -13,8 +13,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
-import static com.ametrinstudios.ametrin.world.block.helper.BlockBehaviourPropertiesHelper.copyProperties;
-
 @SuppressWarnings("unused")
 public final class BlockRegisterHelper {
     private BlockRegisterHelper() {
@@ -66,15 +64,15 @@ public final class BlockRegisterHelper {
     }
 
     public static BlockBehaviour.Properties bushProperties() {
-        return copyProperties(Blocks.SWEET_BERRY_BUSH);
+        return BlockBehaviour.Properties.ofFullCopy(Blocks.SWEET_BERRY_BUSH);
     }
 
     public static BlockBehaviour.Properties pottedProperties() {
-        return copyProperties(Blocks.POTTED_OAK_SAPLING);
+        return BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_OAK_SAPLING);
     }
 
     public static BlockBehaviour.Properties saplingProperties() {
-        return copyProperties(Blocks.OAK_SAPLING);
+        return BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING);
     }
 
     public static BlockBehaviour.Properties woodenPressurePlateProperties() {
@@ -97,6 +95,7 @@ public final class BlockRegisterHelper {
         return (state) -> state.getValue(BlockStateProperties.LIT) ? lightLevel.applyAsInt(state) : 0;
     }
 
+    @Deprecated
     public static ToIntFunction<BlockState> emission(int lightLevel) {
         return (state) -> lightLevel;
     }

@@ -10,7 +10,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -21,12 +20,12 @@ public class AbstractHeadBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public @NotNull FluidState getFluidState(BlockState blockState) {
+    public FluidState getFluidState(BlockState blockState) {
         return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
     }
     @Override @ParametersAreNonnullByDefault
     public boolean isPathfindable(BlockState blockState, PathComputationType pathType) { return false; }
 
     @Override @ParametersAreNonnullByDefault
-    public @NotNull VoxelShape getOcclusionShape(BlockState blockState) { return Shapes.empty(); }
+    public VoxelShape getOcclusionShape(BlockState blockState) { return Shapes.empty(); }
 }

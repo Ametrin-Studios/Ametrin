@@ -32,6 +32,8 @@ neoForge {
     accessTransformers = project.files('src/main/resources/ametrin.base.cfg')
     validateAccessTransformers = true
 
+    interfaceInjectionData.from "interfaces.json"
+
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)

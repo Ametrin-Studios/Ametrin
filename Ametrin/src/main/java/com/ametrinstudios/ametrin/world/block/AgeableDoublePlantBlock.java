@@ -39,9 +39,9 @@ public class AgeableDoublePlantBlock extends SimpleDoublePlantBlock implements B
         registerDefaultState(stateDefinition.any().setValue(AGE, 0).setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
-    public void onHarvest(BlockState blockState, Level level, BlockPos pos, Player player){
+    public void onHarvest(BlockState blockState, Level level, BlockPos pos, Player player) {
         int dropAmount = 1;
-        if(BonusDrop > 0){
+        if (BonusDrop > 0) {
             dropAmount += level.getRandom().nextInt(BonusDrop);
         }
         popResource(level, pos, new ItemStack(asItem(), dropAmount));
@@ -49,9 +49,10 @@ public class AgeableDoublePlantBlock extends SimpleDoublePlantBlock implements B
         setAgeInLevel(1, blockState, level, pos, player);
     }
 
-    @Override @ParametersAreNonnullByDefault
+    @Override
+    @ParametersAreNonnullByDefault
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if(itemStack.is(Items.BONE_MEAL) && isSparse(blockState)){
+        if (itemStack.is(Items.BONE_MEAL) && isSparse(blockState)) {
             return InteractionResult.PASS;
         }
         if (itemStack.is(Items.BOWL) && isFullyAged(blockState)) {
@@ -63,48 +64,55 @@ public class AgeableDoublePlantBlock extends SimpleDoublePlantBlock implements B
     }
 
 
-    @Override @ParametersAreNonnullByDefault
+    @Override
+    @ParametersAreNonnullByDefault
     public void randomTick(BlockState currentState, ServerLevel level, BlockPos pos, RandomSource random) {
-        if(currentState.getValue(HALF) == DoubleBlockHalf.UPPER) { return; }
+        if (currentState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+            return;
+        }
 
         int currentAge = currentState.getValue(AGE);
-        if (isSparse(currentAge) && CommonHooks.canCropGrow(level, pos, currentState,random.nextInt(5) == 0)) {
-            setAgeInLevel(currentAge+1, currentState, level, pos, true);
+        if (isSparse(currentAge) && CommonHooks.canCropGrow(level, pos, currentState, random.nextInt(5) == 0)) {
+            setAgeInLevel(currentAge + 1, currentState, level, pos, true);
         }
     }
 
-    protected void setAgeInLevel(int age, BlockState blockState, Level level, BlockPos pos, Player player){
+    protected void setAgeInLevel(int age, BlockState blockState, Level level, BlockPos pos, Player player) {
         setAgeSingle(age, blockState, level, pos, player);
 
         var otherPos = (blockState.getValue(HALF) == DoubleBlockHalf.LOWER) ? pos.above() : pos.below();
         setAgeSingle(age, level.getBlockState(otherPos), level, otherPos, player);
     }
+
     private void setAgeSingle(int age, BlockState blockState, Level level, BlockPos pos, Player player) {
         var newState = blockState.setValue(AGE, age);
         level.setBlock(pos, newState, 2);
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
     }
 
-    protected void setAgeInLevel(int age, BlockState blockState, Level level, BlockPos pos, boolean triggerEvents){
+    protected void setAgeInLevel(int age, BlockState blockState, Level level, BlockPos pos, boolean triggerEvents) {
         setAgeSingle(age, blockState, level, pos, triggerEvents, triggerEvents);
 
         var otherPos = (blockState.getValue(HALF) == DoubleBlockHalf.LOWER) ? pos.above() : pos.below();
         setAgeSingle(age, level.getBlockState(otherPos), level, otherPos, triggerEvents, triggerEvents);
     }
+
     private void setAgeSingle(int age, BlockState blockState, Level level, BlockPos pos, boolean fireChangeEvent, boolean fireGrowHook) {
         var newState = blockState.setValue(AGE, age);
         level.setBlock(pos, newState, 2);
-        if(fireGrowHook) {
+        if (fireGrowHook) {
             CommonHooks.fireCropGrowPost(level, pos, newState);
         }
-        if(fireChangeEvent) {
+        if (fireChangeEvent) {
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newState));
         }
     }
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState, BonemealSource source) {
-        if(isFullyAged(blockState)) {return;}
+        if (isFullyAged(blockState)) {
+            return;
+        }
         setAgeInLevel(blockState.getValue(AGE) + 1, blockState, level, pos, false);
     }
 
@@ -115,8 +123,12 @@ public class AgeableDoublePlantBlock extends SimpleDoublePlantBlock implements B
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) { return new ItemStack(item.get()); }
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+        return new ItemStack(item.get());
+    }
 
     @Override
-    public boolean isRandomlyTicking(BlockState blockState) { return isSparse(blockState); }
+    public boolean isRandomlyTicking(BlockState blockState) {
+        return isSparse(blockState);
+    }
 }

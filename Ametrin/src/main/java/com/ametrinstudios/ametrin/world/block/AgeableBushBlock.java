@@ -52,7 +52,9 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
         }
     }
 
-    public boolean isRandomlyTicking(BlockState blockState) {return isSparse(blockState);}
+    public boolean isRandomlyTicking(BlockState blockState) {
+        return isSparse(blockState);
+    }
 
     @Override
     public void randomTick(BlockState blockState, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -67,7 +69,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
 
     public void onHarvest(BlockState blockState, Level level, BlockPos pos, Player player) {
         int dropAmount = 1;
-        if(BonusDrop > 0){
+        if (BonusDrop > 0) {
             dropAmount += level.getRandom().nextInt(BonusDrop);
         }
         popResource(level, pos, new ItemStack(asItem(), dropAmount));
@@ -78,7 +80,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     }
 
     @Override
-    protected InteractionResult  useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         return isSparse(blockState) && itemStack.is(Tags.Items.FERTILIZERS)
                 ? InteractionResult.PASS
                 : super.useItemOn(itemStack, blockState, level, pos, player, hand, hitResult);
@@ -86,7 +88,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if(isSparse(blockState)){
+        if (isSparse(blockState)) {
             return super.useWithoutItem(blockState, level, pos, player, hitResult);
         }
         onHarvest(blockState, level, pos, player);
@@ -99,14 +101,24 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState, BonemealSource source) {
-        if(isFullyAged(blockState)) {return;}
+        if (isFullyAged(blockState)) {
+            return;
+        }
         level.setBlock(pos, blockState.setValue(AGE, Math.min(MAX_AGE, blockState.getValue(AGE) + 1)), UPDATE_CLIENTS);
     }
 
     @Override
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return true;}
+    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return true;
+    }
+
     @Override
-    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 60;}
+    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return 60;
+    }
+
     @Override
-    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 100;}
+    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return 100;
+    }
 }

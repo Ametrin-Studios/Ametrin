@@ -1,0 +1,3 @@
+{
+  "net/minecraft/world/level/block/state/BlockBehaviour$Properties": ["com/ametrinstudios/ametrin/util/mixin/IMixinBlockBehaviorProperties"]
+}

@@ -13,6 +13,12 @@ issueTrackerURL="https://github.com/Ametrin-Studios/Ametrin/issues" #optional
     #displayTest="MATCH_VERSION" #optional
     description='''${mod_description}'''
 
+[[mixins]]
+config="${mod_id}.mixins.json"
+
+[[accessTransformers]]
+file="${mod_id}.base.cfg"
+
 [[dependencies.${mod_id}]] #optional
     modId="neoforge" #mandatory
     type="required"
@@ -26,9 +32,3 @@ issueTrackerURL="https://github.com/Ametrin-Studios/Ametrin/issues" #optional
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
-
-[[mixins]]
-    config="${mod_id}.mixins.json"
-
-[[accessTransformers]]
-    file="${mod_id}.base.cfg"
