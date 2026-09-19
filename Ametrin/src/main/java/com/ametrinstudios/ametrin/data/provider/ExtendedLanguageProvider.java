@@ -11,6 +11,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public abstract class ExtendedLanguageProvider extends LanguageProvider {
     public ExtendedLanguageProvider(PackOutput output, String mod_id, String locale) {
         super(output, mod_id, locale);
+        if(locale.contains("-")) throw new IllegalStateException("locals should contain _ not -");
     }
 
     protected void add(ItemLike itemLike, String name) {

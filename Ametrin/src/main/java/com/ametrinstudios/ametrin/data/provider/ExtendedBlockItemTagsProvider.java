@@ -1,6 +1,7 @@
 package com.ametrinstudios.ametrin.data.provider;
 
 import com.ametrinstudios.ametrin.data.DataProviderExtensions;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.tags.BlockItemTagsProvider;
 import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.ResourceKey;
@@ -12,14 +13,16 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getItemKey;
-import static com.ametrinstudios.ametrin.data.DataProviderExtensions.isWooden;
+import static com.ametrinstudios.ametrin.data.DataProviderExtensions.*;
 
 public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvider {
+    @Deprecated
     public ArrayList<ResourceKey<Block>> excludedBlocks = new ArrayList<>();
+    @Deprecated
     public ArrayList<BlockItemTagProviderRule> blockItemTagProviderRules = new ArrayList<>();
 
     protected ExtendedBlockItemTagsProvider(Function<BlockItemTagId, CombinedAppender> tagSupplier) {
@@ -28,7 +31,6 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
 
     @Override
     protected abstract void run();
-
 
     protected void runRules(DeferredRegister.Blocks blockRegistry) {
         runRules(blockRegistry.getEntries().stream());
@@ -50,67 +52,10 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
                 provider.generate(holder, blockItemId);
             }
 
-            if (block instanceof StairBlock) {
-                if (isWooden(name)) {
-                    tag(BlockItemTags.WOODEN_STAIRS).add(blockItemId);
-                } else {
-                    tag(BlockItemTags.STAIRS).add(blockItemId);
-                }
+            if (name.contains("wool")) {
+                tag(BlockItemTags.DAMPENS_VIBRATIONS).add(blockItemId);
             }
-            if (block instanceof SlabBlock) {
-                if (isWooden(name)) {
-                    tag(BlockItemTags.WOODEN_SLABS).add(blockItemId);
-                } else {
-                    tag(BlockItemTags.SLABS).add(blockItemId);
-                }
-            }
-            if (block instanceof WallBlock) {
-                tag(BlockItemTags.WALLS).add(blockItemId);
-            }
-            if (block instanceof FenceBlock) {
-                if (isWooden(name)) {
-                    tag(BlockItemTags.WOODEN_FENCES).add(blockItemId); // c:fences/wooden includes this
-                } else {
-                    tag(BlockItemTags.FENCES).add(blockItemId); // c:fences does not include this
-                    tag(new BlockItemTagId(Tags.Blocks.FENCES, Tags.Items.FENCES)).add(blockItemId);
-                }
-            }
-            if (block instanceof FenceGateBlock) {
-                if (isWooden(name)) {
-                    // those tags don't pull from each other
-                    // minecraft:fence_gates are only wooden fence gates and is contained in furnace fuels
-                    tag(new BlockItemTagId(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN)).add(blockItemId);
-                    tag(BlockItemTags.FENCE_GATES).add(blockItemId);
-                } else {
-                    tag(new BlockItemTagId(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES)).add(blockItemId);
-                }
-            }
-            if (block instanceof ButtonBlock) {
-                if (isWooden(name)) {
-                    tag(BlockItemTags.WOODEN_BUTTONS).add(blockItemId);
-                } else {
-                    tag(BlockItemTags.BUTTONS).add(blockItemId);
-                }
-            }
-            if (block instanceof PressurePlateBlock) {
-                if (isWooden(name)) {
-                    tag(BlockItemTags.WOODEN_PRESSURE_PLATES).add(blockItemId);
-                }
-            }
-            if (block instanceof DoorBlock) {
-                if (isWooden(name)) {
-                    tag(BlockItemTags.WOODEN_DOORS).add(blockItemId);
-                } else {
-                    tag(BlockItemTags.DOORS).add(blockItemId);
-                }
-            }
-            if (block instanceof TrapDoorBlock) {
-                if (isWooden(name)) {
-                    tag(BlockItemTags.WOODEN_TRAPDOORS).add(blockItemId);
-                } else {
-                    tag(BlockItemTags.TRAPDOORS).add(blockItemId);
-                }
-            }
+
             if (block instanceof LeavesBlock) {
                 tag(BlockItemTags.LEAVES).add(blockItemId);
             }
@@ -128,5 +73,57 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
 
     public void tagColorCollection(ColorCollection<BlockItemId> items) {
         ColorCollection.zipApply(ColorCollection.VALUES, items, (color, item) -> tag(DataProviderExtensions.getColorBlockItemTag(color)).add(item));
+    }
+
+    public void tagBlockFamily(BlockFamily family) {
+        family.getVariants().forEach((variant, block) -> {
+            tagVariant(variant, getBlockItemId(block));
+        });
+    }
+
+    public void tagBlockFamilyIgnoring(BlockFamily family, Set<BlockFamily.Variant> ignored) {
+        family.getVariants().forEach((variant, block) -> {
+            if (ignored.contains(variant)) return;
+            tagVariant(variant, getBlockItemId(block));
+        });
+    }
+
+    public void tagVariant(BlockFamily.Variant variant, BlockItemId id) {
+        var isWooden = isWooden(id.block().identifier().getPath());
+        var tag = switch (variant) {
+            case STAIRS -> isWooden ? BlockItemTags.WOODEN_STAIRS : BlockItemTags.STAIRS;
+            case SLAB -> isWooden ? BlockItemTags.WOODEN_SLABS : BlockItemTags.SLABS;
+            case WALL -> BlockItemTags.WALLS;
+            case FENCE, CUSTOM_FENCE -> {
+                if (isWooden) {
+                    yield BlockItemTags.WOODEN_FENCES;
+                } else {
+                    tag(BlockItemTags.FENCES).add(id); // c:fences does not include this
+                    yield new BlockItemTagId(Tags.Blocks.FENCES, Tags.Items.FENCES);
+                }
+            }
+            case FENCE_GATE, CUSTOM_FENCE_GATE -> {
+                if (isWooden) {
+                    tag(BlockItemTags.FENCE_GATES).add(id);
+                    yield new BlockItemTagId(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
+                } else {
+                    yield new BlockItemTagId(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
+                }
+            }
+            case BUTTON -> isWooden ? BlockItemTags.WOODEN_BUTTONS : BlockItemTags.BUTTONS;
+            case PRESSURE_PLATE -> isWooden ? BlockItemTags.WOODEN_PRESSURE_PLATES : null;
+            case CARPET -> BlockItemTags.WOOL_CARPETS;
+            case DOOR -> isWooden ? BlockItemTags.WOODEN_DOORS : BlockItemTags.DOORS;
+            case TRAPDOOR -> isWooden ? BlockItemTags.WOODEN_TRAPDOORS : BlockItemTags.TRAPDOORS;
+            case HANGING_SIGN, CUSTOM_HANGING_SIGN -> BlockItemTags.HANGING_SIGNS;
+            case LOG, STRIPPED_LOG -> BlockItemTags.LOGS;
+            case SIGN, WALL_SIGN -> BlockItemTags.SIGNS;
+//            case WALL_HANGING_SIGN, CUSTOM_WALL_HANGING_SIGN -> null;
+            default -> null;
+        };
+
+        if (tag != null) {
+            tag(tag).add(id);
+        }
     }
 }

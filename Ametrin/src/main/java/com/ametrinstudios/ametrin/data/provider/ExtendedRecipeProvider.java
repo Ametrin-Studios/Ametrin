@@ -55,16 +55,16 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
             .put(BlockFamily.Variant.COBBLED, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
             .build();
 
-    protected String modID;
+    protected String modId;
     protected final Map<Block, BlockFamily> knownBlockFamilies;
 
-    public ExtendedRecipeProvider(String modID, BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput, Stream<BlockFamily> knownBlockFamilies) {
-        this(modID, recipeOutput, advancementOutput, knownBlockFamilies.collect(Collectors.toMap(BlockFamily::getBaseBlock, Function.identity())));
+    public ExtendedRecipeProvider(String modId, BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput, Stream<BlockFamily> knownBlockFamilies) {
+        this(modId, recipeOutput, advancementOutput, knownBlockFamilies.collect(Collectors.toMap(BlockFamily::getBaseBlock, Function.identity())));
     }
 
-    public ExtendedRecipeProvider(String modID, BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput, Map<Block, BlockFamily> knownBlockFamilies) {
+    public ExtendedRecipeProvider(String modId, BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput, Map<Block, BlockFamily> knownBlockFamilies) {
         super(recipeOutput, advancementOutput);
-        this.modID = modID;
+        this.modId = modId;
         this.knownBlockFamilies = knownBlockFamilies;
         this.output = new RecipeOutput() {
             @Override
@@ -726,7 +726,11 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     protected Identifier locate(String key) {
-        return Identifier.parse(key);
+        if (key.contains(":")) {
+            return Identifier.bySeparator(key, ':');
+        }
+        // explicitly create from consume provided id
+        return Identifier.fromNamespaceAndPath(modId, key);
     }
 
     protected FamilyBuilder family(BlockFamily family) {

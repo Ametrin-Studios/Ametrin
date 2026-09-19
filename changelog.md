@@ -4,9 +4,10 @@
 - add `ExtendedLanguageProvider.addHumanized` APIs
 - `ExtendedRecipeProvider` takes a `Map<Block, BlockFamily>` and patches vanilla methods to work with custom families 
 - `BlockModelGenerators.familyWithExistingFullBlock` overloads with texture mappings
+- `ExtendedBlockItemTagsProvider` various helpers for BlockFamilies
 - remove `CustomLootTableProvider` (use vanilla `LootTableProvider` directly)
-- remove `VanillaCompat.addFlowerPot`
-- disabled tree API (Vanilla tree generation should not be able to do the same)
+- remove `VanillaCompat.addFlowerPot` (NeoForge can handle this now)
+- disabled tree API (Vanilla tree generation should now be able to do the same)
 
 ## 1.1.0
 - data gen changes for vanilla compatibility
