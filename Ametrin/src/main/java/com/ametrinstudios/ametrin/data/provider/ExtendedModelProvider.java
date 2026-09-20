@@ -182,4 +182,15 @@ public abstract class ExtendedModelProvider extends ModelProvider {
     public static BlockModelDefinitionGenerator createHorizontalRotatedSlab(Block block, MultiVariant bottom, MultiVariant top, MultiVariant full) {
         return ((MultiVariantGenerator) BlockModelGenerators.createSlab(block, bottom, top, full)).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING);
     }
+
+    public static TextureMapping logTextureMapping(Block log) {
+        var texture = TextureMapping.getBlockTexture(log);
+        var texture_top = TextureMapping.getBlockTexture(log, "_top");
+        return new TextureMapping()
+                .put(TextureSlot.SIDE, texture)
+                .put(TextureSlot.END, texture_top)
+                .put(TextureSlot.PARTICLE, texture)
+                .put(TextureSlot.WALL, texture)
+                .put(TextureSlot.TEXTURE, texture);
+    }
 }
