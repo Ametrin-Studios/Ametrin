@@ -14,7 +14,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -100,7 +99,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState, BonemealSource source) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState) {
         if (isFullyAged(blockState)) {
             return;
         }

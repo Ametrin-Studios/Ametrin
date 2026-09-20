@@ -2,23 +2,17 @@ package com.ametrinstudios.ametrin_test.data.provider;
 
 import com.ametrinstudios.ametrin.data.provider.ExtendedBlockItemTagsProvider;
 import com.ametrinstudios.ametrin_test.registry.TestBlocks;
-import net.minecraft.references.BlockItemId;
-import net.minecraft.tags.BlockItemTagId;
-import net.minecraft.tags.BlockItemTags;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 
-import java.util.function.Function;
 
-public class TestBlockItemTagsProvider extends ExtendedBlockItemTagsProvider {
-
-    protected TestBlockItemTagsProvider(Function<BlockItemTagId, CombinedAppender> tagSupplier) {
-        super(tagSupplier);
-    }
+public abstract class TestBlockItemTagsProvider extends ExtendedBlockItemTagsProvider {
 
     @Override
     protected void run() {
         runRules(TestBlocks.REGISTER);
-        tag(BlockItemTags.LOGS_THAT_BURN)
-                .add(BlockItemId.create(TestBlocks.TEST_LOG.getId(), TestBlocks.TEST_LOG.getId()))
+        tag(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN)
+                .add(TestBlocks.TEST_LOG.get())
         ;
     }
 }

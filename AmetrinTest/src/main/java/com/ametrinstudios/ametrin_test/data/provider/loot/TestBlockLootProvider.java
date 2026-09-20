@@ -3,12 +3,12 @@ package com.ametrinstudios.ametrin_test.data.provider.loot;
 import com.ametrinstudios.ametrin.data.provider.loot_table.ExtendedBlockLootSubProvider;
 import com.ametrinstudios.ametrin_test.registry.TestBlocks;
 import com.ametrinstudios.ametrin_test.registry.TestItems;
-import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 public final class TestBlockLootProvider extends ExtendedBlockLootSubProvider {
-    public TestBlockLootProvider(LootTableSubProvider.Context output) {
+    public TestBlockLootProvider(HolderLookup.Provider output) {
         super(output);
     }
 

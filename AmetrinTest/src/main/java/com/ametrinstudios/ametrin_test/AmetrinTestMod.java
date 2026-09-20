@@ -1,12 +1,13 @@
 package com.ametrinstudios.ametrin_test;
 
+import com.ametrinstudios.ametrin.data.provider.CustomLootTableProvider;
 import com.ametrinstudios.ametrin_test.data.provider.*;
+import com.ametrinstudios.ametrin_test.data.provider.loot.TestBlockLootProvider;
+import com.ametrinstudios.ametrin_test.data.provider.loot.TestChestLootProvider;
 import com.ametrinstudios.ametrin_test.registry.TestBlocks;
 import com.ametrinstudios.ametrin_test.registry.TestItems;
 import com.ametrinstudios.ametrin_test.registry.TestPoiTypes;
 import com.mojang.logging.LogUtils;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -31,11 +32,11 @@ public final class AmetrinTestMod {
 
     // Server data uses Client event because I don't need to run them separately
     public static void gatherServerData(GatherDataEvent.Client event) {
-        event.createReloadableRegistryObjects(new RegistrySetBuilder()
-                .add(Registries.LOOT_TABLE, TestLootTableProvider.create())
-                .add(TestRecipeProvider.create())
-        );
+        event.createProvider(CustomLootTableProvider.builder()
+                .addBlockProvider(TestBlockLootProvider::new)
+                .addChestProvider(TestChestLootProvider::new)::build);
 
+        event.createProvider(TestRecipeProvider.Runner::new);
         event.createProvider(TestBiomeTagsProvider::new);
         event.createBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
     }

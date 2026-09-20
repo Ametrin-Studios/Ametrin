@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "ametrin_test:test_log"
+          "name": "ametrin_test:test_skull"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "ametrin_test:blocks/test_log"
+  "random_sequence": "minecraft:blocks/skeleton_skull"
 }

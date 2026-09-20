@@ -2,37 +2,45 @@
   "type": "minecraft:chest",
   "pools": [
     {
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "modifier": {
-            "type": "minecraft:set_count",
-            "count": {
-              "type": "minecraft:uniform",
-              "max": 3,
-              "min": 1
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
             }
-          },
+          ],
           "name": "ametrin_test:test_block"
         },
         {
           "type": "minecraft:tag",
           "expand": true,
-          "items": "#minecraft:swords",
-          "modifier": {
-            "type": "minecraft:set_count",
-            "count": 2
-          }
+          "functions": [
+            {
+              "add": false,
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:swords"
         },
         {
           "type": "minecraft:item",
-          "modifier": [
+          "functions": [
             {
-              "type": "minecraft:set_count",
-              "count": 1
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
             },
             {
-              "type": "minecraft:set_potion",
+              "function": "minecraft:set_potion",
               "id": "minecraft:fire_resistance"
             }
           ],
@@ -40,63 +48,64 @@
         },
         {
           "type": "minecraft:item",
-          "modifier": [
+          "functions": [
             {
-              "type": "minecraft:set_count",
-              "count": 1
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
             },
             {
-              "type": "minecraft:set_stew_effect",
               "effects": [
                 {
                   "type": "minecraft:night_vision",
                   "duration": {
                     "type": "minecraft:uniform",
-                    "max": 10,
-                    "min": 7
+                    "max": 10.0,
+                    "min": 7.0
                   }
                 },
                 {
                   "type": "minecraft:jump_boost",
                   "duration": {
                     "type": "minecraft:uniform",
-                    "max": 10,
-                    "min": 7
+                    "max": 10.0,
+                    "min": 7.0
                   }
                 },
                 {
                   "type": "minecraft:weakness",
                   "duration": {
                     "type": "minecraft:uniform",
-                    "max": 8,
-                    "min": 6
+                    "max": 8.0,
+                    "min": 6.0
                   }
                 },
                 {
                   "type": "minecraft:blindness",
                   "duration": {
                     "type": "minecraft:uniform",
-                    "max": 7,
-                    "min": 5
+                    "max": 7.0,
+                    "min": 5.0
                   }
                 },
                 {
                   "type": "minecraft:poison",
                   "duration": {
                     "type": "minecraft:uniform",
-                    "max": 20,
-                    "min": 10
+                    "max": 20.0,
+                    "min": 10.0
                   }
                 },
                 {
                   "type": "minecraft:saturation",
                   "duration": {
                     "type": "minecraft:uniform",
-                    "max": 10,
-                    "min": 7
+                    "max": 10.0,
+                    "min": 7.0
                   }
                 }
-              ]
+              ],
+              "function": "minecraft:set_stew_effect"
             }
           ],
           "name": "minecraft:suspicious_stew"
@@ -104,8 +113,8 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 3,
-        "min": 1
+        "max": 3.0,
+        "min": 1.0
       }
     }
   ],

@@ -1,17 +1,14 @@
 package com.ametrinstudios.ametrin.data;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockItemTagId;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.registries.DeferredBlock;
 
 import java.util.HashSet;
 
@@ -65,14 +62,6 @@ public final class DataProviderExtensions {
         return getBlockResouceKey(block).identifier();
     }
 
-    public static BlockItemId getBlockItemId(DeferredBlock<? extends Block> blockItem) {
-        return new BlockItemId(blockItem.getKey(), getItemResourceKey(blockItem.asItem()));
-    }
-
-    public static BlockItemId getBlockItemId(Block blockItem) {
-        return new BlockItemId(getBlockResouceKey(blockItem), getItemResourceKey(blockItem));
-    }
-
     public static ResourceKey<Item> getItemResourceKey(Item item) {
         return BuiltInRegistries.ITEM.getResourceKey(item).orElseThrow();
     }
@@ -83,10 +72,6 @@ public final class DataProviderExtensions {
 
     public static ResourceKey<Block> getBlockResouceKey(Block block) {
         return BuiltInRegistries.BLOCK.getResourceKey(block).orElseThrow();
-    }
-
-    public static BlockItemTagId getColorBlockItemTag(DyeColor color) {
-        return new BlockItemTagId(getColorBlockTag(color), color.getDyedTag());
     }
 
     public static TagKey<Block> getColorBlockTag(DyeColor color) {

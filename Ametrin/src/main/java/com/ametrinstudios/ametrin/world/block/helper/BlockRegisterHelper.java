@@ -29,16 +29,17 @@ public final class BlockRegisterHelper {
         return properties -> new PortalBlock(data, properties.strength(-1).noCollision().lightLevel((state) -> lightLevel).noLootTable().randomTicks().sound(soundType));
     }
 
+    @Deprecated
     public static Function<BlockBehaviour.Properties, StairBlock> stair(Supplier<BlockState> parent) {
-        return properties -> new StairBlock(parent.get(), properties.isViewBlocking(Blocks.NEAR_PLANE_INTERSECTS_OUTLINE));
+        return properties -> new StairBlock(parent.get(), properties);
     }
 
     public static BlockBehaviour.Properties stairProperties(Block base) {
-        return BlockBehaviour.Properties.ofFullCopy(base).isViewBlocking(Blocks.NEAR_PLANE_INTERSECTS_OUTLINE);
+        return BlockBehaviour.Properties.ofFullCopy(base);
     }
 
     public static BlockBehaviour.Properties slabProperties(Block base) {
-        return BlockBehaviour.Properties.ofFullCopy(base).isViewBlocking(Blocks.NEAR_PLANE_INTERSECTS_OUTLINE);
+        return BlockBehaviour.Properties.ofFullCopy(base);
     }
 
     public static BlockBehaviour.Properties wallProperties(Block base) {
@@ -60,7 +61,7 @@ public final class BlockRegisterHelper {
     }
 
     public static BlockBehaviour.Properties buttonProperties() {
-        return BlockBehaviour.Properties.of().noCollision().strength(0.5f).pushReaction(PushReaction.POPPED);
+        return BlockBehaviour.Properties.of().noCollision().strength(0.5f).pushReaction(PushReaction.DESTROY);
     }
 
     public static BlockBehaviour.Properties bushProperties() {
@@ -84,7 +85,7 @@ public final class BlockRegisterHelper {
     }
 
     public static BlockBehaviour.Properties pressurePlateProperties() {
-        return BlockBehaviour.Properties.of().forceSolidOn().noCollision().strength(0.5F).pushReaction(PushReaction.POPPED);
+        return BlockBehaviour.Properties.of().forceSolidOn().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY);
     }
 
     public static ToIntFunction<BlockState> litEmission(int lightLevel) {

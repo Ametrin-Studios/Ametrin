@@ -14,7 +14,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -109,7 +108,7 @@ public class AgeableDoublePlantBlock extends SimpleDoublePlantBlock implements B
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState, BonemealSource source) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState) {
         if (isFullyAged(blockState)) {
             return;
         }

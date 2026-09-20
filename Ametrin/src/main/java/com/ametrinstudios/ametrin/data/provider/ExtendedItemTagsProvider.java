@@ -25,20 +25,21 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     }
 
     {
-
         registerRule((item, name) -> {
             if (item.get() instanceof BoatItem boat) {
                 if (name.contains("chest")) {
-                    tag(ItemTags.CHEST_BOATS).add(item.getKey());
+                    tag(ItemTags.CHEST_BOATS).add(boat);
                 } else {
-                    tag(ItemTags.BOATS).add(item.getKey());
+                    tag(ItemTags.BOATS).add(boat);
                 }
             }
         });
 
         registerRule((item, name) -> {
-            if (name.endsWith("_sign")) {
-                tag(ItemTags.SIGNS).add(item.getKey());
+            if (name.endsWith("_hanging_sign")) {
+                tag(ItemTags.HANGING_SIGNS).add(item.get());
+            } else if (name.endsWith("_sign")) {
+                tag(ItemTags.SIGNS).add(item.get());
             }
         });
     }

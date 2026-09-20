@@ -5,7 +5,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -18,12 +17,12 @@ public interface IAgeablePlant extends BonemealableBlock {
     void onHarvest(BlockState blockState, Level level, BlockPos blockPos, Player player);
 
     @Override
-    default boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState, BonemealSource source) {
+    default boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState) {
         return isSparse(blockState);
     }
 
     @Override
-    default boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState, BonemealSource source) {
+    default boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState) {
         return true;
     }
 

@@ -42,31 +42,31 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
             }
 
             if (block instanceof FlowerPotBlock) {
-                tag(BlockTags.FLOWER_POTS).add(key);
+                tag(BlockTags.FLOWER_POTS).add(block);
             }
             if (block instanceof FireBlock) {
-                tag(BlockTags.FIRE).add(key);
+                tag(BlockTags.FIRE).add(block);
             }
             if (block instanceof CampfireBlock) {
-                tag(BlockTags.CAMPFIRES).add(key);
+                tag(BlockTags.CAMPFIRES).add(block);
             }
             if (block instanceof StandingSignBlock) {
-                tag(BlockTags.STANDING_SIGNS).add(key);
+                tag(BlockTags.STANDING_SIGNS).add(block);
             }
             if (block instanceof WallSignBlock) {
-                tag(BlockTags.WALL_SIGNS).add(key);
+                tag(BlockTags.WALL_SIGNS).add(block);
             }
             if (block instanceof CeilingHangingSignBlock) {
-                tag(BlockTags.CEILING_HANGING_SIGNS).add(key);
+                tag(BlockTags.CEILING_HANGING_SIGNS).add(block);
             }
             if (block instanceof WallHangingSignBlock) {
-                tag(BlockTags.WALL_HANGING_SIGNS).add(key);
+                tag(BlockTags.WALL_HANGING_SIGNS).add(block);
             }
             if (block instanceof CauldronBlock) {
-                tag(BlockTags.CAULDRONS).add(key);
+                tag(BlockTags.CAULDRONS).add(block);
             }
             if (block.defaultBlockState().canBeReplaced()) {
-                tag(BlockTags.REPLACEABLE).add(key);
+                tag(BlockTags.REPLACEABLE).add(block);
             }
         });
     }

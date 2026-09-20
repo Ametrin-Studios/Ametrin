@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 public record WoodTypeCollection<T>(Map<WoodType, T> map) {
     public static final List<WoodType> VANILLA_TYPES = WoodType.values().toList();
-    public static final List<WoodType> VANILLA_OVERWORLD_TYPES = List.of(WoodType.OAK, WoodType.SPRUCE, WoodType.BIRCH, WoodType.JUNGLE, WoodType.ACACIA, WoodType.DARK_OAK, WoodType.MANGROVE, WoodType.CHERRY, WoodType.PALE_OAK, WoodType.POPLAR);
+    public static final List<WoodType> VANILLA_OVERWORLD_TYPES = List.of(WoodType.OAK, WoodType.SPRUCE, WoodType.BIRCH, WoodType.JUNGLE, WoodType.ACACIA, WoodType.DARK_OAK, WoodType.MANGROVE, WoodType.CHERRY, WoodType.PALE_OAK);
     public static final List<WoodType> VANILLA_NETHER_TYPES = List.of(WoodType.CRIMSON, WoodType.WARPED);
 
     public static final WoodTypeCollection<Block> VANILLA_OVERWORLD_LOGS = new WoodTypeCollection<>(ImmutableMap.of(
@@ -30,8 +30,7 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.DARK_OAK, Blocks.DARK_OAK_LOG,
             WoodType.MANGROVE, Blocks.MANGROVE_LOG,
             WoodType.CHERRY, Blocks.CHERRY_LOG,
-            WoodType.PALE_OAK, Blocks.PALE_OAK_LOG,
-            WoodType.POPLAR, Blocks.POPLAR_LOG
+            WoodType.PALE_OAK, Blocks.PALE_OAK_LOG
     ));
 
     public static final WoodTypeCollection<Block> VANILLA_NETHER_STEMS = new WoodTypeCollection<>(ImmutableMap.of(
@@ -50,8 +49,7 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.DARK_OAK, Blocks.STRIPPED_DARK_OAK_LOG,
             WoodType.MANGROVE, Blocks.STRIPPED_MANGROVE_LOG,
             WoodType.CHERRY, Blocks.STRIPPED_CHERRY_LOG,
-            WoodType.PALE_OAK, Blocks.STRIPPED_PALE_OAK_LOG,
-            WoodType.POPLAR, Blocks.STRIPPED_POPLAR_LOG
+            WoodType.PALE_OAK, Blocks.STRIPPED_PALE_OAK_LOG
     ));
 
     public static final WoodTypeCollection<Block> VANILLA_NETHER_STRIPPED_STEMS = new WoodTypeCollection<>(ImmutableMap.of(
@@ -69,8 +67,7 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.DARK_OAK, Blocks.DARK_OAK_WOOD,
             WoodType.MANGROVE, Blocks.MANGROVE_WOOD,
             WoodType.CHERRY, Blocks.CHERRY_WOOD,
-            WoodType.PALE_OAK, Blocks.PALE_OAK_WOOD,
-            WoodType.POPLAR, Blocks.POPLAR_WOOD
+            WoodType.PALE_OAK, Blocks.PALE_OAK_WOOD
     ));
 
     public static final WoodTypeCollection<Block> VANILLA_NETHER_HYPHAES = new WoodTypeCollection<>(ImmutableMap.of(
@@ -89,8 +86,7 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.DARK_OAK, Blocks.STRIPPED_DARK_OAK_WOOD,
             WoodType.MANGROVE, Blocks.STRIPPED_MANGROVE_WOOD,
             WoodType.CHERRY, Blocks.STRIPPED_CHERRY_WOOD,
-            WoodType.PALE_OAK, Blocks.STRIPPED_PALE_OAK_WOOD,
-            WoodType.POPLAR, Blocks.STRIPPED_POPLAR_WOOD
+            WoodType.PALE_OAK, Blocks.STRIPPED_PALE_OAK_WOOD
     ));
 
     public static final WoodTypeCollection<Block> VANILLA_NETHER_STRIPPED_HYPHAES = new WoodTypeCollection<>(ImmutableMap.of(

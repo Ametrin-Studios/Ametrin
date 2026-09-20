@@ -1,8 +1,8 @@
 package com.ametrinstudios.ametrin.data.provider.loot_table;
 
-import net.minecraft.advancements.predicates.StatePropertiesPredicate;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
@@ -16,11 +16,10 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
-import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -28,12 +27,12 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider {
-    protected ExtendedBlockLootSubProvider(LootTableSubProvider.Context output) {
-        this(Set.of(), output);
+    protected ExtendedBlockLootSubProvider(HolderLookup.Provider registries) {
+        this(Set.of(), registries);
     }
 
-    protected ExtendedBlockLootSubProvider(Set<Item> explosionResistant, LootTableSubProvider.Context output) {
-        super(explosionResistant, FeatureFlags.REGISTRY.allFlags(), output);
+    protected ExtendedBlockLootSubProvider(Set<Item> explosionResistant, HolderLookup.Provider registries) {
+        super(explosionResistant, FeatureFlags.REGISTRY.allFlags(), registries);
     }
 
     protected void dropOther(DeferredBlock<? extends Block> block, ItemLike other) {
@@ -61,17 +60,14 @@ public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider 
     }
 
     protected void dropCampfire(Block campfireBlock, ItemLike charcoal) {
-        add(campfireBlock, createSilkTouchDispatchTable(campfireBlock, applyExplosionCondition(campfireBlock, LootItem.lootTableItem(charcoal).apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(2))))));
+        add(campfireBlock, createSilkTouchDispatchTable(campfireBlock, applyExplosionCondition(campfireBlock, LootItem.lootTableItem(charcoal).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))))));
     }
 
-    protected <T extends Comparable<T> & StringRepresentable> LootTable.Builder createSinglePropConditionTableDropOther(Block block, ItemLike drop, Property<T> property, T value) {
-        return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-                .add(LootItem.lootTableItem(drop)
-                        .when(MatchBlock.blockMatches(blocks, block,
-                                StatePropertiesPredicate.Builder.properties().hasProperty(property, value)
-                        ))
-                ))
-        );
+    protected <T extends Comparable<T> & StringRepresentable> LootTable.Builder createSinglePropConditionTableDropOther(Block block, ItemLike dropItem, Property<T> property, T validValue) {
+        return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                .add(LootItem.lootTableItem(dropItem)
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(property, validValue))))));
     }
 
     protected final void dropSelf(final Block... blocks) {
@@ -92,5 +88,5 @@ public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider 
     }
 
     @Override
-    protected abstract @NotNull Iterable<Block> getKnownBlocks();
+    protected abstract Iterable<Block> getKnownBlocks();
 }
