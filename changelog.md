@@ -2,6 +2,7 @@
 - add `WoodTypeCollection` (similar to vanilla `ColorCollection`)
 - add `BlockModelGenerators.family` overloads with `TexturedModel`
 - add `ExtendedModelProvider.logTextureMapping`
+- (26.1) backport vanilla `ColorCollection`
 
 ## 1.2.0
 - add `ExtendedLootSubProvider` (provides common `HolderGetter`s)
