@@ -39,8 +39,6 @@ public final class StructureNbtUpdater implements DataProvider {
         this.basePath = "structure";
         this.modid = modid;
         this.output = output;
-        var packLocation = new PackLocationInfo("mod/" + modid, Component.empty(), PackSource.BUILT_IN, Optional.empty());
-        var packLoader = ResourcePackLoader.createPackForMod(ModList.get().getModFileById(modid));
         this.resources = new MultiPackResourceManager(PackType.SERVER_DATA, List.of(ResourcePackLoader.createPackForMod(ModList.get().getModFileById(modid)).openPrimary(new PackLocationInfo("mod/" + modid, Component.empty(), PackSource.BUILT_IN, Optional.empty()))));
     }
 

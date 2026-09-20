@@ -686,7 +686,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         if (key.contains(":")) {
             return Identifier.bySeparator(key, ':');
         }
-        // explicitly create from consume provided id
+        // explicitly create from consumer provided mod id
         return Identifier.fromNamespaceAndPath(modId, key);
     }
 

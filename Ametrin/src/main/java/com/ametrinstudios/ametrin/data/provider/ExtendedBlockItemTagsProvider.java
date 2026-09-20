@@ -7,7 +7,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.tags.BlockItemTagsProvider;
 import net.minecraft.data.tags.TagAppender;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagEntry;
@@ -27,7 +26,7 @@ import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getBlockNam
 import static com.ametrinstudios.ametrin.data.DataProviderExtensions.isWooden;
 
 public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvider {
-    public ArrayList<ResourceKey<Block>> excludedBlocks = new ArrayList<>();
+    public ArrayList<Block> excludedBlocks = new ArrayList<>();
     public ArrayList<BlockTagProviderRule> blockItemTagProviderRules = new ArrayList<>();
 
     @Override
@@ -39,14 +38,14 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
 
     protected void runRules(Stream<DeferredHolder<Block, ? extends Block>> blocks) {
         blocks.forEach(holder -> {
-            final var key = holder.getKey();
+            final var block = holder.get();
 
-            if (excludedBlocks.contains(key)) {
+            if (excludedBlocks.contains(block)) {
                 return;
             }
 
+            final var key = holder.getKey();
             final var name = key.identifier().getPath();
-            final var block = holder.get();
 
             for (var provider : blockItemTagProviderRules) {
                 provider.generate(holder, name);

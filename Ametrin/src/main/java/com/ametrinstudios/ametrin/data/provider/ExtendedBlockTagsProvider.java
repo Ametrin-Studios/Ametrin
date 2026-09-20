@@ -3,7 +3,6 @@ package com.ametrinstudios.ametrin.data.provider;
 import com.ametrinstudios.ametrin.data.BlockTagProviderRule;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -15,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
-    public ArrayList<ResourceKey<Block>> excludedBlocks = new ArrayList<>();
+    public ArrayList<Block> excludedBlocks = new ArrayList<>();
     public ArrayList<BlockTagProviderRule> blockTagProviderRules = new ArrayList<>();
 
     public ExtendedBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String modID) {
@@ -28,14 +27,14 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
 
     protected void runRules(Stream<DeferredHolder<Block, ? extends Block>> blocks) {
         blocks.forEach(holder -> {
-            final var key = holder.getKey();
+            final var block = holder.get();
 
-            if (excludedBlocks.contains(holder.getKey())) {
+            if (excludedBlocks.contains(block)) {
                 return;
             }
 
+            final var key = holder.getKey();
             final var name = key.identifier().getPath();
-            final var block = holder.get();
 
             for (BlockTagProviderRule provider : blockTagProviderRules) {
                 provider.generate(holder, name);
