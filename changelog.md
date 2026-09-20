@@ -1,3 +1,6 @@
+## 1.2.1
+- add `WoodTypeCollection` (similar to vanilla `ColorCollection`)
+
 ## 1.2.0
 - add `ExtendedLootSubProvider` (provides common `HolderGetter`s)
 - add `ExtendedRecipeProvider.family` and helper for stonecutting/smelting conversion recipes between families
