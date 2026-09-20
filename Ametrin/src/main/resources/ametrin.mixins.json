@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "MixinBlockBehaviorProperties",
-    "MixinBlockModelGenerators"
+    "MixinBlockModelGenerators",
+    "MixinBlockModelGeneratorsBlockFamilyProvider"
   ],
   "injectors": {
     "defaultRequire": 1

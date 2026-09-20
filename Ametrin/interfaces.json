@@ -1,4 +1,5 @@
 {
   "net/minecraft/world/level/block/state/BlockBehaviour$Properties": ["com/ametrinstudios/ametrin/util/mixin/IMixinBlockBehaviorProperties"],
-  "net/minecraft/client/data/models/BlockModelGenerators": ["com/ametrinstudios/ametrin/util/mixin/IExtendedBlockModelGenerators"]
+  "net/minecraft/client/data/models/BlockModelGenerators": ["com/ametrinstudios/ametrin/util/mixin/IExtendedBlockModelGenerators"],
+  "net/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider": ["com/ametrinstudios/ametrin/util/mixin/IBlockModelGeneratorsExtendedBlockFamilyProvider"]
 }

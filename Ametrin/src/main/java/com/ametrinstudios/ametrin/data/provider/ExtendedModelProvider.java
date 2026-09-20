@@ -7,18 +7,22 @@ import com.mojang.math.Quadrant;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 public abstract class ExtendedModelProvider extends ModelProvider {
@@ -37,6 +41,11 @@ public abstract class ExtendedModelProvider extends ModelProvider {
     public static final ModelTemplate PORTAL_NS = new ModelTemplate(Optional.of(Identifier.withDefaultNamespace("block/nether_portal_ns")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
     public static final ModelTemplate PORTAL_EW = new ModelTemplate(Optional.of(Identifier.withDefaultNamespace("block/nether_portal_ew")), Optional.empty(), TEXTURE_SLOT_PORTAL, TextureSlot.PARTICLE);
 
+    static {
+        BlockModelGenerators.SHAPE_CONSUMERS = new HashMap<>(BlockModelGenerators.SHAPE_CONSUMERS);
+        BlockModelGenerators.SHAPE_CONSUMERS.put(BlockFamily.Variant.SLAB, ExtendedModelProvider::slabOverwrite);
+    }
+
     public ExtendedModelProvider(PackOutput output, String modId) {
         super(output, modId);
     }
@@ -45,14 +54,16 @@ public abstract class ExtendedModelProvider extends ModelProvider {
     protected abstract void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels);
 
 
-    /** create a custom head model<br>
+    /**
+     * create a custom head model<br>
      * assumes all textures are opaque, there are no texture on the inside of the head
      */
     public final void createCustomHead(BlockModelGenerators blockModels, Block head, Block wallHead) {
         createCustomHeadImpl(blockModels, head, wallHead, WALL_HEAD, HEAD_0, HEAD_1, HEAD_2, HEAD_3);
     }
 
-    /** create a custom head model<br>
+    /**
+     * create a custom head model<br>
      * mirrors outside textures to the inside so the player can look inside
      */
     public final void createCustomHeadCutout(BlockModelGenerators blockModels, Block head, Block wallHead) {
@@ -119,10 +130,56 @@ public abstract class ExtendedModelProvider extends ModelProvider {
                 .with(PropertyDispatch.initial(BlockStateProperties.AGE_3)
                         .generate(value -> BlockModelGenerators.plainVariant(value > 2
                                         ? blockModels.createSuffixedVariant(block, "/stage" + value, model, TextureMapping::cross)
-                                        : model.createWithSuffix(block, "/stage" + value, TextureMapping.cross(TextureMapping.getBlockTexture(Blocks.SWEET_BERRY_BUSH, "_stage"+value)), blockModels.modelOutput)
+                                        : model.createWithSuffix(block, "/stage" + value, TextureMapping.cross(TextureMapping.getBlockTexture(Blocks.SWEET_BERRY_BUSH, "_stage" + value)), blockModels.modelOutput)
                                 )
                         )
                 )
         );
+    }
+
+    public static void slabOverwrite(BlockModelGenerators.BlockFamilyProvider provider, Block slab) {
+        if (slab.defaultBlockState().hasProperty(BlockStateProperties.HORIZONTAL_AXIS)) {
+            horizontalAxisAlignedSlab(provider.blockModels(), provider, slab);
+        } else if (slab.defaultBlockState().hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+            horizontalRotatedSlab(provider.blockModels(), provider, slab);
+        } else {
+            provider.slab(slab);
+        }
+    }
+
+    public static void horizontalAxisAlignedSlab(BlockModelGenerators blockModels, BlockModelGenerators.BlockFamilyProvider provider, Block slab) {
+        if (provider.fullBlock == null) {
+            throw new IllegalStateException("Full block not generated yet");
+        }
+
+        var bottom = provider.getOrCreateModel(ModelTemplates.SLAB_BOTTOM, slab);
+        var top = BlockModelGenerators.plainVariant(provider.getOrCreateModel(ModelTemplates.SLAB_TOP, slab));
+        blockModels.blockStateOutput
+                .accept(createHorizontalAxisAlignedSlab(slab, BlockModelGenerators.plainVariant(bottom), top, BlockModelGenerators.variant(provider.fullBlock)));
+        blockModels.registerSimpleItemModel(slab, bottom);
+    }
+
+    public static void horizontalRotatedSlab(BlockModelGenerators blockModels, BlockModelGenerators.BlockFamilyProvider provider, Block slab) {
+        if (provider.fullBlock == null) {
+            throw new IllegalStateException("Full block not generated yet");
+        }
+
+        var bottom = provider.getOrCreateModel(ModelTemplates.SLAB_BOTTOM, slab);
+        var top = BlockModelGenerators.plainVariant(provider.getOrCreateModel(ModelTemplates.SLAB_TOP, slab));
+        blockModels.blockStateOutput
+                .accept(createHorizontalRotatedSlab(slab, BlockModelGenerators.plainVariant(bottom), top, BlockModelGenerators.variant(provider.fullBlock)));
+        blockModels.registerSimpleItemModel(slab, bottom);
+    }
+
+    public static BlockModelDefinitionGenerator createHorizontalAxisAlignedSlab(Block block, MultiVariant bottom, MultiVariant top, MultiVariant full) {
+        return ((MultiVariantGenerator) BlockModelGenerators.createSlab(block, bottom, top, full)).with(
+                PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_AXIS)
+                        .select(Direction.Axis.X, BlockModelGenerators.NOP)
+                        .select(Direction.Axis.Z, BlockModelGenerators.Y_ROT_90)
+        );
+    }
+
+    public static BlockModelDefinitionGenerator createHorizontalRotatedSlab(Block block, MultiVariant bottom, MultiVariant top, MultiVariant full) {
+        return ((MultiVariantGenerator) BlockModelGenerators.createSlab(block, bottom, top, full)).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING);
     }
 }
