@@ -15,6 +15,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public record WoodTypeCollection<T>(Map<WoodType, T> map) {
     public static final List<WoodType> VANILLA_TYPES = WoodType.values().toList();
@@ -98,6 +99,11 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.WARPED, Blocks.STRIPPED_WARPED_HYPHAE
     ));
     public static final WoodTypeCollection<Block> VANILLA_STRIPPED_WOODS = WoodTypeCollection.combine(VANILLA_OVERWORLD_STRIPPED_WOODS, VANILLA_NETHER_STRIPPED_HYPHAES);
+
+    public Stream<T> stream() {
+        return map.values().stream();
+    }
+
 
     public void forEach(Consumer<T> consumer) {
         map.values().forEach(consumer);
