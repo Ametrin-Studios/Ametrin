@@ -9,18 +9,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
 
 import static com.ametrinstudios.ametrin.data.LootTableProviderHelper.*;
 
-public record TestLootTableProvider(HolderLookup.Provider registries) implements LootTableSubProvider {
-    @Override
-    public void generate(@NotNull BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
-//        var enchantmentRegistryLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+public record TestChestLootProvider(HolderLookup.Provider registries) implements LootTableSubProvider {
 
-        consumer.accept(ResourceKey.create(Registries.LOOT_TABLE, AmetrinTestMod.locate("chests/test")), LootTable.lootTable()
+    @Override
+    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
+        output.accept(ResourceKey.create(Registries.LOOT_TABLE, AmetrinTestMod.locate("chests/test")), LootTable.lootTable()
                 .withPool(pool(number(1, 3))
                         .add(item(TestBlocks.TEST_BLOCK.get(), 1, number(1, 3)))
                         .add(tag(ItemTags.SWORDS, 1, number(2)))

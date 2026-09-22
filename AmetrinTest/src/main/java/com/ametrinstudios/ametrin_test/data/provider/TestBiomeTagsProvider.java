@@ -7,7 +7,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.world.level.biome.Biomes;
 import net.neoforged.neoforge.common.Tags;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -18,7 +17,7 @@ public final class TestBiomeTagsProvider extends BiomeTagsProvider {
     }
 
     @Override
-    protected void addTags(@NotNull HolderLookup.Provider provider) {
+    protected void addTags(HolderLookup.Provider provider) {
         tag(TestTags.Biomes.TEST_BIOMES).addTag(Tags.Biomes.IS_AQUATIC).remove(Biomes.RIVER);
     }
 }

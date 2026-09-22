@@ -28,9 +28,7 @@ import net.minecraft.world.level.portal.PortalShape;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
 
 public class PortalBlock extends Block implements Portal {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
@@ -46,8 +44,8 @@ public class PortalBlock extends Block implements Portal {
         registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
 
-    @Override @ParametersAreNonnullByDefault
-    protected @NotNull BlockState updateShape(BlockState thisState, LevelReader level, ScheduledTickAccess tickAccess, BlockPos thisPos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
+    @Override
+    protected BlockState updateShape(BlockState thisState, LevelReader level, ScheduledTickAccess tickAccess, BlockPos thisPos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
         var facingAxis = facing.getAxis();
         var thisAxis = thisState.getValue(AXIS);
         boolean flag = thisAxis != facingAxis && facingAxis.isHorizontal();
@@ -56,14 +54,14 @@ public class PortalBlock extends Block implements Portal {
                 : super.updateShape(thisState, level, tickAccess, thisPos, facing, facingPos, facingState, random);
     }
 
-    @Override @ParametersAreNonnullByDefault
+    @Override
     protected void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean flag) {
         if (entity.canUsePortal(true)) {
             entity.setAsInsidePortal(this, pos);
         }
     }
 
-    @Override @ParametersAreNonnullByDefault
+    @Override
     public int getPortalTransitionTime(ServerLevel level, Entity entity) {
         return entity instanceof Player player
                 ? Math.max(
@@ -80,8 +78,7 @@ public class PortalBlock extends Block implements Portal {
 
 
     @Override
-    @ParametersAreNonnullByDefault
-    public TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
+    public @Nullable TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
         var destinationLevelKey = level.dimension() == data.dimensionA() ? data.dimensionB() : data.dimensionA();
         var destinationLevel = level.getServer().getLevel(destinationLevelKey);
         if (destinationLevel == null) {
@@ -95,13 +92,13 @@ public class PortalBlock extends Block implements Portal {
         return helper.getExitPortal(destinationLevel, entity, pos, scaledPosition, isDestinationLevelB, worldBorder);
     }
 
-    @Override @ParametersAreNonnullByDefault
+    @Override
     public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource random) {
         if (random.nextInt(100) == 0) {
             data.soundEvent().ifPresent(soundEvent -> level.playLocalSound(
-                    (double)pos.getX() + 0.5,
-                    (double)pos.getY() + 0.5,
-                    (double)pos.getZ() + 0.5,
+                    (double) pos.getX() + 0.5,
+                    (double) pos.getY() + 0.5,
+                    (double) pos.getZ() + 0.5,
                     soundEvent,
                     SoundSource.BLOCKS,
                     0.5F,
@@ -133,7 +130,7 @@ public class PortalBlock extends Block implements Portal {
     }
 
     @Override
-    protected @NotNull BlockState rotate(@NotNull BlockState blockState, Rotation rotation) {
+    protected BlockState rotate(BlockState blockState, Rotation rotation) {
         return switch (rotation) {
             case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> switch (blockState.getValue(AXIS)) {
                 case Z -> blockState.setValue(AXIS, Direction.Axis.X);
@@ -149,12 +146,12 @@ public class PortalBlock extends Block implements Portal {
         builder.add(AXIS);
     }
 
-    @Override @ParametersAreNonnullByDefault
-    protected @NotNull VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos pos, CollisionContext context) {
+    @Override
+    protected VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos pos, CollisionContext context) {
         return blockState.getValue(AXIS) == Direction.Axis.Z ? Z_AXIS_AABB : X_AXIS_AABB;
     }
 
-    @Override @NotNull
+    @Override
     public Portal.Transition getLocalTransition() {
         return data.transition();
     }

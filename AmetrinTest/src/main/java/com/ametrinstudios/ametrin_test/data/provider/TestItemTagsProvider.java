@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,14 +19,13 @@ public final class TestItemTagsProvider extends ItemTagsProvider {
     }
 
     @Override
-    protected void addTags(@NotNull HolderLookup.Provider provider) {
+    protected void addTags(HolderLookup.Provider provider) {
         new TestBlockItemTagsProvider() {
             @Override
-            protected @NotNull TagAppender<Block, Block> tag(@NotNull TagKey<Block> blockTag, @NotNull TagKey<Item> itemTag) {
+            protected TagAppender<Block, Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag) {
                 return new BlockToItemConverter(TestItemTagsProvider.this.tag(itemTag));
             }
         }.run();
-
         tag(ItemTags.BEACON_PAYMENT_ITEMS).remove(Items.IRON_INGOT);
     }
 }

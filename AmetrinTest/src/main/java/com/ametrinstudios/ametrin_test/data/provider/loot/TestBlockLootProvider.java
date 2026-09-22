@@ -8,8 +8,8 @@ import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 public final class TestBlockLootProvider extends ExtendedBlockLootSubProvider {
-    public TestBlockLootProvider(HolderLookup.Provider registries) {
-        super(registries);
+    public TestBlockLootProvider(HolderLookup.Provider output) {
+        super(output);
     }
 
     @Override

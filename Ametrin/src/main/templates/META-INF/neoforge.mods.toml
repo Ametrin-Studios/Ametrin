@@ -5,18 +5,24 @@ issueTrackerURL="https://github.com/Ametrin-Studios/Ametrin/issues" #optional
     modId="${mod_id}" #mandatory
     version="${mod_version}" #mandatory
     displayName="${mod_name}" #mandatory
-    updateJSONURL="https://raw.githubusercontent.com/Ametrin-Studios/Ametrin/master/update.json" #optional
+    updateJSONURL="https://raw.githubusercontent.com/Ametrin-Studios/Ametrin/main/update.json" #optional
     displayURL="https://www.curseforge.com/minecraft/mc-mods/ametrin" #optional
-    #logoFile="examplemod.png" #optional
+    #iconFile="icon.png" #optional
     #credits="" #optional
     authors="${mod_authors}" #optional
     #displayTest="MATCH_VERSION" #optional
     description='''${mod_description}'''
 
+[[mixins]]
+config="${mod_id}.mixins.json"
+
+[[accessTransformers]]
+file="${mod_id}.base.cfg"
+
 [[dependencies.${mod_id}]] #optional
     modId="neoforge" #mandatory
     type="required"
-    versionRange="[${neo_version},)" #mandatory
+    versionRange="${neo_version_range}" #mandatory
     ordering="NONE"
     side="BOTH"
 
@@ -26,9 +32,3 @@ issueTrackerURL="https://github.com/Ametrin-Studios/Ametrin/issues" #optional
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
-
-[[mixins]]
-    config="${mod_id}.mixins.json"
-
-[[accessTransformers]]
-    file="${mod_id}.base.cfg"

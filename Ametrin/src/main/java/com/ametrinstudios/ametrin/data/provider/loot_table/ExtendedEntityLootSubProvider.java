@@ -4,7 +4,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.stream.Stream;
 
@@ -14,5 +13,5 @@ public abstract class ExtendedEntityLootSubProvider extends EntityLootSubProvide
     }
 
     @Override
-    protected abstract @NotNull Stream<EntityType<?>> getKnownEntityTypes();
+    protected abstract Stream<EntityType<?>> getKnownEntityTypes();
 }

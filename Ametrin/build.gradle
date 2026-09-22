@@ -1,6 +1,3 @@
-import java.nio.file.Files
-import java.nio.file.StandardOpenOption
-
 plugins {
     id 'java-library'
     id 'maven-publish'
@@ -32,6 +29,10 @@ neoForge {
     accessTransformers = project.files('src/main/resources/ametrin.base.cfg')
     validateAccessTransformers = true
 
+    interfaceInjectionData.from "interfaces.json"
+    interfaceInjectionData {
+        publish file("interfaces.json")
+    }
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
@@ -56,6 +57,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
             neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
 
             mod_id                 : mod_id,
             mod_name               : mod_name,
@@ -72,25 +74,6 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
-var generateNullMarkedPackages = tasks.register("generateNullMarkedPackages"){
-    doLast {
-        def srcRoot = file("src/main/java").toPath()
-        def basePath = srcRoot.resolve(group.replace('.', '/'))
-
-        Files.walk(basePath)
-        .filter {Files.isDirectory(it) }
-        .forEach {dir ->
-            def pkgInfo = dir.resolve("package-info.java")
-            if(Files.exists(pkgInfo)) return
-
-            def rel = srcRoot.relativize(dir).toString().replace(File.separator, '.')
-            def content = "@org.jspecify.annotations.NullMarked\npackage ${rel};\n"
-            Files.writeString(pkgInfo, content, StandardOpenOption.CREATE_NEW)
-        }
-    }
-}
-// neoForge.ideSyncTask generateNullMarkedPackages
-
 tasks.register('sourcesJar', Jar) {
     archiveClassifier = 'sources'
     from sourceSets.main.allSource
@@ -100,23 +83,25 @@ artifacts {
     archives sourcesJar
 }
 
-//publishing {
-//    publications {
-//        register('mavenJava', MavenPublication) {
-//            from components.java
-//            artifact sourcesJar
-//
-//            pom {
-//                url = 'https://github.com/Ametrin-Studios/Ametrin'
-//            }
-//        }
-//    }
-//    repositories {
-//        maven {
-//            url = "file://${project.projectDir}/repo"
-//        }
-//    }
-//}
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifactId = "${mod_id}-${minecraft_version}"
+            from components.java
+            artifact sourcesJar
+
+            pom {
+                url = 'https://github.com/Ametrin-Studios/Ametrin'
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'Ametrin'
+            url = uri(rootProject.file("../maven"))
+        }
+    }
+}
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation

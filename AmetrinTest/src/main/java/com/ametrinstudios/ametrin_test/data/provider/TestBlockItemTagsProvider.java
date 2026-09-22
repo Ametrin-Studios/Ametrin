@@ -5,6 +5,7 @@ import com.ametrinstudios.ametrin_test.registry.TestBlocks;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 
+
 public abstract class TestBlockItemTagsProvider extends ExtendedBlockItemTagsProvider {
 
     @Override

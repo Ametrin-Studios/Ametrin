@@ -6,14 +6,12 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
-
-import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getBlockName;
 
 public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
     public ArrayList<Block> excludedBlocks = new ArrayList<>();
@@ -24,18 +22,22 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
     }
 
     protected void runRules(DeferredRegister.Blocks blockRegistry) {
-        runRules(blockRegistry.getEntries().stream().map(Supplier::get));
+        runRules(blockRegistry.getEntries().stream());
     }
 
-    protected void runRules(Stream<? extends Block> blocks) {
-        blocks.forEach(block -> {
+    protected void runRules(Stream<DeferredHolder<Block, ? extends Block>> blocks) {
+        blocks.forEach(holder -> {
+            final var block = holder.get();
+
             if (excludedBlocks.contains(block)) {
                 return;
             }
-            final var name = getBlockName(block);
+
+            final var key = holder.getKey();
+            final var name = key.identifier().getPath();
 
             for (BlockTagProviderRule provider : blockTagProviderRules) {
-                provider.generate(block, name);
+                provider.generate(holder, name);
             }
 
             if (block instanceof FlowerPotBlock) {

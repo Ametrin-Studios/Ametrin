@@ -1,6 +1,5 @@
 package com.ametrinstudios.ametrin.world.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,12 +23,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.Tags;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 
 public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
-    public static final MapCodec<BushBlock> CODEC = simpleCodec((properties)-> new AgeableBushBlock(0, 0, properties));
     public final int GrowRarity;
     public final int BonusDrop;
     private static final VoxelShape SaplingShape = Block.box(3, 0, 3, 13, 8, 13);
@@ -42,13 +37,13 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
         registerDefaultState(stateDefinition.any().setValue(AGE, 0));
     }
 
-    @Override @ParametersAreNonnullByDefault
-    public @NotNull ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
         return new ItemStack(asItem());
     }
 
-    @Override @ParametersAreNonnullByDefault
-    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos pos, CollisionContext context) {
+    @Override
+    public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos pos, CollisionContext context) {
         if (blockState.getValue(AGE) == 0) {
             return SaplingShape;
         } else {
@@ -56,9 +51,11 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
         }
     }
 
-    public boolean isRandomlyTicking(@NotNull BlockState blockState) {return isSparse(blockState);}
+    public boolean isRandomlyTicking(BlockState blockState) {
+        return isSparse(blockState);
+    }
 
-    @Override @ParametersAreNonnullByDefault
+    @Override
     public void randomTick(BlockState blockState, ServerLevel level, BlockPos pos, RandomSource random) {
         int i = blockState.getValue(AGE);
         if (i < MAX_AGE && level.getRawBrightness(pos.above(), 0) >= 9 && CommonHooks.canCropGrow(level, pos, blockState, random.nextInt(GrowRarity) == 0)) {
@@ -71,7 +68,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
 
     public void onHarvest(BlockState blockState, Level level, BlockPos pos, Player player) {
         int dropAmount = 1;
-        if(BonusDrop > 0){
+        if (BonusDrop > 0) {
             dropAmount += level.getRandom().nextInt(BonusDrop);
         }
         popResource(level, pos, new ItemStack(asItem(), dropAmount));
@@ -81,16 +78,16 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
     }
 
-    @Override @NotNull @ParametersAreNonnullByDefault
-    protected InteractionResult  useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    @Override
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         return isSparse(blockState) && itemStack.is(Tags.Items.FERTILIZERS)
                 ? InteractionResult.PASS
                 : super.useItemOn(itemStack, blockState, level, pos, player, hand, hitResult);
     }
 
-    @Override @NotNull @ParametersAreNonnullByDefault
+    @Override
     protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if(isSparse(blockState)){
+        if (isSparse(blockState)) {
             return super.useWithoutItem(blockState, level, pos, player, hitResult);
         }
         onHarvest(blockState, level, pos, player);
@@ -101,21 +98,26 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
         stateBuilder.add(AGE);
     }
 
-    @Override @ParametersAreNonnullByDefault
+    @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState) {
-        if(isFullyAged(blockState)) {return;}
-        level.setBlock(pos, blockState.setValue(AGE, Math.min(MAX_AGE, blockState.getValue(AGE) + 1)), 2);
+        if (isFullyAged(blockState)) {
+            return;
+        }
+        level.setBlock(pos, blockState.setValue(AGE, Math.min(MAX_AGE, blockState.getValue(AGE) + 1)), UPDATE_CLIENTS);
     }
 
-    @Override @ParametersAreNonnullByDefault
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return true;}
-    @Override @ParametersAreNonnullByDefault
-    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 60;}
-    @Override @ParametersAreNonnullByDefault
-    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {return 100;}
+    @Override
+    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return true;
+    }
 
-    @Override @NotNull
-    public MapCodec<BushBlock> codec() {
-        return CODEC;
+    @Override
+    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return 60;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return 100;
     }
 }

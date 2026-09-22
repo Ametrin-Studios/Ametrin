@@ -1,5 +1,6 @@
 package com.ametrinstudios.ametrin.data.provider;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.Advancement;
@@ -9,6 +10,7 @@ import net.minecraft.advancements.criterion.ImpossibleTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -17,6 +19,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -24,122 +28,111 @@ import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static final Logger LOGGER = LogUtils.getLogger();
-    protected Set<Identifier> recipes;
+    protected Set<Identifier> knownRecipes;
+    protected static final FeatureFlagSet DEFAULT_FEATURE_FLAG_SET = FeatureFlagSet.of(FeatureFlags.VANILLA);
 
-    protected String modID;
+    private static final Map<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider> STONECUTTER_RECIPE_BUILDERS = ImmutableMap.<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider>builder()
+            .put(BlockFamily.Variant.SLAB, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 2))
+            .put(BlockFamily.Variant.STAIRS, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.BRICKS, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.WALL, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.DECORATIONS, result, material, 1))
+            .put(BlockFamily.Variant.CHISELED, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.POLISHED, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.CUT, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.TILES, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .put(BlockFamily.Variant.COBBLED, (context, result, material) -> ((ExtendedRecipeProvider) context).stonecutting(RecipeCategory.BUILDING_BLOCKS, result, material, 1))
+            .build();
 
-    public ExtendedRecipeProvider(String modID, HolderLookup.Provider registries, RecipeOutput output, Set<Identifier> recipeSet) {
+    protected String modId;
+    protected final Map<Block, BlockFamily> knownBlockFamilies;
+
+    public ExtendedRecipeProvider(String modId, HolderLookup.Provider registries, RecipeOutput output, Set<Identifier> knownRecipes, Stream<BlockFamily> knownBlockFamilies) {
+        this(modId, registries, output, knownRecipes, knownBlockFamilies.collect(Collectors.toMap(BlockFamily::getBaseBlock, Function.identity())));
+    }
+
+    public ExtendedRecipeProvider(String modId, HolderLookup.Provider registries, RecipeOutput output, Set<Identifier> knownRecipes, Map<Block, BlockFamily> knownBlockFamilies) {
         super(registries, output);
-        this.modID = modID;
-        this.recipes = recipeSet;
+        this.modId = modId;
+        this.knownRecipes = knownRecipes;
+        this.knownBlockFamilies = knownBlockFamilies;
     }
 
     @Override
     protected abstract void buildRecipes();
 
-    protected void stairSlabWallButton(@Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, boolean hasStonecutting) {
-        if (stair != null) {
-            stairs(stair, material, hasStonecutting);
-        }
-        if (slab != null) {
-            slab(slab, material, hasStonecutting);
-        }
-        if (wall != null) {
-            wall(wall, material, hasStonecutting);
-        }
-        if (button != null) {
-            button(button, material, hasStonecutting);
-        }
-    }
-
-    protected void stairSlabWallButton(@Nullable ItemLike stair, @Nullable ItemLike slab, @Nullable ItemLike wall, @Nullable ItemLike button, ItemLike material, ItemLike... additionalStonecuttingMaterials) {
-        if (stair != null) {
-            stairs(stair, material, additionalStonecuttingMaterials);
-        }
-        if (slab != null) {
-            slab(slab, material, additionalStonecuttingMaterials);
-        }
-        if (wall != null) {
-            wall(wall, material, additionalStonecuttingMaterials);
-        }
-        if (button != null) {
-            button(button, material, additionalStonecuttingMaterials);
-        }
-    }
-
     protected void stairs(ItemLike stair, ItemLike material, boolean hasStonecutting) {
         stairBuilder(stair, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(stair, material));
         if (hasStonecutting) {
-            stonecutting(RecipeCategory.BUILDING_BLOCKS, stair, 1, material);
+            stonecutting(RecipeCategory.BUILDING_BLOCKS, stair, material, 1);
         }
     }
 
     protected void stairs(ItemLike stair, ItemLike material, ItemLike... additionalStonecuttingMaterials) {
         stairs(stair, material, true);
-        for (ItemLike mat : additionalStonecuttingMaterials) {
-            stonecutting(RecipeCategory.BUILDING_BLOCKS, stair, 1, mat);
+        for (var mat : additionalStonecuttingMaterials) {
+            stonecutting(RecipeCategory.BUILDING_BLOCKS, stair, mat, 1);
         }
     }
 
     protected void slab(ItemLike slab, ItemLike material, boolean hasStonecutting) {
         slabBuilder(RecipeCategory.BUILDING_BLOCKS, slab, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(slab, material));
         if (hasStonecutting) {
-            stonecutting(RecipeCategory.BUILDING_BLOCKS, slab, 2, material);
+            stonecutting(RecipeCategory.BUILDING_BLOCKS, slab, material, 2);
         }
     }
 
     protected void slab(ItemLike slab, ItemLike material, ItemLike... additionalStonecuttingMaterials) {
         slab(slab, material, true);
         for (ItemLike mat : additionalStonecuttingMaterials) {
-            stonecutting(RecipeCategory.BUILDING_BLOCKS, slab, getItemName(mat).contains("slab") ? 1 : 2, mat);
+            stonecutting(RecipeCategory.BUILDING_BLOCKS, slab, mat, getItemName(mat).contains("slab") ? 1 : 2);
         }
     }
 
     protected void wall(ItemLike wall, ItemLike material, boolean hasStonecutting) {
         wallBuilder(RecipeCategory.DECORATIONS, wall, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(wall, material));
         if (hasStonecutting) {
-            stonecutting(RecipeCategory.DECORATIONS, wall, 1, material);
+            stonecutting(RecipeCategory.DECORATIONS, wall, material, 1);
         }
     }
 
     protected void wall(ItemLike wall, ItemLike material, ItemLike... additionalStonecuttingMaterials) {
         wall(wall, material, true);
-        for (ItemLike mat : additionalStonecuttingMaterials) {
-            stonecutting(RecipeCategory.DECORATIONS, wall, 1, mat);
+        for (var mat : additionalStonecuttingMaterials) {
+            stonecutting(RecipeCategory.DECORATIONS, wall, mat, 1);
         }
     }
 
     protected void button(ItemLike button, ItemLike material, boolean hasStonecutting) {
         buttonBuilder(button, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(button, material));
         if (hasStonecutting) {
-            stonecutting(RecipeCategory.REDSTONE, button, 1, material);
+            stonecutting(RecipeCategory.REDSTONE, button, material, 1);
         }
     }
 
     protected void button(ItemLike button, ItemLike material, ItemLike... additionalStonecuttingMaterials) {
         button(button, material, true);
-        for (ItemLike item : additionalStonecuttingMaterials) {
-            stonecutting(RecipeCategory.REDSTONE, button, 1, item);
+        for (var item : additionalStonecuttingMaterials) {
+            stonecutting(RecipeCategory.REDSTONE, button, item, 1);
         }
     }
 
     protected void chiseled(ItemLike chiseled, ItemLike material, boolean hasStonecutting) {
         chiseledBuilder(RecipeCategory.BUILDING_BLOCKS, chiseled, Ingredient.of(material)).unlockedBy(getHasName(material), has(material)).save(output, recipeID(chiseled, material));
         if (hasStonecutting) {
-            stonecutting(RecipeCategory.BUILDING_BLOCKS, chiseled, 1, material);
+            stonecutting(RecipeCategory.BUILDING_BLOCKS, chiseled, material, 1);
         }
     }
 
@@ -154,7 +147,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected void fence(ItemLike fence, int count, ItemLike material, ItemLike stick, boolean hasStonecutting) {
         shaped(RecipeCategory.DECORATIONS, fence, count).define('W', material).define('#', stick).pattern("W#W").pattern("W#W").unlockedBy(getHasName(material), has(material)).save(output, recipeID(fence, material));
         if (hasStonecutting) {
-            stonecutting(RecipeCategory.DECORATIONS, fence, 1, material);
+            stonecutting(RecipeCategory.DECORATIONS, fence, material, 1);
         }
     }
 
@@ -169,7 +162,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected void fenceGate(ItemLike fenceGate, ItemLike material, ItemLike stick, boolean hasStonecutting) {
         shaped(RecipeCategory.REDSTONE, fenceGate).define('#', stick).define('W', material).pattern("#W#").pattern("#W#").unlockedBy(getHasName(material), has(material)).save(output, recipeID(fenceGate, material));
         if (hasStonecutting) {
-            stonecutting(RecipeCategory.REDSTONE, fenceGate, 1, material);
+            stonecutting(RecipeCategory.REDSTONE, fenceGate, material, 1);
         }
     }
 
@@ -476,6 +469,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         shapeless(category, result).requires(block).requires(moss).unlockedBy(getHasName(block), has(block)).save(output, recipeID(result, block));
     }
 
+    @Deprecated
     protected void dying(TagKey<Item> dyedItems, String idPattern, String group) {
         for (var dye : DyeColor.values()) {
             var resultID = locate(idPattern.replace("{color}", dye.getName()));
@@ -486,6 +480,75 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                     .requires(dyeItem).group(group)
                     .unlockedBy("has_needed_dye", has(dyeItem))
                     .save(output, ResourceKey.create(Registries.RECIPE, locate("dye_" + getItemName(result))));
+        }
+    }
+
+    protected void generateRecipes(BlockFamily family, FeatureFlagSet flagSet) {
+        family.getVariants().forEach((variant, result) -> {
+            if (result.requiredFeatures().isSubsetOf(flagSet)) {
+                if (family.shouldGenerateCraftingRecipe()) {
+                    var base = getBaseBlockForCrafting(family, variant);
+                    this.generateCraftingRecipe(family, variant, result, base);
+                    if (variant == BlockFamily.Variant.CRACKED || variant == BlockFamily.Variant.COBBLED) {
+                        smelting(RecipeCategory.BUILDING_BLOCKS, result, base, 0.1F, 200);
+                    }
+                }
+
+                if (family.shouldGenerateStonecutterRecipe()) {
+                    this.generateStonecutterRecipe(family, variant, family.getBaseBlock());
+                }
+            }
+        });
+    }
+
+    protected void generateSmeltingConversionRecipes(BlockFamily resultFamily, BlockFamily baseFamily, FeatureFlagSet flagSet) {
+        resultFamily.getVariants().forEach((variant, result) -> {
+            if (result.requiredFeatures().isSubsetOf(flagSet)) {
+                var base = baseFamily.get(variant);
+                if (base != null && base.requiredFeatures().isSubsetOf(flagSet)) {
+                    smelting(variant == BlockFamily.Variant.WALL ? RecipeCategory.DECORATIONS : RecipeCategory.BUILDING_BLOCKS, result, base, 0.1F, 200);
+                }
+            }
+        });
+    }
+
+    protected void generateStonecuttingConversionRecipes(BlockFamily resultFamily, BlockFamily baseFamily, FeatureFlagSet flagSet) {
+        resultFamily.getVariants().forEach((variant, result) -> {
+            if (result.requiredFeatures().isSubsetOf(flagSet)) {
+                var base = baseFamily.get(variant);
+                if (base != null && base.requiredFeatures().isSubsetOf(flagSet)) {
+                    stonecutting(variant == BlockFamily.Variant.WALL ? RecipeCategory.DECORATIONS : RecipeCategory.BUILDING_BLOCKS, result, base, 1);
+                }
+            }
+        });
+    }
+
+    private void generateCraftingRecipe(BlockFamily family, BlockFamily.Variant variant, Block result, ItemLike base) {
+        var recipeFunction = SHAPE_BUILDERS.get(variant);
+        if (recipeFunction != null) {
+            RecipeBuilder builder = recipeFunction.create(this, result, base);
+            family.getRecipeGroupPrefix()
+                    .ifPresent(prefix -> builder.group(prefix + (variant == BlockFamily.Variant.CUT ? "" : "_" + variant.getRecipeGroup())));
+            builder.unlockedBy(family.getRecipeUnlockedBy().orElseGet(() -> getHasName(base)), this.has(base));
+            builder.save(output, recipeID(result, base));
+        }
+    }
+
+    private void generateStonecutterRecipe(BlockFamily family, BlockFamily.Variant variant, Block base) {
+        var recipeFunction = STONECUTTER_RECIPE_BUILDERS.get(variant);
+        if (recipeFunction != null) {
+            recipeFunction.create(this, family.get(variant), base);
+        }
+
+        if (variant == BlockFamily.Variant.POLISHED
+                || variant == BlockFamily.Variant.CUT
+                || variant == BlockFamily.Variant.BRICKS
+                || variant == BlockFamily.Variant.TILES
+                || variant == BlockFamily.Variant.COBBLED) {
+            var childVariantFamily = knownBlockFamilies.get(family.get(variant));
+            if (childVariantFamily != null) {
+                childVariantFamily.getVariants().forEach((childVariant, r) -> generateStonecutterRecipe(childVariantFamily, childVariant, base));
+            }
         }
     }
 
@@ -515,7 +578,7 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         shapeless(category, result, countR).requires(tag(material), countM).unlockedBy(getHasName(material), has(material)).save(output, recipeID(result, material));
     }
 
-    protected void stonecutting(RecipeCategory category, ItemLike result, int count, ItemLike material) {
+    protected void stonecutting(RecipeCategory category, ItemLike result, ItemLike material, int count) {
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(material), category, result, count).unlockedBy(getHasName(material), has(material)).save(output, stonecuttingRecipeID(result, material));
     }
 
@@ -540,102 +603,66 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     }
 
     protected void smoking(ItemLike result, TagKey<Item> ingredient, float xp, int time) {
-        SimpleCookingRecipeBuilder.blasting(tag(ingredient), RecipeCategory.FOOD, CookingBookCategory.FOOD, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smokingRecipeID(result, ingredient));
+        SimpleCookingRecipeBuilder.smoking(tag(ingredient), RecipeCategory.FOOD, result, xp, time).unlockedBy(getHasName(ingredient), has(ingredient)).save(output, smokingRecipeID(result, ingredient));
     }
 
-    protected ResourceKey<Recipe<?>> recipeID(ItemLike result, ItemLike material) {
-        String itemID = getItemName(result);
-        Identifier recipeID = locate(itemID);
-        if (recipes.contains(recipeID)) {
-            return ResourceKey.create(Registries.RECIPE, locate(getConversionRecipeName(itemID, material)));
-        }
-        return ResourceKey.create(Registries.RECIPE, recipeID);
+    protected ResourceKey<Recipe<?>> recipeID(ItemLike result, ItemLike ingredient) {
+        return prefixedRecipeID(result, ingredient, "");
     }
 
-    protected ResourceKey<Recipe<?>> recipeID(ItemLike result, TagKey<Item> material) {
-        String itemID = getItemName(result);
-        Identifier recipeID = locate(itemID);
-        if (recipes.contains(recipeID)) {
-            return ResourceKey.create(Registries.RECIPE, locate(getConversionRecipeName(itemID, material)));
-        }
-        return ResourceKey.create(Registries.RECIPE, recipeID);
-    }
-
-    protected Identifier stonecuttingRecipeID(String key) {
-        return locate("stonecutting/" + key);
+    protected ResourceKey<Recipe<?>> recipeID(ItemLike result, TagKey<Item> ingredient) {
+        return prefixedRecipeID(result, ingredient, "");
     }
 
     protected ResourceKey<Recipe<?>> stonecuttingRecipeID(ItemLike result, ItemLike ingredient) {
-        String itemID = getItemName(result);
-        Identifier recipeID = stonecuttingRecipeID(itemID);
-        if (recipes.contains(recipeID)) {
-            return ResourceKey.create(Registries.RECIPE, locate("stonecutting/" + getConversionRecipeName(itemID, ingredient)));
-        }
-        return ResourceKey.create(Registries.RECIPE, recipeID);
+        return prefixedRecipeID(result, ingredient, "stonecutting/");
     }
 
-    protected Identifier smeltingRecipeID(String key) {
-        return locate("smelting/" + key);
+    protected ResourceKey<Recipe<?>> stonecuttingRecipeID(ItemLike result, TagKey<Item> ingredient) {
+        return prefixedRecipeID(result, ingredient, "stonecutting/");
     }
 
     protected ResourceKey<Recipe<?>> smeltingRecipeID(ItemLike result, ItemLike ingredient) {
-        String itemID = getItemName(result);
-        Identifier recipeID = smeltingRecipeID(itemID);
-        if (recipes.contains(recipeID)) {
-            return ResourceKey.create(Registries.RECIPE, locate("smelting/" + getConversionRecipeName(itemID, ingredient)));
-        }
-        return ResourceKey.create(Registries.RECIPE, recipeID);
+        return prefixedRecipeID(result, ingredient, "smelting/");
     }
 
     protected ResourceKey<Recipe<?>> smeltingRecipeID(ItemLike result, TagKey<Item> ingredient) {
-        String itemID = getItemName(result);
-        Identifier recipeID = smeltingRecipeID(itemID);
-        if (recipes.contains(recipeID)) {
-            return ResourceKey.create(Registries.RECIPE, locate("smelting/" + getConversionRecipeName(itemID, ingredient)));
-        }
-        return ResourceKey.create(Registries.RECIPE, recipeID);
-    }
-
-    protected Identifier blastingRecipeID(String key) {
-        return locate("blasting/" + key);
+        return prefixedRecipeID(result, ingredient, "smelting/");
     }
 
     protected ResourceKey<Recipe<?>> blastingRecipeID(ItemLike result, ItemLike ingredient) {
-        String itemID = getItemName(result);
-        Identifier recipeID = blastingRecipeID(itemID);
-        if (recipes.contains(recipeID)) {
-            return ResourceKey.create(Registries.RECIPE, locate("blasting/" + getConversionRecipeName(itemID, ingredient)));
-        }
-        return ResourceKey.create(Registries.RECIPE, recipeID);
+        return prefixedRecipeID(result, ingredient, "blasting/");
     }
 
     protected ResourceKey<Recipe<?>> blastingRecipeID(ItemLike result, TagKey<Item> ingredient) {
-        String itemID = getItemName(result);
-        Identifier recipeID = blastingRecipeID(itemID);
-        if (recipes.contains(recipeID)) {
-            return ResourceKey.create(Registries.RECIPE, locate("blasting/" + getConversionRecipeName(itemID, ingredient)));
-        }
-        return ResourceKey.create(Registries.RECIPE, recipeID);
-    }
-
-    protected Identifier smokingRecipeID(String key) {
-        return locate("smoking/" + key);
+        return prefixedRecipeID(result, ingredient, "blasting/");
     }
 
     protected ResourceKey<Recipe<?>> smokingRecipeID(ItemLike result, ItemLike ingredient) {
-        String itemID = getItemName(result);
-        Identifier recipeID = smokingRecipeID(itemID);
-        if (recipes.contains(recipeID)) {
-            return ResourceKey.create(Registries.RECIPE, locate("smoking/" + getConversionRecipeName(itemID, ingredient)));
+        return prefixedRecipeID(result, ingredient, "smoking/");
+    }
+
+    protected ResourceKey<Recipe<?>> smokingRecipeID(ItemLike result, TagKey<Item> ingredient) {
+        return prefixedRecipeID(result, ingredient, "smoking/");
+    }
+
+
+    protected ResourceKey<Recipe<?>> prefixedRecipeID(ItemLike result, ItemLike ingredient, String prefix) {
+        final var itemID = getItemName(result);
+        var recipeID = locate(prefix + itemID);
+        if (knownRecipes.contains(recipeID)) {
+            recipeID = locate(prefix + getConversionRecipeName(itemID, ingredient));
+            if (knownRecipes.contains(recipeID)) throw new IllegalStateException("duplicate recipe key:" + recipeID);
         }
         return ResourceKey.create(Registries.RECIPE, recipeID);
     }
 
-    protected ResourceKey<Recipe<?>> smokingRecipeID(ItemLike result, TagKey<Item> ingredient) {
-        String itemID = getItemName(result);
-        Identifier recipeID = smokingRecipeID(itemID);
-        if (recipes.contains(recipeID)) {
-            return ResourceKey.create(Registries.RECIPE, locate("smoking/" + getConversionRecipeName(itemID, ingredient)));
+    protected ResourceKey<Recipe<?>> prefixedRecipeID(ItemLike result, TagKey<Item> ingredient, String prefix) {
+        final var itemID = getItemName(result);
+        var recipeID = locate(prefix + itemID);
+        if (knownRecipes.contains(recipeID)) {
+            recipeID = locate(prefix + getConversionRecipeName(itemID, ingredient));
+            if (knownRecipes.contains(recipeID)) throw new IllegalStateException("duplicate recipe key:" + recipeID);
         }
         return ResourceKey.create(Registries.RECIPE, recipeID);
     }
@@ -660,7 +687,45 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         if (key.contains(":")) {
             return Identifier.bySeparator(key, ':');
         }
-        return Identifier.fromNamespaceAndPath(modID, key);
+        // explicitly create from consumer provided mod id
+        return Identifier.fromNamespaceAndPath(modId, key);
+    }
+
+    protected FamilyBuilder family(BlockFamily family) {
+        return new FamilyBuilder(family, DEFAULT_FEATURE_FLAG_SET);
+    }
+
+    protected FamilyBuilder family(BlockFamily family, FeatureFlagSet featureFlags) {
+        return new FamilyBuilder(family, featureFlags);
+    }
+
+    protected final class FamilyBuilder {
+        private final BlockFamily family;
+        private final FeatureFlagSet featureFlags;
+
+        public FamilyBuilder(BlockFamily family, FeatureFlagSet featureFlags) {
+            this.family = family;
+            this.featureFlags = featureFlags;
+        }
+
+        public FamilyBuilder generate() {
+            generateRecipes(family, featureFlags);
+            return this;
+        }
+
+        public FamilyBuilder generateStonecuttingConversions(BlockFamily baseFamily) {
+            generateStonecuttingConversionRecipes(family, baseFamily, featureFlags);
+
+            family.getVariants().forEach((variant, block) -> {
+                generateStonecutterRecipe(family, variant, getBaseBlockForCrafting(baseFamily, variant));
+            });
+            return this;
+        }
+
+        public FamilyBuilder generateSmeltingConversions(BlockFamily baseFamily) {
+            generateSmeltingConversionRecipes(family, baseFamily, featureFlags);
+            return this;
+        }
     }
 
     public static abstract class Runner implements DataProvider {
@@ -683,7 +748,6 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                                 final List<CompletableFuture<?>> list = new ArrayList<>();
                                 RecipeOutput recipeoutput = new RecipeOutput() {
                                     @Override
-                                    @ParametersAreNonnullByDefault
                                     public void accept(ResourceKey<Recipe<?>> id, Recipe<?> recipe, @Nullable AdvancementHolder advancementHolder, net.neoforged.neoforge.common.conditions.ICondition... conditions) {
                                         if (!recipes.add(id.identifier())) {
                                             throw new IllegalStateException("Duplicate recipe " + id.identifier());

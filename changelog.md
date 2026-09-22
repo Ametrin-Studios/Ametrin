@@ -1,3 +1,24 @@
+## 1.2.1
+- add `WoodTypeCollection` (similar to vanilla `ColorCollection`)
+- add `BlockModelGenerators.family` overloads with `TexturedModel`
+- add `ExtendedModelProvider.logTextureMapping`
+- (26.1) backport vanilla `ColorCollection`
+
+## 1.2.0
+- (26.3) add `ExtendedLootSubProvider` (provides common `HolderGetter`s)
+- add `ExtendedRecipeProvider.family` and helper for stonecutting/smelting conversion recipes between families
+- add `ExtendedLanguageProvider.addHumanized` APIs
+- `ExtendedRecipeProvider` takes a `Map<Block, BlockFamily>` and patches vanilla methods to work with custom families 
+- add `BlockModelGenerators.familyWithExistingFullBlock` overloads with `TextureMapping`
+- `ExtendedBlockItemTagsProvider`: various helpers for BlockFamilies
+- (26.3)remove `CustomLootTableProvider` (use vanilla `LootTableProvider` directly)
+- remove `VanillaCompat.addFlowerPot` (NeoForge can handle this now)
+- disabled tree API (Vanilla tree generation should now be able to do the same)
+
+## 1.1.0
+- data gen changes for vanilla compatibility
+- 26.2 port
+
 ## 1.0.1
 - mark compatible with 26.1.x
 

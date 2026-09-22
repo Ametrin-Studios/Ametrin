@@ -20,7 +20,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -89,5 +88,5 @@ public abstract class ExtendedBlockLootSubProvider extends BlockLootSubProvider 
     }
 
     @Override
-    protected abstract @NotNull Iterable<Block> getKnownBlocks();
+    protected abstract Iterable<Block> getKnownBlocks();
 }

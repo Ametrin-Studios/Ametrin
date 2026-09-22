@@ -10,14 +10,14 @@ license="${mod_license}"
 [[dependencies.${mod_id}]]
     modId="ametrin"
     type="required"
-    versionRange="[0.0.1,)"
+    versionRange="[1.0.0,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.${mod_id}]] #optional
     modId="neoforge" #mandatory
     type="required"
-    versionRange="[${neo_version},)" #mandatory
+    versionRange="${neo_version_range}" #mandatory
     ordering="NONE"
     side="BOTH"
 

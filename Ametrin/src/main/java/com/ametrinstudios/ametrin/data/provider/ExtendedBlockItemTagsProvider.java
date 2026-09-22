@@ -1,7 +1,10 @@
 package com.ametrinstudios.ametrin.data.provider;
 
 import com.ametrinstudios.ametrin.data.BlockTagProviderRule;
+import com.ametrinstudios.ametrin.data.DataProviderExtensions;
+import com.ametrinstudios.ametrin.util.ColorCollection;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.tags.BlockItemTagsProvider;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.tags.BlockTags;
@@ -11,12 +14,12 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -30,85 +33,31 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
     @Override
     protected abstract void run();
 
-    @Override
-    @ParametersAreNonnullByDefault
-    protected abstract @NotNull TagAppender<Block, Block> tag(@NotNull TagKey<Block> blockTag, @NotNull TagKey<Item> itemTag);
-
     protected void runRules(DeferredRegister.Blocks blockRegistry) {
-        runRules(blockRegistry.getEntries().stream().map(Supplier::get));
+        runRules(blockRegistry.getEntries().stream());
     }
 
-    protected void runRules(Stream<? extends Block> blocks) {
-        blocks.forEach(block -> {
+    protected void runRules(Stream<DeferredHolder<Block, ? extends Block>> blocks) {
+        blocks.forEach(holder -> {
+            final var block = holder.get();
+
             if (excludedBlocks.contains(block)) {
                 return;
             }
-            final var name = getBlockName(block);
+
+            final var key = holder.getKey();
+            final var name = key.identifier().getPath();
 
             for (var provider : blockItemTagProviderRules) {
-                provider.generate(block, name);
+                provider.generate(holder, name);
             }
 
-            if (block instanceof StairBlock) {
-                if (isWooden(name)) {
-                    tag(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS).add(block);
-                } else {
-                    tag(BlockTags.STAIRS, ItemTags.STAIRS).add(block);
-                }
+            if (name.contains("wool")) {
+                tag(BlockTags.DAMPENS_VIBRATIONS, ItemTags.DAMPENS_VIBRATIONS).add(block);
             }
-            if (block instanceof SlabBlock) {
-                if (isWooden(name)) {
-                    tag(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS).add(block);
-                } else {
-                    tag(BlockTags.SLABS, ItemTags.SLABS).add(block);
-                }
-            }
-            if (block instanceof WallBlock) {
-                tag(BlockTags.WALLS, ItemTags.WALLS).add(block);
-            }
-            if (block instanceof FenceBlock) {
-                if (isWooden(name)) {
-                    tag(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES).add(block); // c:fences/wooden includes this
-                } else {
-                    tag(BlockTags.FENCES, ItemTags.FENCES).add(block); // c:fences does not include this
-                    tag(Tags.Blocks.FENCES, Tags.Items.FENCES).add(block);
-                }
-            }
-            if (block instanceof FenceGateBlock) {
-                if (isWooden(name)) {
-                    // those tags don't pull from each other
-                    // minecraft:fence_gates are only wooden fence gates and is contained in furnace fuels
-                    tag(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN).add(block);
-                    tag(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES).add(block);
-                } else {
-                    tag(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES).add(block);
-                }
-            }
-            if (block instanceof ButtonBlock) {
-                if (isWooden(name)) {
-                    tag(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS).add(block);
-                } else {
-                    tag(BlockTags.BUTTONS, ItemTags.BUTTONS).add(block);
-                }
-            }
-            if (block instanceof PressurePlateBlock) {
-                if (isWooden(name)) {
-                    tag(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES).add(block);
-                }
-            }
-            if (block instanceof DoorBlock) {
-                if (isWooden(name)) {
-                    tag(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS).add(block);
-                } else {
-                    tag(BlockTags.DOORS, ItemTags.DOORS).add(block);
-                }
-            }
-            if (block instanceof TrapDoorBlock) {
-                if (isWooden(name)) {
-                    tag(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS).add(block);
-                } else {
-                    tag(BlockTags.TRAPDOORS, ItemTags.TRAPDOORS).add(block);
-                }
+
+            if (block instanceof CarpetBlock) {
+                tag(BlockTags.WOOL_CARPETS, ItemTags.WOOL_CARPETS).add(block);
             }
             if (block instanceof LeavesBlock) {
                 tag(BlockTags.LEAVES, ItemTags.LEAVES).add(block);
@@ -125,6 +74,64 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
         });
     }
 
+    public void tagColorCollection(ColorCollection<? extends Supplier<? extends Block>> items) {
+        ColorCollection.zipApply(ColorCollection.VALUES, items, (color, block) -> tag(DataProviderExtensions.getColorBlockTag(color), color.getDyedTag()).add(block.get()));
+    }
+
+    public void tagBlockFamily(BlockFamily family) {
+        family.getVariants().forEach(this::tagVariant);
+    }
+
+    public void tagBlockFamilyIgnoring(BlockFamily family, Set<BlockFamily.Variant> ignored) {
+        family.getVariants().forEach((variant, block) -> {
+            if (ignored.contains(variant)) return;
+            tagVariant(variant, block);
+        });
+    }
+
+    public void tagVariant(BlockFamily.Variant variant, Block block) {
+        var isWooden = isWooden(getBlockName(block));
+
+        record BlockItemTagId(TagKey<Block> block, TagKey<Item> item) {}
+        var tag = switch (variant) {
+            case STAIRS ->
+                    isWooden ? new BlockItemTagId(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS) : new BlockItemTagId(BlockTags.STAIRS, ItemTags.STAIRS);
+            case SLAB ->
+                    isWooden ? new BlockItemTagId(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS) : new BlockItemTagId(BlockTags.SLABS, ItemTags.SLABS);
+            case WALL -> new BlockItemTagId(BlockTags.WALLS, ItemTags.WALLS);
+            case FENCE, CUSTOM_FENCE -> {
+                if (isWooden) {
+                    yield new BlockItemTagId(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
+                } else {
+                    tag(BlockTags.FENCES, ItemTags.FENCES).add(block); // c:fences does not include this
+                    yield new BlockItemTagId(Tags.Blocks.FENCES, Tags.Items.FENCES);
+                }
+            }
+            case FENCE_GATE, CUSTOM_FENCE_GATE -> {
+                if (isWooden) {
+                    tag(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES).add(block);
+                    yield new BlockItemTagId(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
+                } else {
+                    yield new BlockItemTagId(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
+                }
+            }
+            case BUTTON ->
+                    isWooden ? new BlockItemTagId(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS) : new BlockItemTagId(BlockTags.BUTTONS, ItemTags.BUTTONS);
+            case PRESSURE_PLATE ->
+                    isWooden ? new BlockItemTagId(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES) : null;
+            case DOOR ->
+                    isWooden ? new BlockItemTagId(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS) : new BlockItemTagId(BlockTags.DOORS, ItemTags.DOORS);
+            case TRAPDOOR ->
+                    isWooden ? new BlockItemTagId(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS) : new BlockItemTagId(BlockTags.TRAPDOORS, ItemTags.TRAPDOORS);
+            case SIGN, WALL_SIGN -> new BlockItemTagId(BlockTags.SIGNS, ItemTags.SIGNS);
+            default -> null;
+        };
+
+        if (tag != null) {
+            tag(tag.block, tag.item).add(block);
+        }
+    }
+
     public static class BlockToItemConverter implements TagAppender<Block, Block> {
         private final TagAppender<Item, Item> itemAppender;
 
@@ -132,12 +139,12 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
             this.itemAppender = itemAppender;
         }
 
-        public @NotNull TagAppender<Block, Block> add(Block block) {
+        public TagAppender<Block, Block> add(Block block) {
             this.itemAppender.add(Objects.requireNonNull(block.asItem()));
             return this;
         }
 
-        public @NotNull TagAppender<Block, Block> addOptional(Block block) {
+        public TagAppender<Block, Block> addOptional(Block block) {
             this.itemAppender.addOptional(Objects.requireNonNull(block.asItem()));
             return this;
         }
@@ -147,37 +154,37 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
         }
 
         @Override
-        public @NotNull TagAppender<Block, Block> addTag(@NotNull TagKey<Block> tagKey) {
+        public TagAppender<Block, Block> addTag(TagKey<Block> tagKey) {
             this.itemAppender.addTag(blockTagToItemTag(tagKey));
             return this;
         }
 
         @Override
-        public @NotNull TagAppender<Block, Block> addOptionalTag(@NotNull TagKey<Block> tagKey) {
+        public TagAppender<Block, Block> addOptionalTag(TagKey<Block> tagKey) {
             this.itemAppender.addOptionalTag(blockTagToItemTag(tagKey));
             return this;
         }
 
         @Override
-        public @NotNull TagAppender<Block, Block> add(@NotNull TagEntry entry) {
+        public TagAppender<Block, Block> add(TagEntry entry) {
             itemAppender.add(entry);
             return this;
         }
 
         @Override
-        public @NotNull TagAppender<Block, Block> replace(boolean value) {
+        public TagAppender<Block, Block> replace(boolean value) {
             itemAppender.replace(value);
             return this;
         }
 
         @Override
-        public @NotNull TagAppender<Block, Block> remove(Block block) {
+        public TagAppender<Block, Block> remove(Block block) {
             itemAppender.remove(block.asItem());
             return this;
         }
 
         @Override
-        public @NotNull TagAppender<Block, Block> remove(@NotNull TagKey<Block> tag) {
+        public TagAppender<Block, Block> remove(TagKey<Block> tag) {
             itemAppender.remove(blockTagToItemTag(tag));
             return this;
         }
