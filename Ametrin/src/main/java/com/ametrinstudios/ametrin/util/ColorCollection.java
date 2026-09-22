@@ -4,7 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.apache.commons.lang3.function.TriFunction;
 
@@ -37,6 +39,101 @@ public record ColorCollection<T>(
             DyeColor.BLACK
     );
     public static final ColorCollection<String> NAMES = VALUES.map(DyeColor::getName);
+
+    public static final ColorCollection<Item> DYE = new ColorCollection<>(
+            Items.WHITE_DYE,
+            Items.ORANGE_DYE,
+            Items.MAGENTA_DYE,
+            Items.LIGHT_BLUE_DYE,
+            Items.YELLOW_DYE,
+            Items.LIME_DYE,
+            Items.PINK_DYE,
+            Items.GRAY_DYE,
+            Items.LIGHT_GRAY_DYE,
+            Items.CYAN_DYE,
+            Items.PURPLE_DYE,
+            Items.BLUE_DYE,
+            Items.BROWN_DYE,
+            Items.GREEN_DYE,
+            Items.RED_DYE,
+            Items.BLACK_DYE
+    );
+
+    public static final ColorCollection<Block> WOOL = new ColorCollection<>(
+            Blocks.WHITE_WOOL,
+            Blocks.ORANGE_WOOL,
+            Blocks.MAGENTA_WOOL,
+            Blocks.LIGHT_BLUE_WOOL,
+            Blocks.YELLOW_WOOL,
+            Blocks.LIME_WOOL,
+            Blocks.PINK_WOOL,
+            Blocks.GRAY_WOOL,
+            Blocks.LIGHT_GRAY_WOOL,
+            Blocks.CYAN_WOOL,
+            Blocks.PURPLE_WOOL,
+            Blocks.BLUE_WOOL,
+            Blocks.BROWN_WOOL,
+            Blocks.GREEN_WOOL,
+            Blocks.RED_WOOL,
+            Blocks.BLACK_WOOL
+    );
+
+    public static final ColorCollection<Block> CONCRETE = new ColorCollection<>(
+            Blocks.WHITE_CONCRETE,
+            Blocks.ORANGE_CONCRETE,
+            Blocks.MAGENTA_CONCRETE,
+            Blocks.LIGHT_BLUE_CONCRETE,
+            Blocks.YELLOW_CONCRETE,
+            Blocks.LIME_CONCRETE,
+            Blocks.PINK_CONCRETE,
+            Blocks.GRAY_CONCRETE,
+            Blocks.LIGHT_GRAY_CONCRETE,
+            Blocks.CYAN_CONCRETE,
+            Blocks.PURPLE_CONCRETE,
+            Blocks.BLUE_CONCRETE,
+            Blocks.BROWN_CONCRETE,
+            Blocks.GREEN_CONCRETE,
+            Blocks.RED_CONCRETE,
+            Blocks.BLACK_CONCRETE
+    );
+
+    public static final ColorCollection<Block> DYED_TERRACOTTA = new ColorCollection<>(
+            Blocks.WHITE_TERRACOTTA,
+            Blocks.ORANGE_TERRACOTTA,
+            Blocks.MAGENTA_TERRACOTTA,
+            Blocks.LIGHT_BLUE_TERRACOTTA,
+            Blocks.YELLOW_TERRACOTTA,
+            Blocks.LIME_TERRACOTTA,
+            Blocks.PINK_TERRACOTTA,
+            Blocks.GRAY_TERRACOTTA,
+            Blocks.LIGHT_GRAY_TERRACOTTA,
+            Blocks.CYAN_TERRACOTTA,
+            Blocks.PURPLE_TERRACOTTA,
+            Blocks.BLUE_TERRACOTTA,
+            Blocks.BROWN_TERRACOTTA,
+            Blocks.GREEN_TERRACOTTA,
+            Blocks.RED_TERRACOTTA,
+            Blocks.BLACK_TERRACOTTA
+    );
+
+    public static final ColorCollection<Block> GLAZED_TERRACOTTA = new ColorCollection<>(
+            Blocks.WHITE_GLAZED_TERRACOTTA,
+            Blocks.ORANGE_GLAZED_TERRACOTTA,
+            Blocks.MAGENTA_GLAZED_TERRACOTTA,
+            Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA,
+            Blocks.YELLOW_GLAZED_TERRACOTTA,
+            Blocks.LIME_GLAZED_TERRACOTTA,
+            Blocks.PINK_GLAZED_TERRACOTTA,
+            Blocks.GRAY_GLAZED_TERRACOTTA,
+            Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA,
+            Blocks.CYAN_GLAZED_TERRACOTTA,
+            Blocks.PURPLE_GLAZED_TERRACOTTA,
+            Blocks.BLUE_GLAZED_TERRACOTTA,
+            Blocks.BROWN_GLAZED_TERRACOTTA,
+            Blocks.GREEN_GLAZED_TERRACOTTA,
+            Blocks.RED_GLAZED_TERRACOTTA,
+            Blocks.BLACK_GLAZED_TERRACOTTA
+    );
 
     public static <T> ColorCollection<T> create(T value) {
         return new ColorCollection<>(value, value, value, value, value, value, value, value, value, value, value, value, value, value, value, value);

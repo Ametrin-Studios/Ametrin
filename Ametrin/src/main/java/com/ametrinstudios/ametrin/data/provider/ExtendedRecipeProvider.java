@@ -41,7 +41,7 @@ import java.util.stream.Stream;
 @SuppressWarnings("unused")
 public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static final Logger LOGGER = LogUtils.getLogger();
-    protected static Set<Identifier> knownRecipes = new HashSet<>();
+    protected Set<Identifier> knownRecipes;
     protected static final FeatureFlagSet DEFAULT_FEATURE_FLAG_SET = FeatureFlagSet.of(FeatureFlags.VANILLA);
 
     private static final Map<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider> STONECUTTER_RECIPE_BUILDERS = ImmutableMap.<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider>builder()
@@ -59,13 +59,14 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected String modId;
     protected final Map<Block, BlockFamily> knownBlockFamilies;
 
-    public ExtendedRecipeProvider(String modId, HolderLookup.Provider registries, RecipeOutput output, Stream<BlockFamily> knownBlockFamilies) {
-        this(modId, registries, output, knownBlockFamilies.collect(Collectors.toMap(BlockFamily::getBaseBlock, Function.identity())));
+    public ExtendedRecipeProvider(String modId, HolderLookup.Provider registries, RecipeOutput output, Set<Identifier> knownRecipes, Stream<BlockFamily> knownBlockFamilies) {
+        this(modId, registries, output, knownRecipes, knownBlockFamilies.collect(Collectors.toMap(BlockFamily::getBaseBlock, Function.identity())));
     }
 
-    public ExtendedRecipeProvider(String modId, HolderLookup.Provider registries, RecipeOutput output, Map<Block, BlockFamily> knownBlockFamilies) {
+    public ExtendedRecipeProvider(String modId, HolderLookup.Provider registries, RecipeOutput output, Set<Identifier> knownRecipes, Map<Block, BlockFamily> knownBlockFamilies) {
         super(registries, output);
         this.modId = modId;
+        this.knownRecipes = knownRecipes;
         this.knownBlockFamilies = knownBlockFamilies;
     }
 

@@ -20,6 +20,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static com.ametrinstudios.ametrin.data.DataProviderExtensions.getBlockName;
@@ -73,8 +74,8 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
         });
     }
 
-    public void tagColorCollection(ColorCollection<Block> items) {
-        ColorCollection.zipApply(ColorCollection.VALUES, items, (color, item) -> tag(DataProviderExtensions.getColorBlockTag(color), color.getDyedTag()).add(item));
+    public void tagColorCollection(ColorCollection<? extends Supplier<? extends Block>> items) {
+        ColorCollection.zipApply(ColorCollection.VALUES, items, (color, block) -> tag(DataProviderExtensions.getColorBlockTag(color), color.getDyedTag()).add(block.get()));
     }
 
     public void tagBlockFamily(BlockFamily family) {
