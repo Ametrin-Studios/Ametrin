@@ -7,7 +7,6 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.recipes.*;
@@ -18,7 +17,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CookingBookCategory;
@@ -501,18 +499,44 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         shapeless(category, result).requires(block).requires(moss).unlockedBy(getHasName(block), has(block)).save(output, recipeID(result, block));
     }
 
-    @Deprecated
-    protected void dying(TagKey<Item> dyedItems, String idPattern, String group) {
-        for (var dye : DyeColor.values()) {
-            var resultID = locate(idPattern.replace("{color}", dye.getName()));
-            var dyeID = Identifier.withDefaultNamespace(dye.getName() + "_dye");
-            var result = BuiltInRegistries.ITEM.get(resultID).orElseThrow().value();
-            var dyeItem = BuiltInRegistries.ITEM.get(dyeID).orElseThrow().value();
-            shapeless(RecipeCategory.BUILDING_BLOCKS, result).requires(dyedItems)
-                    .requires(dyeItem).group(group)
-                    .unlockedBy("has_needed_dye", has(dyeItem))
-                    .save(output, ResourceKey.create(Registries.RECIPE, locate("dye_" + getItemName(result))));
-        }
+    public void dyeing8(RecipeCategory category, ItemLike result, TagKey<Item> source, ItemLike dye, String group) {
+        shaped(category, result, 8)
+                .define('#', source)
+                .define('X', dye)
+                .pattern("###")
+                .pattern("#X#")
+                .pattern("###")
+                .group(group)
+                .unlockedBy(getHasName(source), has(source))
+                .save(output, dyeingRecipeID(result, dye));
+    }
+
+    public void dyeing8(RecipeCategory category, ItemLike result, ItemLike source, ItemLike dye, String group) {
+        shaped(category, result, 8)
+                .define('#', source)
+                .define('X', dye)
+                .pattern("###")
+                .pattern("#X#")
+                .pattern("###")
+                .group(group)
+                .unlockedBy(getHasName(source), has(source))
+                .save(output, dyeingRecipeID(result, dye));
+    }
+
+    protected void dyeing1(RecipeCategory category, ItemLike result, ItemLike source, ItemLike dye, String group) {
+        shapeless(category, result)
+                .requires(source).requires(dye).group(group)
+                .unlockedBy(getHasName(source), has(source))
+                .save(output, dyeingRecipeID(result, dye));
+
+    }
+
+    protected void dyeing1(RecipeCategory category, ItemLike result, TagKey<Item> source, ItemLike dye, String group) {
+        shapeless(category, result)
+                .requires(source).requires(dye).group(group)
+                .unlockedBy(getHasName(source), has(source))
+                .save(output, dyeingRecipeID(result, dye));
+
     }
 
     protected void generateRecipes(BlockFamily family, FeatureFlagSet flagSet) {
@@ -686,6 +710,14 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
 
     protected ResourceKey<Recipe<?>> smokingRecipeID(ItemLike result, TagKey<Item> ingredient) {
         return prefixedRecipeID(result, ingredient, "smoking/");
+    }
+
+    protected ResourceKey<Recipe<?>> dyeingRecipeID(ItemLike result, ItemLike ingredient) {
+        return prefixedRecipeID(result, ingredient, "dyeing/");
+    }
+
+    protected ResourceKey<Recipe<?>> dyeingRecipeID(ItemLike result, TagKey<Item> ingredient) {
+        return prefixedRecipeID(result, ingredient, "dyeing/");
     }
 
 

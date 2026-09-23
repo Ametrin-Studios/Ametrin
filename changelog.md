@@ -1,3 +1,6 @@
+## 1.2.2
+- dyeing recipe helper
+
 ## 1.2.1
 - add `WoodTypeCollection` (similar to vanilla `ColorCollection`)
 - add `BlockModelGenerators.family` overloads with `TexturedModel`
