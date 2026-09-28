@@ -22,6 +22,32 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
     public static final List<WoodType> VANILLA_OVERWORLD_TYPES = List.of(WoodType.OAK, WoodType.SPRUCE, WoodType.BIRCH, WoodType.JUNGLE, WoodType.ACACIA, WoodType.DARK_OAK, WoodType.MANGROVE, WoodType.CHERRY, WoodType.PALE_OAK, WoodType.POPLAR);
     public static final List<WoodType> VANILLA_NETHER_TYPES = List.of(WoodType.CRIMSON, WoodType.WARPED);
 
+    public static final WoodTypeCollection<Block> VANILLA_OVERWORLD_SAPLINGS = new WoodTypeCollection<>(ImmutableMap.of(
+            WoodType.OAK, Blocks.OAK_SAPLING,
+            WoodType.SPRUCE, Blocks.SPRUCE_SAPLING,
+            WoodType.BIRCH, Blocks.BIRCH_SAPLING,
+            WoodType.JUNGLE, Blocks.JUNGLE_SAPLING,
+            WoodType.ACACIA, Blocks.ACACIA_SAPLING,
+            WoodType.DARK_OAK, Blocks.DARK_OAK_SAPLING,
+            WoodType.MANGROVE, Blocks.MANGROVE_PROPAGULE,
+            WoodType.CHERRY, Blocks.CHERRY_SAPLING,
+            WoodType.PALE_OAK, Blocks.PALE_OAK_SAPLING,
+            WoodType.POPLAR, Blocks.POPLAR_SAPLING
+    ));
+
+    /// POPLAR has 3 leaf variants
+    public static final WoodTypeCollection<Block> VANILLA_OVERWORLD_LEAVES_WITHOUT_POPLAR = new WoodTypeCollection<>(ImmutableMap.of(
+            WoodType.OAK, Blocks.OAK_LEAVES,
+            WoodType.SPRUCE, Blocks.SPRUCE_LEAVES,
+            WoodType.BIRCH, Blocks.BIRCH_LEAVES,
+            WoodType.JUNGLE, Blocks.JUNGLE_LEAVES,
+            WoodType.ACACIA, Blocks.ACACIA_LEAVES,
+            WoodType.DARK_OAK, Blocks.DARK_OAK_LEAVES,
+            WoodType.MANGROVE, Blocks.MANGROVE_LEAVES,
+            WoodType.CHERRY, Blocks.CHERRY_LEAVES,
+            WoodType.PALE_OAK, Blocks.PALE_OAK_LEAVES
+    ));
+
     public static final WoodTypeCollection<Block> VANILLA_OVERWORLD_LOGS = new WoodTypeCollection<>(ImmutableMap.of(
             WoodType.OAK, Blocks.OAK_LOG,
             WoodType.SPRUCE, Blocks.SPRUCE_LOG,
