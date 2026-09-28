@@ -9,6 +9,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.entries.TagEntry;
@@ -18,40 +19,57 @@ import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 public final class LootTableProviderHelper {
+    public static LootPoolSingletonContainer.Builder<?> empty(int weight) {
+        return EmptyLootItem.emptyItem().setWeight(weight);
+    }
+
     public static LootPoolSingletonContainer.Builder<?> item(ItemLike item) {
         return LootItem.lootTableItem(item);
     }
 
+    @Deprecated
+    public static LootPoolSingletonContainer.Builder<?> item(ItemLike item, int weight) {
+        return item(item).setWeight(weight);
+    }
+
     public static LootPoolSingletonContainer.Builder<?> item(ItemLike item, int weight, NumberProvider amount) {
-        return item(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
+        var builder = item(item).setWeight(weight);
+        if (!(amount instanceof ConstantValue(float value) && value == 1)) {
+            builder.apply(SetItemCountFunction.setCount(amount));
+        }
+        return builder;
+    }
+
+    public static LootPoolSingletonContainer.Builder<?> tag(TagKey<Item> tagKey) {
+        return TagEntry.expandTag(tagKey);
     }
 
     public static LootPoolSingletonContainer.Builder<?> tag(TagKey<Item> tagKey, int weight, NumberProvider amount) {
-        return TagEntry.expandTag(tagKey).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
+        return tag(tagKey).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
     }
 
     public static LootPoolSingletonContainer.Builder<?> enchantedItem(ItemLike item, int weight, NumberProvider enchant, NumberProvider amount, HolderLookup.Provider provider) {
-        return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(EnchantWithLevelsFunction.enchantWithLevels(provider, enchant));
+        return item(item, weight, amount).apply(EnchantWithLevelsFunction.enchantWithLevels(provider, enchant));
     }
 
     public static LootPoolSingletonContainer.Builder<?> enchantedItem(ItemLike item, int weight, NumberProvider amount, HolderLookup.Provider provider) {
-        return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(EnchantRandomlyFunction.randomApplicableEnchantment(provider));
+        return item(item, weight, amount).apply(EnchantRandomlyFunction.randomApplicableEnchantment(provider));
     }
 
     public static LootPoolSingletonContainer.Builder<?> suspiciousStew(int weight, NumberProvider amount) {
-        return LootItem.lootTableItem(Items.SUSPICIOUS_STEW).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(SetStewEffectFunction.stewEffect().withEffect(MobEffects.NIGHT_VISION, number(7, 10)).withEffect(MobEffects.JUMP_BOOST, number(7, 10)).withEffect(MobEffects.WEAKNESS, number(6, 8)).withEffect(MobEffects.BLINDNESS, number(5, 7)).withEffect(MobEffects.POISON, number(10, 20)).withEffect(MobEffects.SATURATION, number(7, 10)));
+        return item(Items.SUSPICIOUS_STEW, weight, amount).apply(SetStewEffectFunction.stewEffect().withEffect(MobEffects.NIGHT_VISION, number(7, 10)).withEffect(MobEffects.JUMP_BOOST, number(7, 10)).withEffect(MobEffects.WEAKNESS, number(6, 8)).withEffect(MobEffects.BLINDNESS, number(5, 7)).withEffect(MobEffects.POISON, number(10, 20)).withEffect(MobEffects.SATURATION, number(7, 10)));
     }
 
     public static LootPoolSingletonContainer.Builder<?> potion(int weight, Holder<Potion> potion, NumberProvider amount) {
-        return LootItem.lootTableItem(Items.POTION).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(SetPotionFunction.setPotion(potion));
+        return item(Items.POTION, weight, amount).apply(SetPotionFunction.setPotion(potion));
     }
 
     public static LootPoolSingletonContainer.Builder<?> splashPotion(int weight, Holder<Potion> potion, NumberProvider amount) {
-        return LootItem.lootTableItem(Items.SPLASH_POTION).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(SetPotionFunction.setPotion(potion));
+        return item(Items.SPLASH_POTION, weight, amount).apply(SetPotionFunction.setPotion(potion));
     }
 
     public static LootPoolSingletonContainer.Builder<?> lingeringPotion(int weight, Holder<Potion> potion, NumberProvider amount) {
-        return LootItem.lootTableItem(Items.LINGERING_POTION).setWeight(weight).apply(SetItemCountFunction.setCount(amount)).apply(SetPotionFunction.setPotion(potion));
+        return item(Items.LINGERING_POTION, weight, amount).apply(SetPotionFunction.setPotion(potion));
     }
 
     public static NumberProvider one() {
