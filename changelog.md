@@ -1,4 +1,8 @@
 ## 1.2.1
+- `BannerBuilder`
+- `ExtendedAdvancementSubProvider`
+
+## 1.2.1
 - add `WoodTypeCollection` (similar to vanilla `ColorCollection`)
 - add `BlockModelGenerators.family` overloads with `TexturedModel`
 - add `ExtendedModelProvider.logTextureMapping`
