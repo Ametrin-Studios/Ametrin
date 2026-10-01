@@ -1,6 +1,7 @@
-## 1.2.1
+## 1.2.2
 - `BannerBuilder`
 - `ExtendedAdvancementSubProvider`
+- remove `/ametrin list` command (neoforge can already do this)
 
 ## 1.2.1
 - add `WoodTypeCollection` (similar to vanilla `ColorCollection`)
