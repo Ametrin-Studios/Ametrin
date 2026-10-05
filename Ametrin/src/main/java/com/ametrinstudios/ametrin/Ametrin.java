@@ -1,6 +1,5 @@
 package com.ametrinstudios.ametrin;
 
-import com.ametrinstudios.ametrin.commands.AmArgumentTypes;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -12,7 +11,6 @@ public final class Ametrin {
     public static final String MOD_ID = "ametrin";
 
     public Ametrin(IEventBus modBus) {
-        AmArgumentTypes.REGISTER.register(modBus);
     }
 
     @ApiStatus.Internal

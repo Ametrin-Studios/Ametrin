@@ -66,7 +66,7 @@ public final class DataProviderExtensions {
     }
 
     public static BlockItemId getBlockItemId(DeferredBlock<? extends Block> blockItem) {
-        return new BlockItemId(blockItem.getKey(), getItemResourceKey(blockItem.asItem()));
+        return new BlockItemId(blockItem.key(), getItemResourceKey(blockItem.asItem()));
     }
 
     public static BlockItemId getBlockItemId(Block blockItem) {

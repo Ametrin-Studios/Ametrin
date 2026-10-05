@@ -59,7 +59,7 @@ public record PortalData(ResourceKey<Level> dimensionA, ResourceKey<Level> dimen
         }
 
         public Builder poi(DeferredHolder<PoiType, PoiType> portalPoi) {
-            return poi(portalPoi.getKey());
+            return poi(portalPoi.key());
         }
 
         public Builder poi(ResourceKey<PoiType> portalPoi) {

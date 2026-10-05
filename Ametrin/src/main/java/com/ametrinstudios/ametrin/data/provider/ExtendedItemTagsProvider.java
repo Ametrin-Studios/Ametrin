@@ -29,16 +29,16 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
         registerRule((item, name) -> {
             if (item.get() instanceof BoatItem boat) {
                 if (name.contains("chest")) {
-                    tag(ItemTags.CHEST_BOATS).add(item.getKey());
+                    tag(ItemTags.CHEST_BOATS).add(item.key());
                 } else {
-                    tag(ItemTags.BOATS).add(item.getKey());
+                    tag(ItemTags.BOATS).add(item.key());
                 }
             }
         });
 
         registerRule((item, name) -> {
             if (name.endsWith("_sign")) {
-                tag(ItemTags.SIGNS).add(item.getKey());
+                tag(ItemTags.SIGNS).add(item.key());
             }
         });
     }
@@ -60,9 +60,8 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
 
     protected void runRules(Stream<DeferredHolder<Item, ? extends Item>> items) {
         items.forEach(holder -> {
-            final var key = holder.getKey();
-            if (excludedItems.contains(key)) return;
-            final var name = key.identifier().getPath();
+            if (excludedItems.contains(holder.key())) return;
+            final var name = holder.key().identifier().getPath();
 
             for (var rule : itemTagProviderRules) {
                 rule.run(holder, name);

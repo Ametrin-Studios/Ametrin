@@ -28,9 +28,9 @@ public abstract class ExtendedBlockTagsProvider extends BlockTagsProvider {
 
     protected void runRules(Stream<DeferredHolder<Block, ? extends Block>> blocks) {
         blocks.forEach(holder -> {
-            final var key = holder.getKey();
+            final var key = holder.key();
 
-            if (excludedBlocks.contains(holder.getKey())) {
+            if (excludedBlocks.contains(key)) {
                 return;
             }
 
