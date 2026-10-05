@@ -147,7 +147,7 @@ public abstract class ExtendedAdvancementSubProvider implements AdvancementSubPr
         public AdvancementBuilder onEnterStructure(TagKey<Structure> structure) {
             var lookup = registries.lookupOrThrow(Registries.STRUCTURE);
             var structures = lookup.getOrThrow(structure);
-            return addCriterion("entered_" + structure.location().getPath(), PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setStructures(structures)));
+            return addCriterion("entered_" + structure.location().getPath().replace('/', '_'), PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setStructures(structures)));
         }
 
         public AdvancementBuilder onEnterStructure(ResourceKey<Structure> structure) {
@@ -156,7 +156,7 @@ public abstract class ExtendedAdvancementSubProvider implements AdvancementSubPr
         }
 
         public AdvancementBuilder onEnterStructure(Holder<Structure> structure) {
-            return addCriterion("entered_" + Objects.requireNonNull(structure.getKey()).identifier().getPath(), PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(structure)));
+            return addCriterion("entered_" + Objects.requireNonNull(structure.getKey()).identifier().getPath().replace('/', '_'), PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(structure)));
         }
 
         public AdvancementBuilder addCriterion(String name, Criterion<?> criterion) {
