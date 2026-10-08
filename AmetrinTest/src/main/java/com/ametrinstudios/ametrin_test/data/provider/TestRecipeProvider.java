@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 public final class TestRecipeProvider extends ExtendedRecipeProvider {
     public TestRecipeProvider(HolderLookup.Provider provider, RecipeOutput output) {
-        super(AmetrinTestMod.MOD_ID, provider, output, Map.of());
+        super(AmetrinTestMod.MOD_ID, provider, output, Set.of(), Map.of());
     }
 
 
