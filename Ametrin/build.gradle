@@ -21,7 +21,10 @@ sourceSets.main.resources {
     exclude("src/generated/**/.cache") // datagen cache files
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+    withSourcesJar()
+}
 
 neoForge {
     version = project.neo_version
@@ -74,21 +77,11 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
-tasks.register('sourcesJar', Jar) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives sourcesJar
-}
-
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
             artifactId = "${mod_id}-${minecraft_version}"
             from components.java
-            artifact sourcesJar
 
             pom {
                 url = 'https://github.com/Ametrin-Studios/Ametrin'
