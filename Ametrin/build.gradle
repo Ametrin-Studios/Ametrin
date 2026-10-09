@@ -25,6 +25,7 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(25)
     withSourcesJar()
 }
+
 neoForge {
     version = project.neo_version
 

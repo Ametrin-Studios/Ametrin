@@ -10,6 +10,5 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 public final class AmEvents {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
-//        ConfigCommand.register(event.getDispatcher());
     }
 }

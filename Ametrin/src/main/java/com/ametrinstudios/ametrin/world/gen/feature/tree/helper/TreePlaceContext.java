@@ -8,6 +8,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 
 import java.util.function.BiConsumer;
 
+@Deprecated
 public record TreePlaceContext(BlockPos pos, WorldGenLevel level, RandomSource random,
                                BiConsumer<BlockPos, BlockState> changedLogs,
                                BiConsumer<BlockPos, BlockState> changedLeaves,

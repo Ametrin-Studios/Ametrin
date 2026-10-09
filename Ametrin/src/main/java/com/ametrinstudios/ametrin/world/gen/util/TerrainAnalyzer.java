@@ -17,11 +17,11 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 
 import java.util.function.Predicate;
 
+/// use Ametrin Structures
+@Deprecated
 public final class TerrainAnalyzer {
 
-    /**
-     * @return the average height between the corner points and weather the difference is larger than the threshold, always true on {@link FlatLevelSource}
-     */
+    /// @return the average height between the corner points and weather the difference is larger than the threshold, always true on [FlatLevelSource]
     public static Pair<Float, Boolean> isFlatEnough(BlockPos pos, Vec3i size, int padding, int threshold, Context context) {
         if(context.generator() instanceof FlatLevelSource) { return Pair.of((float)context.generator().getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState()), true); }
 

@@ -5,17 +5,16 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import static com.ametrinstudios.ametrin.world.gen.feature.tree.helper.TreeHelper.setBlockChecked;
 
+@Deprecated
 public final class TreeHelper1x1 {
     public static final double CIRCULAR_LEAVES_ROUNDING_MULTIPLIER = 1.7;
 
-    /**
-     * Places a vertical trunk.
-     *
-     * @param log     trunk {@link BlockState}
-     * @param height  height of the trunk in blocks
-     * @param context {@link TreePlaceContext}
-     * @return {@link BlockPos} over the trunk
-     */
+    /// Places a vertical trunk.
+    ///
+    /// @param log     trunk [BlockState]
+    /// @param height  height of the trunk in blocks
+    /// @param context [TreePlaceContext]
+    /// @return [BlockPos] over the trunk
     public static BlockPos placeTrunk(BlockState log, int height, TreePlaceContext context) {
         for (int y = 0; y < height; y++) {
             setBlockChecked(log, context.pos().above(y), context.level(), context.changedLogs());

@@ -12,6 +12,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 
+@Deprecated
 public final class TreeHelper {
     public static boolean setBlockChecked(BlockState blockState, BlockPos pos, WorldGenLevel level, @Nullable BiConsumer<BlockPos, BlockState> changedBlocks) {
         var block = blockState.getBlock();

@@ -16,6 +16,8 @@ import org.jspecify.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+/// use Ametrin Structures
+@Deprecated
 public class KeepStateRandomBlockSwapProcessor extends StructureProcessor {
     public static final MapCodec<KeepStateRandomBlockSwapProcessor> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
                     BuiltInRegistries.BLOCK.byNameCodec().fieldOf("condition").forGetter(processor -> (processor).condition),

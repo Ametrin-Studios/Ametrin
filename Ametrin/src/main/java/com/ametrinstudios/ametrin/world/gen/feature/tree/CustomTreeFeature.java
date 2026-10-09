@@ -14,9 +14,8 @@ import org.jetbrains.annotations.ApiStatus;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.BiConsumer;
 
-/**
- * This is an alternative method of adding trees, if possible use the vanilla way!
- */
+/// This is an alternative method of adding trees, if possible use the vanilla way!
+@Deprecated
 public abstract class CustomTreeFeature extends TreeFeature {
     public CustomTreeFeature(Codec<TreeConfiguration> codec) {
         super(codec);
