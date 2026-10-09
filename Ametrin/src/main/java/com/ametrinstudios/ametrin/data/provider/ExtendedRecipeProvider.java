@@ -483,6 +483,46 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         }
     }
 
+    public void dyeing8(RecipeCategory category, ItemLike result, TagKey<Item> source, ItemLike dye, String group) {
+        shaped(category, result, 8)
+                .define('#', source)
+                .define('X', dye)
+                .pattern("###")
+                .pattern("#X#")
+                .pattern("###")
+                .group(group)
+                .unlockedBy(getHasName(source), has(source))
+                .save(output, dyeingRecipeID(result, dye));
+    }
+
+    public void dyeing8(RecipeCategory category, ItemLike result, ItemLike source, ItemLike dye, String group) {
+        shaped(category, result, 8)
+                .define('#', source)
+                .define('X', dye)
+                .pattern("###")
+                .pattern("#X#")
+                .pattern("###")
+                .group(group)
+                .unlockedBy(getHasName(source), has(source))
+                .save(output, dyeingRecipeID(result, dye));
+    }
+
+    protected void dyeing1(RecipeCategory category, ItemLike result, ItemLike source, ItemLike dye, String group) {
+        shapeless(category, result)
+                .requires(source).requires(dye).group(group)
+                .unlockedBy(getHasName(source), has(source))
+                .save(output, dyeingRecipeID(result, dye));
+
+    }
+
+    protected void dyeing1(RecipeCategory category, ItemLike result, TagKey<Item> source, ItemLike dye, String group) {
+        shapeless(category, result)
+                .requires(source).requires(dye).group(group)
+                .unlockedBy(getHasName(source), has(source))
+                .save(output, dyeingRecipeID(result, dye));
+
+    }
+
     protected void generateRecipes(BlockFamily family, FeatureFlagSet flagSet) {
         family.getVariants().forEach((variant, result) -> {
             if (result.requiredFeatures().isSubsetOf(flagSet)) {
@@ -646,6 +686,13 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
         return prefixedRecipeID(result, ingredient, "smoking/");
     }
 
+    protected ResourceKey<Recipe<?>> dyeingRecipeID(ItemLike result, ItemLike ingredient) {
+        return prefixedRecipeID(result, ingredient, "dyeing/");
+    }
+
+    protected ResourceKey<Recipe<?>> dyeingRecipeID(ItemLike result, TagKey<Item> ingredient) {
+        return prefixedRecipeID(result, ingredient, "dyeing/");
+    }
 
     protected ResourceKey<Recipe<?>> prefixedRecipeID(ItemLike result, ItemLike ingredient, String prefix) {
         final var itemID = getItemName(result);
