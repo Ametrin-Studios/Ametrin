@@ -3,6 +3,7 @@
 - `BannerBuilder`
 - `ExtendedAdvancementSubProvider`
 - remove `/ametrin list` command (neoforge can already do this)
+- deprecating features moved to [Ametrin Structures](https://github.com/Ametrin-Studios/AmetrinStructures) 
 
 ## 1.2.1
 - add `WoodTypeCollection` (similar to vanilla `ColorCollection`)
