@@ -1,8 +1,8 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/ametrin",
   "promos": {
-    "26.3-latest": "1.2.1",
-    "26.3-recommended": "1.2.1",
+    "26.3-latest": "1.2.2",
+    "26.3-recommended": "1.2.2",
     "26.2-latest": "1.1.0",
     "26.2-recommended": "1.1.0",
     "26.1.2-latest": "1.2.2",
@@ -49,6 +49,7 @@
     "1.19.2-recommended": "0.0.26"
   },
   "26.3": {
+    "1.2.2": "various API additions",
     "1.2.1": "various API additions",
     "1.2.0": "various API additions, 26.3 port"
   },
