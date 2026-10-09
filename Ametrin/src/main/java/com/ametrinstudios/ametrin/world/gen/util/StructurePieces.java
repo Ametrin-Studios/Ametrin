@@ -5,6 +5,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedList;
 
+@Deprecated // Ametrin Structures
 public class StructurePieces {
     private final WeightedList<Piece> pieces;
 

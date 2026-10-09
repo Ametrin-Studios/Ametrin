@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 
 import java.util.function.Predicate;
 
+@Deprecated // Ametrin Structures
 public final class TerrainAnalyzer {
 
     /**

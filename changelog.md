@@ -1,5 +1,8 @@
 ## 1.2.2
 - dyeing recipe helper
+- `BannerBuilder`
+- `ExtendedAdvancementSubProvider`
+- remove `/ametrin list` command (neoforge can already do this)
 
 ## 1.2.1
 - add `WoodTypeCollection` (similar to vanilla `ColorCollection`)

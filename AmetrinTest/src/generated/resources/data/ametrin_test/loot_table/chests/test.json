@@ -26,79 +26,67 @@
         },
         {
           "type": "minecraft:item",
-          "modifier": [
-            {
-              "type": "minecraft:set_count",
-              "count": 1
-            },
-            {
-              "type": "minecraft:set_potion",
-              "id": "minecraft:fire_resistance"
-            }
-          ],
+          "modifier": {
+            "type": "minecraft:set_potion",
+            "id": "minecraft:fire_resistance"
+          },
           "name": "minecraft:potion"
         },
         {
           "type": "minecraft:item",
-          "modifier": [
-            {
-              "type": "minecraft:set_count",
-              "count": 1
-            },
-            {
-              "type": "minecraft:set_stew_effect",
-              "effects": [
-                {
-                  "type": "minecraft:night_vision",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 10,
-                    "min": 7
-                  }
-                },
-                {
-                  "type": "minecraft:jump_boost",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 10,
-                    "min": 7
-                  }
-                },
-                {
-                  "type": "minecraft:weakness",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 8,
-                    "min": 6
-                  }
-                },
-                {
-                  "type": "minecraft:blindness",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 7,
-                    "min": 5
-                  }
-                },
-                {
-                  "type": "minecraft:poison",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 20,
-                    "min": 10
-                  }
-                },
-                {
-                  "type": "minecraft:saturation",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 10,
-                    "min": 7
-                  }
+          "modifier": {
+            "type": "minecraft:set_stew_effect",
+            "effects": [
+              {
+                "type": "minecraft:night_vision",
+                "duration": {
+                  "type": "minecraft:uniform",
+                  "max": 10,
+                  "min": 7
                 }
-              ]
-            }
-          ],
+              },
+              {
+                "type": "minecraft:jump_boost",
+                "duration": {
+                  "type": "minecraft:uniform",
+                  "max": 10,
+                  "min": 7
+                }
+              },
+              {
+                "type": "minecraft:weakness",
+                "duration": {
+                  "type": "minecraft:uniform",
+                  "max": 8,
+                  "min": 6
+                }
+              },
+              {
+                "type": "minecraft:blindness",
+                "duration": {
+                  "type": "minecraft:uniform",
+                  "max": 7,
+                  "min": 5
+                }
+              },
+              {
+                "type": "minecraft:poison",
+                "duration": {
+                  "type": "minecraft:uniform",
+                  "max": 20,
+                  "min": 10
+                }
+              },
+              {
+                "type": "minecraft:saturation",
+                "duration": {
+                  "type": "minecraft:uniform",
+                  "max": 10,
+                  "min": 7
+                }
+              }
+            ]
+          },
           "name": "minecraft:suspicious_stew"
         }
       ],

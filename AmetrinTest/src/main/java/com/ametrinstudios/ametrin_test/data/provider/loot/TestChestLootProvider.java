@@ -7,6 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import static com.ametrinstudios.ametrin.data.LootTableProviderHelper.*;
@@ -21,11 +22,11 @@ public final class TestChestLootProvider extends ExtendedLootSubProvider {
     @Override
     public void run() {
         output.accept(ResourceKey.create(Registries.LOOT_TABLE, AmetrinTestMod.locate("chests/test")), LootTable.lootTable()
-                .withPool(pool(between(1, 3))
-                        .add(item(TestBlocks.TEST_BLOCK.get(), 1, between(1, 3)))
-                        .add(tag(items.getOrThrow(ItemTags.SWORDS), 1, exactly(2)))
-                        .add(potion(1, Potions.FIRE_RESISTANCE, one()))
-                        .add(suspiciousStew(1, one()))
+                .withPool(LootPool.lootPool().setRolls(between(1, 3))
+                        .add(item(TestBlocks.TEST_BLOCK.get(), between(1, 3)))
+                        .add(tag(items.getOrThrow(ItemTags.SWORDS), exactly(2)))
+                        .add(potion(Potions.FIRE_RESISTANCE, one()))
+                        .add(suspiciousStew(one()))
                 )
         );
     }
