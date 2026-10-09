@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "ametrin_test:test_skull"
+  ],
+  "result": {
+    "id": "ametrin_test:test_block"
+  }
+}

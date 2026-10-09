@@ -37,7 +37,7 @@ import java.util.stream.Stream;
 @SuppressWarnings("unused")
 public abstract class ExtendedRecipeProvider extends RecipeProvider {
     protected static final Logger LOGGER = LogUtils.getLogger();
-    protected static Set<Identifier> knownRecipes = new HashSet<>();
+    protected Set<Identifier> knownRecipes = new HashSet<>();
     protected static final FeatureFlagSet DEFAULT_FEATURE_FLAG_SET = FeatureFlagSet.of(FeatureFlags.VANILLA);
 
     private static final Map<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider> STONECUTTER_RECIPE_BUILDERS = ImmutableMap.<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider>builder()

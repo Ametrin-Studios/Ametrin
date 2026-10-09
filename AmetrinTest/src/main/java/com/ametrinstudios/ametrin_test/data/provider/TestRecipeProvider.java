@@ -2,10 +2,12 @@ package com.ametrinstudios.ametrin_test.data.provider;
 
 import com.ametrinstudios.ametrin.data.provider.ExtendedRecipeProvider;
 import com.ametrinstudios.ametrin_test.AmetrinTestMod;
+import com.ametrinstudios.ametrin_test.registry.TestItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.MultiRegistryBootstrap;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.Recipe;
@@ -21,7 +23,8 @@ public final class TestRecipeProvider extends ExtendedRecipeProvider {
 
     @Override
     protected void buildRecipes() {
-
+        shapeless(RecipeCategory.DECORATIONS, TestItems.TEST_BLOCK, 1, TestItems.TEST_SKULL, 1);
+        shapeless(RecipeCategory.DECORATIONS, TestItems.TEST_BLOCK, 1, TestItems.TEST_CATALYST, 1);
     }
 
     public static MultiRegistryBootstrap create() {

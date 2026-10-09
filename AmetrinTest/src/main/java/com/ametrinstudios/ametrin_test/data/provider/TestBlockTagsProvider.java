@@ -22,7 +22,7 @@ public final class TestBlockTagsProvider extends ExtendedBlockTagsProvider {
         runRules(TestBlocks.REGISTER);
 
         tag(TestTags.Blocks.TEST_PORTAL_FRAMES).add(
-                TestBlocks.TEST_BLOCK.getKey()
+                TestBlocks.TEST_BLOCK.key()
         );
     }
 }
