@@ -1,3 +1,7 @@
+## 1.2.3
+- deprecate `VanillaCompat.Flammable` in favor of `NeoForgeDataMaps.FLAMMABLE`
+- remove `VanillaHack`
+
 ## 1.2.2
 - dyeing recipe helper
 - `BannerBuilder`

@@ -3,6 +3,7 @@ package com.ametrinstudios.ametrin.util;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
+import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 
 @SuppressWarnings("unused")
 public final class VanillaCompat {
@@ -12,6 +13,8 @@ public final class VanillaCompat {
 //        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(plant, fullPot);
 //    }
 
+    /// use [[NeoForgeDataMaps.FLAMMABLE]]
+    @Deprecated
     public interface Flammable {
         static void add(Block block, int encouragement, int flammability) {
             ((FireBlock) Blocks.FIRE).setFlammable(block, encouragement, flammability);
