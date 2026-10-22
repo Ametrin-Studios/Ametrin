@@ -1,5 +1,6 @@
 ## 1.2.3
 - deprecate `VanillaCompat.Flammable` in favor of `NeoForgeDataMaps.FLAMMABLE`
+- deprecate `DataProviderExtensions.getColorBlockItemTag` and `getColorBlockTag`
 - remove `VanillaHack`
 
 ## 1.2.2

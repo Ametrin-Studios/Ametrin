@@ -85,28 +85,13 @@ public final class DataProviderExtensions {
         return BuiltInRegistries.BLOCK.getResourceKey(block).orElseThrow();
     }
 
+    @Deprecated
     public static BlockItemTagId getColorBlockItemTag(DyeColor color) {
-        return new BlockItemTagId(getColorBlockTag(color), color.getDyedTag());
+        return Tags.BlockItems.DYED_COLORS.pick(color);
     }
 
+    @Deprecated
     public static TagKey<Block> getColorBlockTag(DyeColor color) {
-        return switch (color) {
-            case DyeColor.WHITE -> Tags.Blocks.DYED_WHITE;
-            case DyeColor.LIGHT_GRAY -> Tags.Blocks.DYED_LIGHT_GRAY;
-            case DyeColor.GRAY -> Tags.Blocks.DYED_GRAY;
-            case DyeColor.BLACK -> Tags.Blocks.DYED_BLACK;
-            case DyeColor.BROWN -> Tags.Blocks.DYED_BROWN;
-            case DyeColor.RED -> Tags.Blocks.DYED_RED;
-            case DyeColor.ORANGE -> Tags.Blocks.DYED_ORANGE;
-            case DyeColor.YELLOW -> Tags.Blocks.DYED_YELLOW;
-            case DyeColor.LIME -> Tags.Blocks.DYED_LIME;
-            case DyeColor.GREEN -> Tags.Blocks.DYED_GREEN;
-            case DyeColor.CYAN -> Tags.Blocks.DYED_CYAN;
-            case DyeColor.LIGHT_BLUE -> Tags.Blocks.DYED_LIGHT_BLUE;
-            case DyeColor.BLUE -> Tags.Blocks.DYED_BLUE;
-            case DyeColor.PURPLE -> Tags.Blocks.DYED_PURPLE;
-            case DyeColor.MAGENTA -> Tags.Blocks.DYED_MAGENTA;
-            case DyeColor.PINK -> Tags.Blocks.DYED_PINK;
-        };
+        return Tags.BlockItems.DYED_COLORS.pick(color).block();
     }
 }

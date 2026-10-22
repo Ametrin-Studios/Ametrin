@@ -1,6 +1,5 @@
 package com.ametrinstudios.ametrin.data.provider;
 
-import com.ametrinstudios.ametrin.data.DataProviderExtensions;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.tags.BlockItemTagsProvider;
 import net.minecraft.references.BlockItemId;
@@ -72,7 +71,7 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
     }
 
     public void tagColorCollection(ColorCollection<BlockItemId> items) {
-        ColorCollection.zipApply(ColorCollection.VALUES, items, (color, item) -> tag(DataProviderExtensions.getColorBlockItemTag(color)).add(item));
+        ColorCollection.zipApply(Tags.BlockItems.DYED_COLORS, items, (colorTag, item) -> tag(colorTag).add(item));
     }
 
     public void tagBlockFamily(BlockFamily family) {
@@ -99,15 +98,15 @@ public abstract class ExtendedBlockItemTagsProvider extends BlockItemTagsProvide
                     yield BlockItemTags.WOODEN_FENCES;
                 } else {
                     tag(BlockItemTags.FENCES).add(id); // c:fences does not include this
-                    yield new BlockItemTagId(Tags.Blocks.FENCES, Tags.Items.FENCES);
+                    yield Tags.BlockItems.FENCES;
                 }
             }
             case FENCE_GATE, CUSTOM_FENCE_GATE -> {
                 if (isWooden) {
                     tag(BlockItemTags.FENCE_GATES).add(id);
-                    yield new BlockItemTagId(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
+                    yield Tags.BlockItems.FENCE_GATES_WOODEN;
                 } else {
-                    yield new BlockItemTagId(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
+                    yield Tags.BlockItems.FENCE_GATES;
                 }
             }
             case BUTTON -> isWooden ? BlockItemTags.WOODEN_BUTTONS : BlockItemTags.BUTTONS;
