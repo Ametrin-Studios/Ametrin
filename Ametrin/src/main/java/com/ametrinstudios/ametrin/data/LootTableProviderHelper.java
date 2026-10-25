@@ -60,7 +60,7 @@ public final class LootTableProviderHelper {
     }
 
     public static LootPoolSingletonContainer.Builder<?> suspiciousStew(NumberProvider amount) {
-        return item(Items.SUSPICIOUS_STEW, amount).apply(SetStewEffectFunction.stewEffect().withEffect(MobEffects.NIGHT_VISION, between(7, 10)).withEffect(MobEffects.JUMP_BOOST, between(7, 10)).withEffect(MobEffects.WEAKNESS, between(6, 8)).withEffect(MobEffects.BLINDNESS, between(5, 7)).withEffect(MobEffects.POISON, between(10, 20)).withEffect(MobEffects.SATURATION, between(7, 10)));
+        return item(Items.SUSPICIOUS_STEW, amount).apply(SetStewEffectFunction.stewEffect().withEffect(MobEffects.NIGHT_VISION, between(7, 10)).withEffect(MobEffects.JUMP, between(7, 10)).withEffect(MobEffects.WEAKNESS, between(6, 8)).withEffect(MobEffects.BLINDNESS, between(5, 7)).withEffect(MobEffects.POISON, between(10, 20)).withEffect(MobEffects.SATURATION, between(7, 10)));
     }
 
     public static LootPoolSingletonContainer.Builder<?> potion(Holder<Potion> potion, NumberProvider amount) {
