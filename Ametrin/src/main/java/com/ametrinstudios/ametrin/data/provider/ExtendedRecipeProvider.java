@@ -529,8 +529,11 @@ public abstract class ExtendedRecipeProvider extends RecipeProvider {
                 if (family.shouldGenerateCraftingRecipe()) {
                     var base = getBaseBlockForCrafting(family, variant);
                     this.generateCraftingRecipe(family, variant, result, base);
-                    if (variant == BlockFamily.Variant.CRACKED || variant == BlockFamily.Variant.COBBLED) {
+                    if (variant == BlockFamily.Variant.CRACKED) {
                         smelting(RecipeCategory.BUILDING_BLOCKS, result, base, 0.1F, 200);
+                    }
+                    if (variant == BlockFamily.Variant.COBBLED) {
+                        smelting(RecipeCategory.BUILDING_BLOCKS, base, result, 0.1F, 200);
                     }
                 }
 

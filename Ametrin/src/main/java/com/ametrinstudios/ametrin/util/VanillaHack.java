@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
 
+@Deprecated
 public final class VanillaHack {
     private static final Logger LOGGER = LogUtils.getLogger();
 

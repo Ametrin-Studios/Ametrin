@@ -34,10 +34,12 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Shadow float speedFactor;
     @Shadow float jumpFactor;
     @Shadow DependantName<Block, Optional<ResourceKey<LootTable>>> drops;
+    @Shadow DependantName<Block, String> descriptionId;
     @Shadow boolean canOcclude;
     @Shadow boolean isAir;
     @Shadow boolean ignitedByLava;
     @Shadow boolean liquid;
+    @Shadow boolean forceSolidOff;
     @Shadow boolean forceSolidOn;
     @Shadow PushReaction pushReaction;
     @Shadow boolean spawnTerrainParticles;
@@ -78,6 +80,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
         if(ignitedByLava) { properties.ignitedByLava(); }
         if(liquid) { properties.liquid(); }
         if(forceSolidOn) { properties.forceSolidOn(); }
+        if(forceSolidOff) { properties.forceSolidOff(); }
         if(!spawnTerrainParticles) { properties.noTerrainParticles(); }
         if(replaceable) { properties.replaceable(); }
         if(isViewBlocking != isSuffocating) { properties.isViewBlocking(isViewBlocking); }
@@ -87,6 +90,7 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
         mixinProperties.setFeatureFlagSet(requiredFeatures);
         mixinProperties.setOffsetFunction(offsetFunction);
         mixinProperties.overrideDrops(drops);
+        mixinProperties.overrideDescriptionId(descriptionId);
 
         return properties;
     }
@@ -104,5 +108,10 @@ public abstract class MixinBlockBehaviorProperties implements IMixinBlockBehavio
     @Override
     public void overrideDrops(DependantName<Block, Optional<ResourceKey<LootTable>>> drops) {
         this.drops = drops;
+    }
+
+    @Override
+    public void overrideDescriptionId(DependantName<Block, String> descriptionId) {
+        this.descriptionId = descriptionId;
     }
 }

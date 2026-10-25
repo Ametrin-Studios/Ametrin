@@ -25,4 +25,8 @@ public interface IMixinBlockBehaviorProperties {
     default void overrideDrops(DependantName<Block, Optional<ResourceKey<LootTable>>> drops) {
         throw new AssertionError("Implemented via Mixin");
     }
+
+    default void overrideDescriptionId(DependantName<Block, String> descriptionId) {
+        throw new AssertionError("Implemented via Mixin");
+    }
 }

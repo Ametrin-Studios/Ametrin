@@ -40,11 +40,7 @@ public final class LootTableProviderHelper {
     }
 
     public static LootPoolSingletonContainer.Builder<?> item(ItemLike item, NumberProvider amount) {
-        var builder = item(item);
-        if (!(amount instanceof ConstantValue(float value) && value == 1)) {
-            builder.apply(SetItemCountFunction.setCount(amount));
-        }
-        return builder;
+        return applySetCount(item(item), amount);
     }
 
     public static LootPoolSingletonContainer.Builder<?> tag(TagKey<Item> tagKey) {
@@ -52,7 +48,7 @@ public final class LootTableProviderHelper {
     }
 
     public static LootPoolSingletonContainer.Builder<?> tag(TagKey<Item> tagKey, int weight, NumberProvider amount) {
-        return tag(tagKey).setWeight(weight).apply(SetItemCountFunction.setCount(amount));
+        return applySetCount(tag(tagKey).setWeight(weight), amount);
     }
 
     public static LootPoolSingletonContainer.Builder<?> enchantedItem(ItemLike item, NumberProvider amount, HolderLookup.Provider provider, NumberProvider levels) {
@@ -77,6 +73,13 @@ public final class LootTableProviderHelper {
 
     public static LootPoolSingletonContainer.Builder<?> lingeringPotion(Holder<Potion> potion, NumberProvider amount) {
         return item(Items.LINGERING_POTION, amount).apply(SetPotionFunction.setPotion(potion));
+    }
+
+    public static LootPoolSingletonContainer.Builder<?> applySetCount(LootPoolSingletonContainer.Builder<?> builder, NumberProvider amount) {
+        if (!(amount instanceof ConstantValue(float value) && value == 1)) {
+            builder.apply(SetItemCountFunction.setCount(amount));
+        }
+        return builder;
     }
 
     public static NumberProvider one() {

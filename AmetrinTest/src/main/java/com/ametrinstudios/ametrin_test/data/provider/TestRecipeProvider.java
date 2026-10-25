@@ -2,8 +2,10 @@ package com.ametrinstudios.ametrin_test.data.provider;
 
 import com.ametrinstudios.ametrin.data.provider.ExtendedRecipeProvider;
 import com.ametrinstudios.ametrin_test.AmetrinTestMod;
+import com.ametrinstudios.ametrin_test.registry.TestItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.Identifier;
 
@@ -19,7 +21,8 @@ public final class TestRecipeProvider extends ExtendedRecipeProvider {
 
     @Override
     protected void buildRecipes() {
-
+        shapeless(RecipeCategory.DECORATIONS, TestItems.TEST_BLOCK, 1, TestItems.TEST_SKULL, 1);
+        shapeless(RecipeCategory.DECORATIONS, TestItems.TEST_BLOCK, 1, TestItems.TEST_CATALYST, 1);
     }
 
     public static class Runner extends ExtendedRecipeProvider.Runner {
