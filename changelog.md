@@ -17,7 +17,7 @@
 - (26.1.2) add `ColorCollection` from 26.3 Vanilla
 
 ## 1.2.0
-- add `ExtendedLootSubProvider` (provides common `HolderGetter`s)
+- (26.3) add `ExtendedLootSubProvider` (provides common `HolderGetter`s)
 - add `ExtendedRecipeProvider.family` and helper for stonecutting/smelting conversion recipes between families
 - add `ExtendedLanguageProvider.addHumanized` APIs
 - `ExtendedRecipeProvider` takes a `Map<Block, BlockFamily>` and patches vanilla methods to work with custom families 

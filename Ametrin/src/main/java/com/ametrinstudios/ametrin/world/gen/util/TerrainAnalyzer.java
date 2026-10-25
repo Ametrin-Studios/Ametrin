@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -65,12 +64,9 @@ public final class TerrainAnalyzer {
         return context.generator().getBaseHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState()) < height;
     }
 
-    public static boolean areNearbyBiomesValid(Structure.GenerationContext context, Predicate<Holder<Biome>> biomePredicate) {
-        int offsetX = context.chunkPos().getBlockX(9);
-        int offsetZ = context.chunkPos().getBlockZ(9);
-
-        for (Holder<Biome> biome : context.biomeResolver().getBiomesWithin(offsetX, context.chunkGenerator().getSeaLevel(), offsetZ, 29)) {
-            if (!biome.is(BiomeTags.REQUIRED_OCEAN_MONUMENT_SURROUNDING)) {
+    public static boolean areNearbyBiomesValid(BlockPos pos, int radius, Predicate<Holder<Biome>> biomePredicate, Structure.GenerationContext context) {
+        for (Holder<Biome> biome : context.biomeResolver().getBiomesWithin(pos.getX(), context.chunkGenerator().getSeaLevel(), pos.getZ(), radius)) {
+            if (!biomePredicate.test(biome)) {
                 return false;
             }
         }
