@@ -8,7 +8,6 @@ import com.ametrinstudios.ametrin_test.registry.TestBlocks;
 import com.ametrinstudios.ametrin_test.registry.TestItems;
 import com.ametrinstudios.ametrin_test.registry.TestPoiTypes;
 import com.mojang.logging.LogUtils;
-import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -47,7 +46,10 @@ public final class AmetrinTestMod {
         var blockTags = generator.addProvider(server, new TestBlockTagsProvider(output, registries, existingFileHelper));
         generator.addProvider(server, new TestItemTagsProvider(output, registries, blockTags.contentsGetter(), existingFileHelper));
 
-        generator.addProvider(event.includeClient(), (DataProvider.Factory<TestLanguageProvider>) TestLanguageProvider::new);
+        var client = event.includeClient();
+        generator.addProvider(client, new TestBlockStateProvider(output, existingFileHelper));
+        generator.addProvider(client, new TestItemModelProvider(output, existingFileHelper));
+        generator.addProvider(client, new TestLanguageProvider(output));
     }
 
     public static ResourceLocation locate(String key) {
