@@ -8,7 +8,8 @@ import com.ametrinstudios.ametrin_test.registry.TestBlocks;
 import com.ametrinstudios.ametrin_test.registry.TestItems;
 import com.ametrinstudios.ametrin_test.registry.TestPoiTypes;
 import com.mojang.logging.LogUtils;
-import net.minecraft.resources.Identifier;
+import net.minecraft.data.DataProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -26,27 +27,30 @@ public final class AmetrinTestMod {
         TestItems.REGISTER.register(modBus);
         TestPoiTypes.REGISTER.register(modBus);
 
-        modBus.addListener(AmetrinTestMod::gatherServerData);
-        modBus.addListener(AmetrinTestMod::gatherClientData);
+        modBus.addListener(AmetrinTestMod::gatherData);
     }
 
-    // Server data uses Client event because I don't need to run them separately
-    public static void gatherServerData(GatherDataEvent.Client event) {
-        event.createProvider(CustomLootTableProvider.builder()
+    public static void gatherData(GatherDataEvent event) {
+        var generator = event.getGenerator();
+        var output = generator.getPackOutput();
+        var registries = event.getLookupProvider();
+        var existingFileHelper = event.getExistingFileHelper();
+        var server = event.includeServer();
+
+        generator.addProvider(server, CustomLootTableProvider.builder()
                 .addBlockProvider(TestBlockLootProvider::new)
-                .addChestProvider(TestChestLootProvider::new)::build);
+                .addChestProvider(TestChestLootProvider::new)
+                .build(output, registries));
 
-        event.createProvider(TestRecipeProvider.Runner::new);
-        event.createProvider(TestBiomeTagsProvider::new);
-        event.createBlockAndItemTags(TestBlockTagsProvider::new, TestItemTagsProvider::new);
+        generator.addProvider(server, new TestRecipeProvider(output, registries));
+        generator.addProvider(server, new TestBiomeTagsProvider(output, registries, existingFileHelper));
+        var blockTags = generator.addProvider(server, new TestBlockTagsProvider(output, registries, existingFileHelper));
+        generator.addProvider(server, new TestItemTagsProvider(output, registries, blockTags.contentsGetter(), existingFileHelper));
+
+        generator.addProvider(event.includeClient(), (DataProvider.Factory<TestLanguageProvider>) TestLanguageProvider::new);
     }
 
-    public static void gatherClientData(GatherDataEvent.Client event) {
-        event.createProvider(TestModelProvider::new);
-        event.createProvider(TestLanguageProvider::new);
-    }
-
-    public static Identifier locate(String key) {
-        return Identifier.fromNamespaceAndPath(MOD_ID, key);
+    public static ResourceLocation locate(String key) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, key);
     }
 }

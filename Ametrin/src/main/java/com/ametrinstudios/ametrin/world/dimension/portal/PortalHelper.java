@@ -1,11 +1,11 @@
 package com.ametrinstudios.ametrin.world.dimension.portal;
 
 import com.ametrinstudios.ametrin.world.block.PortalBlock;
+import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.BlockUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
@@ -16,10 +16,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.level.portal.PortalShape;
-import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -33,12 +33,12 @@ public final class PortalHelper {
     }
 
     @Nullable
-    public TeleportTransition getExitPortal(
+    public DimensionTransition getExitPortal(
             ServerLevel level, Entity entity, BlockPos entryPos, BlockPos exitPos, boolean isTarget, WorldBorder worldBorder
     ) {
         var closestPortalPosition = findClosestPortalPosition(level, exitPos, isTarget, worldBorder);
         BlockUtil.FoundRectangle portalRect;
-        TeleportTransition.PostTeleportTransition postTransition;
+        DimensionTransition.PostDimensionTransition postTransition;
         if (closestPortalPosition.isPresent()) {
             var portalPos = closestPortalPosition.get();
             var blockstate = level.getBlockState(portalPos);
@@ -50,7 +50,7 @@ public final class PortalHelper {
                     21,
                     pos -> level.getBlockState(pos) == blockstate
             );
-            postTransition = TeleportTransition.PLAY_PORTAL_SOUND.then(traveller -> traveller.placePortalTicket(portalPos));
+            postTransition = DimensionTransition.PLAY_PORTAL_SOUND.then(traveller -> traveller.placePortalTicket(portalPos));
         } else {
             var portalAxis = entity.level().getBlockState(entryPos).getOptionalValue(PortalBlock.AXIS).orElse(Direction.Axis.X);
             var portal = createPortal(level, exitPos, portalAxis);
@@ -59,10 +59,10 @@ public final class PortalHelper {
             }
 
             portalRect = portal.get();
-            postTransition = TeleportTransition.PLAY_PORTAL_SOUND.then(TeleportTransition.PLACE_PORTAL_TICKET);
+            postTransition = DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET);
         }
 
-        return getTeleportTransitionFromExit(entity, entryPos, portalRect, level, postTransition);
+        return getDimensionTransitionFromExit(entity, entryPos, portalRect, level, postTransition);
     }
 
     private Optional<BlockPos> findClosestPortalPosition(ServerLevel level, BlockPos exitPos, boolean isNether, WorldBorder worldBorder) {
@@ -76,8 +76,8 @@ public final class PortalHelper {
                 .min(Comparator.<BlockPos>comparingDouble(p_352046_ -> p_352046_.distSqr(exitPos)).thenComparingInt(Vec3i::getY));
     }
 
-    public static TeleportTransition getTeleportTransitionFromExit(
-            Entity entity, BlockPos entryPos, BlockUtil.FoundRectangle portalRect, ServerLevel level, TeleportTransition.PostTeleportTransition postTransition
+    public static DimensionTransition getDimensionTransitionFromExit(
+            Entity entity, BlockPos entryPos, BlockUtil.FoundRectangle portalRect, ServerLevel level, DimensionTransition.PostDimensionTransition postTransition
     ) {
         var blockState = entity.level().getBlockState(entryPos); //?
         Direction.Axis portalAxis;
@@ -93,12 +93,12 @@ public final class PortalHelper {
             relativePosition = new Vec3(0.5, 0.0, 0.0);
         }
 
-        return createTeleportTransition(
+        return createDimensionTransition(
                 level, portalRect, portalAxis, relativePosition, entity, entity.getDeltaMovement(), entity.getYRot(), entity.getXRot(), postTransition
         );
     }
 
-    public static TeleportTransition createTeleportTransition(
+    public static DimensionTransition createDimensionTransition(
             ServerLevel level,
             BlockUtil.FoundRectangle portalRect,
             Direction.Axis portalAxis,
@@ -107,7 +107,7 @@ public final class PortalHelper {
             Vec3 entitySpeed,
             float entityYRot,
             float entityXRot,
-            TeleportTransition.PostTeleportTransition postTransition
+            DimensionTransition.PostDimensionTransition postTransition
     ) {
         var cornerPos = portalRect.minCorner;
         var frameBlockState = level.getBlockState(cornerPos);
@@ -115,13 +115,13 @@ public final class PortalHelper {
         var entitydimensions = entity.getDimensions(entity.getPose());
         var rotationIncrease = portalAxis == frameDirection ? 0f : 90f;
         var newEntitySpeed = portalAxis == frameDirection ? entitySpeed : new Vec3(entitySpeed.z, entitySpeed.y, -entitySpeed.x);
-        var d2 = (double) entitydimensions.width() / 2.0 + (portalRect.axis1Size - (double) entitydimensions.width()) * relativeOffset.x();
-        var d3 = (portalRect.axis2Size - (double) entitydimensions.height()) * relativeOffset.y();
+        var d2 = (double)entitydimensions.width() / 2.0 + (portalRect.axis1Size - (double)entitydimensions.width()) * relativeOffset.x();
+        var d3 = (portalRect.axis2Size - (double)entitydimensions.height()) * relativeOffset.y();
         var d4 = 0.5 + relativeOffset.z();
         var isXAxis = frameDirection == Direction.Axis.X;
-        var rawPos = new Vec3((double) cornerPos.getX() + (isXAxis ? d2 : d4), (double) cornerPos.getY() + d3, (double) cornerPos.getZ() + (isXAxis ? d4 : d2));
+        var rawPos = new Vec3((double)cornerPos.getX() + (isXAxis ? d2 : d4), (double)cornerPos.getY() + d3, (double)cornerPos.getZ() + (isXAxis ? d4 : d2));
         var newEntityPos = PortalShape.findCollisionFreePosition(rawPos, level, entity, entitydimensions);
-        return new TeleportTransition(level, newEntityPos, newEntitySpeed, entityYRot + rotationIncrease, entityXRot, postTransition);
+        return new DimensionTransition(level, newEntityPos, newEntitySpeed, entityYRot + rotationIncrease, entityXRot, postTransition);
     }
 
     public Optional<BlockUtil.FoundRectangle> createPortal(ServerLevel level, BlockPos pos, Direction.Axis axis) {
@@ -131,7 +131,7 @@ public final class PortalHelper {
         double d1 = -1.0;
         BlockPos blockpos1 = null;
         WorldBorder worldborder = level.getWorldBorder();
-        int i = Math.min(level.getMaxY(), level.getMinY() + level.getLogicalHeight() - 1);
+        int i = Math.min(level.getMaxBuildHeight(), level.getMinBuildHeight() + level.getLogicalHeight()) - 1;
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
 
         for (var spiralPos : BlockPos.spiralAround(pos, 16, Direction.EAST, Direction.SOUTH)) {
@@ -139,12 +139,12 @@ public final class PortalHelper {
             if (worldborder.isWithinBounds(spiralPos) && worldborder.isWithinBounds(spiralPos.move(direction, 1))) {
                 spiralPos.move(direction.getOpposite(), 1);
 
-                for (int l = k; l >= level.getMinY(); l--) {
+                for (int l = k; l >= level.getMinBuildHeight(); l--) {
                     spiralPos.setY(l);
                     if (canPortalReplaceBlock(level, spiralPos)) {
                         int i1 = l;
 
-                        while (l > level.getMinY() && canPortalReplaceBlock(level, spiralPos.move(Direction.DOWN))) {
+                        while (l > level.getMinBuildHeight() && canPortalReplaceBlock(level, spiralPos.move(Direction.DOWN))) {
                             l--;
                         }
 
@@ -180,7 +180,7 @@ public final class PortalHelper {
 
         var frameState = data.frameBlock().get();
         if (d0 == -1.0) {
-            int k1 = Math.max(level.getMinY() - -1, 70);
+            int k1 = Math.max(level.getMinBuildHeight() - -1, 70);
             int i2 = i - 9;
             if (i2 < k1) {
                 return Optional.empty();
@@ -236,7 +236,7 @@ public final class PortalHelper {
         for (int i = -1; i < 3; i++) {
             for (int j = -1; j < 4; j++) {
                 offsetPos.setWithOffset(
-                        originalPos, actualDirection.getStepX() * i + actualDirection.getStepX() * offsetScale, j, direction.getStepZ() * i + actualDirection.getStepZ() * offsetScale
+                        originalPos, actualDirection.getStepX() * i + actualDirection.getStepX() * offsetScale, j, actualDirection.getStepZ() * i + actualDirection.getStepZ() * offsetScale
                 );
                 if (j < 0 && !level.getBlockState(offsetPos).isSolid()) {
                     return false;

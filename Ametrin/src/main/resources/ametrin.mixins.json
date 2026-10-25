@@ -1,11 +1,9 @@
 {
   "required": true,
   "package": "com.ametrinstudios.ametrin.mixin",
-  "compatibilityLevel": "JAVA_25",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "MixinBlockBehaviorProperties",
-    "MixinBlockModelGenerators",
-    "MixinBlockModelGeneratorsBlockFamilyProvider"
+    "MixinBlockBehaviorProperties"
   ],
   "injectors": {
     "defaultRequire": 1

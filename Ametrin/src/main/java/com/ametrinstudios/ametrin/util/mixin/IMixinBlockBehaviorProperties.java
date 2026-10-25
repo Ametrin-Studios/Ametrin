@@ -1,13 +1,11 @@
 package com.ametrinstudios.ametrin.util.mixin;
 
-import net.minecraft.resources.DependantName;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.flag.FeatureFlagSet;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.storage.loot.LootTable;
 
-import java.util.Optional;
+import java.util.function.Supplier;
 
 public interface IMixinBlockBehaviorProperties {
     default BlockBehaviour.Properties copy() {
@@ -22,11 +20,11 @@ public interface IMixinBlockBehaviorProperties {
         throw new AssertionError("Implemented via Mixin");
     }
 
-    default void overrideDrops(DependantName<Block, Optional<ResourceKey<LootTable>>> drops) {
+    default void overrideDrops(ResourceKey<LootTable> drops) {
         throw new AssertionError("Implemented via Mixin");
     }
 
-    default void overrideDescriptionId(DependantName<Block, String> descriptionId) {
+    default void overrideLootTableSupplier(Supplier<ResourceKey<LootTable>> lootTableSupplier) {
         throw new AssertionError("Implemented via Mixin");
     }
 }

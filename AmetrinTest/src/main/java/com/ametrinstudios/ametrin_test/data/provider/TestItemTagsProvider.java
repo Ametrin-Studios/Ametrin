@@ -1,31 +1,29 @@
 package com.ametrinstudios.ametrin_test.data.provider;
 
+import com.ametrinstudios.ametrin.data.provider.ExtendedItemTagsProvider;
 import com.ametrinstudios.ametrin_test.AmetrinTestMod;
+import com.ametrinstudios.ametrin_test.registry.TestItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.TagAppender;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ItemTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
-public final class TestItemTagsProvider extends ItemTagsProvider {
-    public TestItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider) {
-        super(packOutput, lookupProvider, AmetrinTestMod.MOD_ID);
+public final class TestItemTagsProvider extends ExtendedItemTagsProvider {
+    public TestItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
+        super(packOutput, lookupProvider, blockTags, AmetrinTestMod.MOD_ID, existingFileHelper);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        new TestBlockItemTagsProvider() {
-            @Override
-            protected TagAppender<Block, Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag) {
-                return new BlockToItemConverter(TestItemTagsProvider.this.tag(itemTag));
-            }
-        }.run();
+        runRules(TestItems.REGISTER);
+
+        copy(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN);
         tag(ItemTags.BEACON_PAYMENT_ITEMS).remove(Items.IRON_INGOT);
     }
 }

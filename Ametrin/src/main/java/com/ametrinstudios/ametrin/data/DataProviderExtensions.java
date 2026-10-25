@@ -1,7 +1,7 @@
 package com.ametrinstudios.ametrin.data;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -54,12 +54,12 @@ public final class DataProviderExtensions {
         return getBlockKey(block).getPath();
     }
 
-    public static Identifier getItemKey(Item item) {
-        return getItemResourceKey(item).identifier();
+    public static ResourceLocation getItemKey(Item item) {
+        return getItemResourceKey(item).location();
     }
 
-    public static Identifier getBlockKey(Block block) {
-        return getBlockResouceKey(block).identifier();
+    public static ResourceLocation getBlockKey(Block block) {
+        return getBlockResouceKey(block).location();
     }
 
     public static ResourceKey<Item> getItemResourceKey(Item item) {

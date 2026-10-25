@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 public record WoodTypeCollection<T>(Map<WoodType, T> map) {
     public static final List<WoodType> VANILLA_TYPES = WoodType.values().toList();
-    public static final List<WoodType> VANILLA_OVERWORLD_TYPES = List.of(WoodType.OAK, WoodType.SPRUCE, WoodType.BIRCH, WoodType.JUNGLE, WoodType.ACACIA, WoodType.DARK_OAK, WoodType.MANGROVE, WoodType.CHERRY, WoodType.PALE_OAK);
+    public static final List<WoodType> VANILLA_OVERWORLD_TYPES = List.of(WoodType.OAK, WoodType.SPRUCE, WoodType.BIRCH, WoodType.JUNGLE, WoodType.ACACIA, WoodType.DARK_OAK, WoodType.MANGROVE, WoodType.CHERRY);
     public static final List<WoodType> VANILLA_NETHER_TYPES = List.of(WoodType.CRIMSON, WoodType.WARPED);
 
     public static final WoodTypeCollection<Block> VANILLA_OVERWORLD_SAPLINGS = new WoodTypeCollection<>(ImmutableMap.of(
@@ -30,8 +30,7 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.ACACIA, Blocks.ACACIA_SAPLING,
             WoodType.DARK_OAK, Blocks.DARK_OAK_SAPLING,
             WoodType.MANGROVE, Blocks.MANGROVE_PROPAGULE,
-            WoodType.CHERRY, Blocks.CHERRY_SAPLING,
-            WoodType.PALE_OAK, Blocks.PALE_OAK_SAPLING
+            WoodType.CHERRY, Blocks.CHERRY_SAPLING
     ));
 
     public static final WoodTypeCollection<Block> VANILLA_OVERWORLD_LEAVES = new WoodTypeCollection<>(ImmutableMap.of(
@@ -42,8 +41,7 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.ACACIA, Blocks.ACACIA_LEAVES,
             WoodType.DARK_OAK, Blocks.DARK_OAK_LEAVES,
             WoodType.MANGROVE, Blocks.MANGROVE_LEAVES,
-            WoodType.CHERRY, Blocks.CHERRY_LEAVES,
-            WoodType.PALE_OAK, Blocks.PALE_OAK_LEAVES
+            WoodType.CHERRY, Blocks.CHERRY_LEAVES
     ));
 
     public static final WoodTypeCollection<Block> VANILLA_OVERWORLD_LOGS = new WoodTypeCollection<>(ImmutableMap.of(
@@ -54,8 +52,7 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.ACACIA, Blocks.ACACIA_LOG,
             WoodType.DARK_OAK, Blocks.DARK_OAK_LOG,
             WoodType.MANGROVE, Blocks.MANGROVE_LOG,
-            WoodType.CHERRY, Blocks.CHERRY_LOG,
-            WoodType.PALE_OAK, Blocks.PALE_OAK_LOG
+            WoodType.CHERRY, Blocks.CHERRY_LOG
     ));
 
     public static final WoodTypeCollection<Block> VANILLA_NETHER_STEMS = new WoodTypeCollection<>(ImmutableMap.of(
@@ -73,8 +70,7 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.ACACIA, Blocks.STRIPPED_ACACIA_LOG,
             WoodType.DARK_OAK, Blocks.STRIPPED_DARK_OAK_LOG,
             WoodType.MANGROVE, Blocks.STRIPPED_MANGROVE_LOG,
-            WoodType.CHERRY, Blocks.STRIPPED_CHERRY_LOG,
-            WoodType.PALE_OAK, Blocks.STRIPPED_PALE_OAK_LOG
+            WoodType.CHERRY, Blocks.STRIPPED_CHERRY_LOG
     ));
 
     public static final WoodTypeCollection<Block> VANILLA_NETHER_STRIPPED_STEMS = new WoodTypeCollection<>(ImmutableMap.of(
@@ -91,8 +87,7 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.ACACIA, Blocks.ACACIA_WOOD,
             WoodType.DARK_OAK, Blocks.DARK_OAK_WOOD,
             WoodType.MANGROVE, Blocks.MANGROVE_WOOD,
-            WoodType.CHERRY, Blocks.CHERRY_WOOD,
-            WoodType.PALE_OAK, Blocks.PALE_OAK_WOOD
+            WoodType.CHERRY, Blocks.CHERRY_WOOD
     ));
 
     public static final WoodTypeCollection<Block> VANILLA_NETHER_HYPHAES = new WoodTypeCollection<>(ImmutableMap.of(
@@ -110,8 +105,7 @@ public record WoodTypeCollection<T>(Map<WoodType, T> map) {
             WoodType.ACACIA, Blocks.STRIPPED_ACACIA_WOOD,
             WoodType.DARK_OAK, Blocks.STRIPPED_DARK_OAK_WOOD,
             WoodType.MANGROVE, Blocks.STRIPPED_MANGROVE_WOOD,
-            WoodType.CHERRY, Blocks.STRIPPED_CHERRY_WOOD,
-            WoodType.PALE_OAK, Blocks.STRIPPED_PALE_OAK_WOOD
+            WoodType.CHERRY, Blocks.STRIPPED_CHERRY_WOOD
     ));
 
     public static final WoodTypeCollection<Block> VANILLA_NETHER_STRIPPED_HYPHAES = new WoodTypeCollection<>(ImmutableMap.of(

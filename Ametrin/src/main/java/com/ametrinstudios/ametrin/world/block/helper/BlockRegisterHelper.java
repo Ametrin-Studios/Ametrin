@@ -26,7 +26,7 @@ public final class BlockRegisterHelper {
     }
 
     public static Function<BlockBehaviour.Properties, PortalBlock> portalBlock(PortalData data, SoundType soundType, int lightLevel) {
-        return properties -> new PortalBlock(data, properties.strength(-1).noCollision().lightLevel((state) -> lightLevel).noLootTable().randomTicks().sound(soundType));
+        return properties -> new PortalBlock(data, properties.strength(-1).noCollission().lightLevel((state) -> lightLevel).noLootTable().randomTicks().sound(soundType));
     }
 
     @Deprecated
@@ -61,7 +61,7 @@ public final class BlockRegisterHelper {
     }
 
     public static BlockBehaviour.Properties buttonProperties() {
-        return BlockBehaviour.Properties.of().noCollision().strength(0.5f).pushReaction(PushReaction.DESTROY);
+        return BlockBehaviour.Properties.of().noCollission().strength(0.5f).pushReaction(PushReaction.DESTROY);
     }
 
     public static BlockBehaviour.Properties bushProperties() {
@@ -85,7 +85,7 @@ public final class BlockRegisterHelper {
     }
 
     public static BlockBehaviour.Properties pressurePlateProperties() {
-        return BlockBehaviour.Properties.of().forceSolidOn().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY);
+        return BlockBehaviour.Properties.of().forceSolidOn().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY);
     }
 
     public static ToIntFunction<BlockState> litEmission(int lightLevel) {

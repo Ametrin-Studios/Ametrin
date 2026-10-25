@@ -1,38 +1,33 @@
 package com.ametrinstudios.ametrin.world.item.helper;
 
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.equipment.ArmorMaterial;
-import net.minecraft.world.item.equipment.ArmorType;
-import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public final class ArmorMaterialBuilder {
-    private int _durability = 1;
-    private final EnumMap<ArmorType, Integer> _defence = new EnumMap<>(ArmorType.class);
+    private final EnumMap<ArmorItem.Type, Integer> _defence = new EnumMap<>(ArmorItem.Type.class);
     private int _enchantmentValue = 0;
     private Holder<SoundEvent> _equipSound = SoundEvents.ARMOR_EQUIP_IRON;
-    private TagKey<Item> _repairIngredient;
+    private Supplier<Ingredient> _repairIngredient = ()-> Ingredient.EMPTY;
+    private final List<ArmorMaterial.Layer> _layers;
     private float _toughness = 0;
     private float _knockbackResistance = 0;
-    private final ResourceKey<EquipmentAsset> _modelID;
 
-    public ArmorMaterialBuilder(ResourceKey<EquipmentAsset> modelID) {
-        _modelID = modelID;
+    public ArmorMaterialBuilder(String name) {
+        _layers = List.of(new ArmorMaterial.Layer(ResourceLocation.withDefaultNamespace(name)));
     }
 
-    public ArmorMaterialBuilder durability(int value) {
-        _durability = value;
-        return this;
-    }
-
-    public ArmorMaterialBuilder defence(Consumer<EnumMap<ArmorType, Integer>> defence) {
+    public ArmorMaterialBuilder defence(Consumer<EnumMap<ArmorItem.Type, Integer>> defence) {
         defence.accept(_defence);
         return this;
     }
@@ -47,9 +42,13 @@ public final class ArmorMaterialBuilder {
         return this;
     }
 
-    public ArmorMaterialBuilder repairIngredient(TagKey<Item> repairIngredient) {
+    public ArmorMaterialBuilder repairIngredient(Supplier<Ingredient> repairIngredient) {
         _repairIngredient = repairIngredient;
         return this;
+    }
+
+    public ArmorMaterialBuilder repairItem(Supplier<ItemLike> repairIngredient) {
+        return repairIngredient(() -> Ingredient.of(repairIngredient.get()));
     }
 
     public ArmorMaterialBuilder toughness(float value) {
@@ -63,6 +62,6 @@ public final class ArmorMaterialBuilder {
     }
 
     public ArmorMaterial build() {
-        return new ArmorMaterial(_durability, _defence, _enchantmentValue, _equipSound, _toughness, _knockbackResistance, _repairIngredient, _modelID);
+        return new ArmorMaterial(_defence, _enchantmentValue, _equipSound, _repairIngredient, _layers, _toughness, _knockbackResistance);
     }
 }

@@ -1,5 +1,6 @@
 package com.ametrinstudios.ametrin.world.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -8,6 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -19,12 +21,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.Tags;
 
 public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
+    public static final MapCodec<AgeableBushBlock> CODEC = simpleCodec(properties -> new AgeableBushBlock(0, 0, properties));
     public final int GrowRarity;
     public final int BonusDrop;
     private static final VoxelShape SaplingShape = Block.box(3, 0, 3, 13, 8, 13);
@@ -38,7 +42,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         return new ItemStack(asItem());
     }
 
@@ -79,9 +83,9 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         return isSparse(blockState) && itemStack.is(Tags.Items.FERTILIZERS)
-                ? InteractionResult.PASS
+                ? ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION
                 : super.useItemOn(itemStack, blockState, level, pos, player, hand, hitResult);
     }
 
@@ -91,7 +95,7 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
             return super.useWithoutItem(blockState, level, pos, player, hitResult);
         }
         onHarvest(blockState, level, pos, player);
-        return InteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
@@ -119,5 +123,10 @@ public class AgeableBushBlock extends BushBlock implements IAgeablePlant {
     @Override
     public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return 100;
+    }
+
+    @Override
+    protected MapCodec<? extends BushBlock> codec() {
+        return CODEC;
     }
 }

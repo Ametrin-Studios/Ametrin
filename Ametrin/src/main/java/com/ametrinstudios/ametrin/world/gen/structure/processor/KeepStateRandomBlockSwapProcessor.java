@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

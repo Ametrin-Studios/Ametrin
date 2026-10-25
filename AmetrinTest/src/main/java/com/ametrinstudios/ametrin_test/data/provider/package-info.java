@@ -1,4 +1,7 @@
-@NullMarked
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 package com.ametrinstudios.ametrin_test.data.provider;
 
-import org.jspecify.annotations.NullMarked;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
+import javax.annotation.ParametersAreNonnullByDefault;

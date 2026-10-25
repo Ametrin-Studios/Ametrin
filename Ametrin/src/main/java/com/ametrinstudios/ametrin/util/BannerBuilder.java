@@ -2,12 +2,11 @@ package com.ametrinstudios.ametrin.util;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BannerPatternLayers;
 
@@ -30,7 +29,9 @@ public class BannerBuilder {
         return this;
     }
 
-    public ItemStackTemplate build() {
-        return new ItemStackTemplate(_bannerItem, DataComponentPatch.builder().set(DataComponents.BANNER_PATTERNS, _layers.build()).build());
+    public ItemStack build() {
+        var stack = new ItemStack(_bannerItem);
+        stack.set(DataComponents.BANNER_PATTERNS, _layers.build());
+        return stack;
     }
 }

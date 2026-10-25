@@ -4,7 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.util.context.ContextKeySet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public final class CustomLootTableProvider extends LootTableProvider {
             return addProvider(LootContextParamSets.FISHING, subProviderSupplier);
         }
 
-        public Builder addProvider(ContextKeySet paramSet, Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
+        public Builder addProvider(LootContextParamSet paramSet, Function<HolderLookup.Provider, LootTableSubProvider> subProviderSupplier) {
             return addProvider(new SubProviderEntry(subProviderSupplier, paramSet));
         }
 

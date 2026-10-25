@@ -2,21 +2,21 @@ package com.ametrinstudios.ametrin.data.provider;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.criterion.LocationPredicate;
-import net.minecraft.advancements.criterion.PlayerTrigger;
+import net.minecraft.advancements.critereon.LocationPredicate;
+import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import org.jspecify.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +44,11 @@ public abstract class ExtendedAdvancementSubProvider implements AdvancementSubPr
         private final String name;
         private final HolderLookup.Provider registries;
         @Nullable
-        private ItemStackTemplate displayItem;
+        private ItemStack displayItem;
         @Nullable
         private AdvancementHolder parent = null;
         @Nullable
-        private Identifier background = null;
+        private ResourceLocation background = null;
         private AdvancementType type = AdvancementType.TASK;
         private boolean showToast = true;
         private boolean announceToChat = true;
@@ -68,19 +68,19 @@ public abstract class ExtendedAdvancementSubProvider implements AdvancementSubPr
         }
 
         public AdvancementBuilder displayItem(ItemLike item) {
-            return displayItem(new ItemStackTemplate(item.asItem()));
+            return displayItem(new ItemStack(item));
         }
 
-        public AdvancementBuilder displayItem(ItemStackTemplate template) {
-            this.displayItem = template;
+        public AdvancementBuilder displayItem(ItemStack stack) {
+            this.displayItem = stack;
             return this;
         }
 
         public AdvancementBuilder background(String background) {
-            return background(Identifier.fromNamespaceAndPath(namespace, background));
+            return background(ResourceLocation.fromNamespaceAndPath(namespace, background));
         }
 
-        public AdvancementBuilder background(Identifier background) {
+        public AdvancementBuilder background(ResourceLocation background) {
             this.background = background;
             return this;
         }
@@ -156,7 +156,7 @@ public abstract class ExtendedAdvancementSubProvider implements AdvancementSubPr
         }
 
         public AdvancementBuilder onEnterStructure(Holder<Structure> structure) {
-            return addCriterion("entered_" + Objects.requireNonNull(structure.getKey()).identifier().getPath().replace('/', '_'), PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(structure)));
+            return addCriterion("entered_" + Objects.requireNonNull(structure.getKey()).location().getPath().replace('/', '_'), PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.inStructure(structure)));
         }
 
         public AdvancementBuilder addCriterion(String name, Criterion<?> criterion) {
@@ -171,7 +171,7 @@ public abstract class ExtendedAdvancementSubProvider implements AdvancementSubPr
                 builder.addCriterion(pair.getFirst(), pair.getSecond());
             }
             if (parent != null) builder.parent(parent);
-            return builder.save(consumer, Identifier.fromNamespaceAndPath(namespace, name));
+            return builder.save(consumer, ResourceLocation.fromNamespaceAndPath(namespace, name).toString());
         }
 
         private Component component(String key) {

@@ -6,11 +6,14 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.common.data.ItemTagsProvider;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -20,8 +23,8 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
     private final List<Item> excludedItems = new ArrayList<>();
     private final List<ItemTagProviderRule> itemTagProviderRules = new ArrayList<>();
 
-    public ExtendedItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId) {
-        super(output, lookupProvider, modId);
+    public ExtendedItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, String modId, @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, blockTags, modId, existingFileHelper);
     }
 
     {
@@ -63,7 +66,7 @@ public abstract class ExtendedItemTagsProvider extends ItemTagsProvider {
         items.forEach(holder -> {
             if (excludedItems.contains(holder.get())) return;
             final var key = holder.getKey();
-            final var name = key.identifier().getPath();
+            final var name = key.location().getPath();
 
             for (var rule : itemTagProviderRules) {
                 rule.run(holder, name);

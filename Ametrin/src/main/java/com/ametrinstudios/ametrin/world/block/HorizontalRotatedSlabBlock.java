@@ -9,11 +9,11 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import javax.annotation.Nullable;
 
 public class HorizontalRotatedSlabBlock extends SlabBlock {
-    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public HorizontalRotatedSlabBlock(Properties properties) {
         super(properties);

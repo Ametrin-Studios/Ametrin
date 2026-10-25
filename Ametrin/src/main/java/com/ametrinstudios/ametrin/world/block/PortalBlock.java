@@ -8,12 +8,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Portal;
@@ -23,12 +22,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.portal.PortalShape;
-import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jspecify.annotations.Nullable;
+import javax.annotation.Nullable;
 
 public class PortalBlock extends Block implements Portal {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
@@ -45,17 +43,17 @@ public class PortalBlock extends Block implements Portal {
     }
 
     @Override
-    protected BlockState updateShape(BlockState thisState, LevelReader level, ScheduledTickAccess tickAccess, BlockPos thisPos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
+    protected BlockState updateShape(BlockState thisState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos thisPos, BlockPos facingPos) {
         var facingAxis = facing.getAxis();
         var thisAxis = thisState.getValue(AXIS);
         boolean flag = thisAxis != facingAxis && facingAxis.isHorizontal();
-        return !flag && !facingState.is(this) && !PortalShape.findAnyShape(level, thisPos, thisAxis).isComplete()
+        return !flag && !facingState.is(this) && !new PortalShape(level, thisPos, thisAxis).isComplete()
                 ? Blocks.AIR.defaultBlockState()
-                : super.updateShape(thisState, level, tickAccess, thisPos, facing, facingPos, facingState, random);
+                : super.updateShape(thisState, facing, facingState, level, thisPos, facingPos);
     }
 
     @Override
-    protected void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean flag) {
+    protected void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entity) {
         if (entity.canUsePortal(true)) {
             entity.setAsInsidePortal(this, pos);
         }
@@ -67,10 +65,10 @@ public class PortalBlock extends Block implements Portal {
                 ? Math.max(
                 1,
                 level.getGameRules()
-                        .get(
+                        .getInt(
                                 player.getAbilities().invulnerable
-                                        ? GameRules.PLAYERS_NETHER_PORTAL_CREATIVE_DELAY
-                                        : GameRules.PLAYERS_NETHER_PORTAL_DEFAULT_DELAY
+                                        ? GameRules.RULE_PLAYERS_NETHER_PORTAL_CREATIVE_DELAY
+                                        : GameRules.RULE_PLAYERS_NETHER_PORTAL_DEFAULT_DELAY
                         )
         )
                 : 0;
@@ -78,7 +76,7 @@ public class PortalBlock extends Block implements Portal {
 
 
     @Override
-    public @Nullable TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
+    public @Nullable DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
         var destinationLevelKey = level.dimension() == data.dimensionA() ? data.dimensionB() : data.dimensionA();
         var destinationLevel = level.getServer().getLevel(destinationLevelKey);
         if (destinationLevel == null) {
